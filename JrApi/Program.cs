@@ -23,7 +23,7 @@ internal class Program
         );
 
         // Injecting dependency
-        builder.Services.AddScoped<IUserRepository<UserModel>, UserRepository>();
+        builder.Services.AddScoped<IDbRepository<UserModel>, UserRepository>();
 
         var app = builder.Build();
 
