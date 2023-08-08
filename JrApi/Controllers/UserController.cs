@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace JrApi.Controllers
 {
     // Defining route for /api/usuarios
+    //FEEDBACK: Use IActionResult so you get free of defining the actual return type for every endpoint method.
     [Route("/api/usuarios")]
-    [ApiController]
+    [ApiController]    
     public class UserController : ControllerBase
     {
 

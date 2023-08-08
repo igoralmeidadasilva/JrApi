@@ -3,6 +3,7 @@ using System;
 namespace JrApi.Models
 {
     // User Entity Model Class
+    //FEEDBACK: use 'init' keyword instead of 'set' to ensure immutability. This is not mandatory, but a good practice when dealing with entity classes.
     public class UserModel
     {
         // Attributes
