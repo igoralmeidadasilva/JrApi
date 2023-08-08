@@ -8,8 +8,11 @@ Welcome to the Jr API built using ASP.NET, Entity Framework, and SQLite. This AP
 Make sure you have the following software installed in your development environment:
 
 Visual Studio (recommended version)
+
 .NET SDK (recommended version)
+
 SQLite (recommended version)
+
 
 ### API Endpoints
 The API has the following endpoints to manage its resources:
