@@ -23,7 +23,7 @@ internal class Program
         );
 
         // Injecting dependency
-        builder.Services.AddScoped<IDbRepository<UserModel>, UserRepository>();
+        builder.Services.AddScoped<IDbRepository<UserModel>, UserRepository>(); //FEEDBACK: good use of scoped lifetime here. It's exactly what's recommended when injecting repositories.
 
         var app = builder.Build();
 
