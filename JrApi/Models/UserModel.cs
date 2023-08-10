@@ -7,7 +7,7 @@ namespace JrApi.Models
     public class UserModel
     {
         // Attributes
-        public int Id { get; set; }
+        public int Id { get; init; }
         public string? Name { get; set; }
         public string? LastName { get; set; }
         public DateTime BirthDate { get; set; }

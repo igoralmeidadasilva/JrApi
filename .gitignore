@@ -416,5 +416,6 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 JrApi.rar
+Tasks.md
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,visualstudio

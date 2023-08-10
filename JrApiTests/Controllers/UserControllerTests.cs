@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
+using JrApi.Utils;
 
 namespace JrApi.Controllers.Tests
 {
@@ -15,6 +17,7 @@ namespace JrApi.Controllers.Tests
         private UserDbContext? _context;
         private UserRepository? _itemRepository;
         private DbConnection? _connection;
+        private IValidator<UserModel>? _validator; 
         
         [TestInitialize]
         public void Setup()
@@ -30,9 +33,10 @@ namespace JrApi.Controllers.Tests
             _context.Database.EnsureCreated();
 
             _itemRepository = new UserRepository(_context);
+            _validator = new UserValidation();
 
             _context.Users.Add(new UserModel("TestName1", "LastName", DateTime.Now));
-            _context.Users.Add(new UserModel("TestName1", "LastName", DateTime.Now));
+            _context.Users.Add(new UserModel("TestName2", "LastName", DateTime.Now));
             _context.Users.Add(new UserModel("TestName3", "LastName", DateTime.Now));
             _context.Users.Add(new UserModel("TestName4", "LastName", DateTime.Now));
             _context.Users.Add(new UserModel("TestName5", "LastName", DateTime.Now));
@@ -52,7 +56,7 @@ namespace JrApi.Controllers.Tests
         public async Task SelectAllUsersTest()
         {
             // Arrange
-            var controller = new UserController(_itemRepository!);
+            var controller = new UserController(_itemRepository!, _validator!);
             
             // Act
             var result = await controller.SelectAllUsers();
@@ -67,7 +71,7 @@ namespace JrApi.Controllers.Tests
         public async Task SelectUserByIdTest()
         {
             // Arrange
-            var controller = new UserController(_itemRepository!);
+            var controller = new UserController(_itemRepository!, _validator!);
             int id = 1;
 
             // Act
@@ -83,15 +87,15 @@ namespace JrApi.Controllers.Tests
         public async Task InsertTest()
         {
             // Arrange
-            var controller = new UserController(_itemRepository!);
+            var controller = new UserController(_itemRepository!, _validator!);
             var newItem = new UserModel(6, "TestName6", "LastName", DateTime.Now);
 
             // Act
-            var result = await controller.Insert(newItem);
+            var result = await controller.InsertAsync(newItem);
             var objectResult = result.Result as CreatedResult;
             var itemResult = objectResult?.Value as UserModel;
             
-            // Assert
+            // // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(newItem, itemResult);
         }
@@ -100,7 +104,7 @@ namespace JrApi.Controllers.Tests
         public async Task UpdateTest()
         {
             // Arrange
-            var controller = new UserController(_itemRepository!);
+            var controller = new UserController(_itemRepository!, _validator!);
             var id = 1;
             var updateItem = new UserModel(id, "TestNameX", "LastNameX", DateTime.Now);
 
@@ -118,7 +122,7 @@ namespace JrApi.Controllers.Tests
         public async Task DeleteTest()
         {
             // Arrange
-            var controller = new UserController(_itemRepository!);
+            var controller = new UserController(_itemRepository!, _validator!);
             var id = 1;
 
             // Act

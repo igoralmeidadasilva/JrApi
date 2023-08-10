@@ -8,6 +8,7 @@ https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotn
 https://learn.microsoft.com/en-us/visualstudio/test/walkthrough-creating-and-running-unit-tests-for-managed-code?view=vs-2022
 https://learn.microsoft.com/pt-br/visualstudio/test/unit-test-basics?view=vs-2022
 https://learn.microsoft.com/en-us/ef/core/testing/testing-without-the-database#sqlite-in-memory
+https://docs.fluentvalidation.net/en/latest/aspnet.html
 
 ### Chatgpt Questions
 
