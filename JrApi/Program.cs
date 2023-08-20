@@ -1,5 +1,6 @@
 using FluentValidation;
 using JrApi.Data;
+using JrApi.Middleware;
 using JrApi.Models;
 using JrApi.Repository;
 using JrApi.Repository.Interfaces;
@@ -39,6 +40,8 @@ internal class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.UseMiddleware<GlobalExceptionHandler>();
 
         app.MapControllers();
 
