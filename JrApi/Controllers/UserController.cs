@@ -1,4 +1,4 @@
-using System;
+using System.Diagnostics;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JrApi.Controllers
 {
     // Defining route for /api/usuarios
-    //FEEDBACK: Use IActionResult so you get free of defining the actual return type for every endpoint method.
+    // FEEDBACK: Use IActionResult so you get free of defining the actual return type for every endpoint method.
     [Route("/api/usuarios")]
     [ApiController]    
     public class UserController : ControllerBase
@@ -17,21 +17,31 @@ namespace JrApi.Controllers
 
         private readonly IDbRepository<UserModel> _user;
         private readonly IValidator<UserModel> _validator;
-
+        private readonly ILogger<UserController> _logger;
         // Constructor that receives an implementation of the IUserRepository interface 
-        public UserController(IDbRepository<UserModel> _user, IValidator<UserModel> validator)
+        public UserController(IDbRepository<UserModel> user, IValidator<UserModel> validator, ILogger<UserController> logger)
         {
-           this._user = _user; 
-           _validator = validator;
+            _user = user;
+            _validator = validator;
+            _logger = logger;
         }
 
         // Asynchronous HTTPGET method that is responsible for Selectin all records from the Database.
         // This method returns an Ok() if successful, otherwise returns a NotFound()
         [HttpGet]
-        public async Task<ActionResult<List<UserModel>>> SelectAllUsers()
+        public async Task<ActionResult<List<UserModel>>> GetAllUsers()
         {
-            // Calling the repository method
-            var users = await _user.SelectAll();
+            // The Stopwatch class will measure the request time.
+            var stopwatch = new Stopwatch();
+            stopwatch.Start(); // Start
+            //Calling the repository method
+            var users = await _user.GetItems();
+            stopwatch.Stop(); // Stop
+
+            // Create a TimeSpan for logging
+            TimeSpan ts = stopwatch.Elapsed; 
+            // Logging the request execution time. 
+            _logger.LogInformation($"GetAllUsers - Requisition Time: {ts.Seconds} : {ts.Milliseconds} : {ts.Nanoseconds}"); 
             // If sequence contains elements
             if(users.Any())
             {
@@ -46,10 +56,19 @@ namespace JrApi.Controllers
         // Asynchronous HTTPGET method that is responsible for selecting one record from the Database. This method receives a user id to search for the record
         // This method returns an Ok() if successful, otherwise returns a NotFound()
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> SelectUserById(int id)
+        public async Task<ActionResult<UserModel>> GetItemById(int id)
         {
+            
+            // The Stopwatch class will measure the request time.
+            var stopwatch = new Stopwatch();
+            stopwatch.Start(); // Start
             // Calling the repository method
-            var user = await _user.SelectById(id);
+            var user = await _user.GetItemById(id);
+            stopwatch.Stop(); // Stop
+            // Create a TimeSpan for logging
+            TimeSpan ts = stopwatch.Elapsed; 
+            // Logging the request execution time.
+            _logger.LogInformation($"GetUserById - Requisition Time: {ts.Seconds} : {ts.Milliseconds} : {ts.Nanoseconds}");
             // If the UserModel instance is not null 
             if(user != null)
             {
@@ -86,7 +105,7 @@ namespace JrApi.Controllers
             //Validation
             ValidationResult result = await _validator.ValidateAsync(userBody);
             //Searching in Database the User
-            var userUpdate = await _user.SelectById(id);
+            var userUpdate = await _user.GetItemById(id);
             
             // Returning NotFound
             if(userUpdate == null){

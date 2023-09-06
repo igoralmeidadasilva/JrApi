@@ -1,7 +1,6 @@
 using JrApi.Data;
 using JrApi.Models;
 using JrApi.Repository.Interfaces;
-using JrApi.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace JrApi.Repository
@@ -19,7 +18,7 @@ namespace JrApi.Repository
         }
 
         // Asynchronous method that returns all records in the Users table using the IEnumerable interface
-        public async Task<IEnumerable<UserModel>> SelectAll()
+        public async Task<IEnumerable<UserModel>> GetItems()
         {
             // Searching for all records in the database
             var users = await _dbContext.Users.AsNoTracking().ToListAsync(); //FEEDBACK: if this is a readonly operation, you can use AsNoTracking() to improve performance.
@@ -28,7 +27,7 @@ namespace JrApi.Repository
         }
         
         // Asynchronous method that returns a record from the Users table, this method receives a user ID
-        public async Task<UserModel> SelectById(int id)
+        public async Task<UserModel> GetItemById(int id)
         {
             // Searching the database for the record by ID
             var user = await _dbContext.Users.FirstOrDefaultAsync(p => p.Id == id);
@@ -65,7 +64,7 @@ namespace JrApi.Repository
         public async Task<bool> Delete(int id)
         {
             // Searches for the user in the database
-            var userDelete = await SelectById(id);
+            var userDelete = await GetItemById(id);
             if(userDelete == null)
             {
                 return false;

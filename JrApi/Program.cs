@@ -3,6 +3,7 @@ using JrApi.Data;
 using JrApi.Middleware;
 using JrApi.Models;
 using JrApi.Repository;
+using JrApi.Repository.Caches;
 using JrApi.Repository.Interfaces;
 using JrApi.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,6 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
         // Add services to the container.
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -27,6 +27,15 @@ internal class Program
         // Injecting dependency
         builder.Services.AddScoped<IDbRepository<UserModel>, UserRepository>(); //FEEDBACK: good use of scoped lifetime here. It's exactly what's recommended when injecting repositories.
         builder.Services.AddScoped<IValidator<UserModel>, UserValidation>();
+        builder.Services.Decorate<IDbRepository<UserModel>, CachingUserRepository>(); // Using Scrutor for implements Decorator Pattern
+
+        //Redis connection and configuration
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            string connection = builder.Configuration
+                .GetConnectionString("Redis")!;
+            options.Configuration = connection;
+        });
 
         var app = builder.Build();
 
