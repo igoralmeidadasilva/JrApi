@@ -31,17 +31,9 @@ namespace JrApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserModel>>> GetAllUsers()
         {
-            // The Stopwatch class will measure the request time.
-            var stopwatch = new Stopwatch();
-            stopwatch.Start(); // Start
-            //Calling the repository method
-            var users = await _user.GetItems();
-            stopwatch.Stop(); // Stop
 
-            // Create a TimeSpan for logging
-            TimeSpan ts = stopwatch.Elapsed; 
-            // Logging the request execution time. 
-            _logger.LogInformation($"GetAllUsers - Requisition Time: {ts.Seconds} : {ts.Milliseconds} : {ts.Nanoseconds}"); 
+            var users = await _user.GetItems();
+
             // If sequence contains elements
             if(users.Any())
             {
@@ -59,16 +51,9 @@ namespace JrApi.Controllers
         public async Task<ActionResult<UserModel>> GetItemById(int id)
         {
             
-            // The Stopwatch class will measure the request time.
-            var stopwatch = new Stopwatch();
-            stopwatch.Start(); // Start
             // Calling the repository method
             var user = await _user.GetItemById(id);
-            stopwatch.Stop(); // Stop
-            // Create a TimeSpan for logging
-            TimeSpan ts = stopwatch.Elapsed; 
-            // Logging the request execution time.
-            _logger.LogInformation($"GetUserById - Requisition Time: {ts.Seconds} : {ts.Milliseconds} : {ts.Nanoseconds}");
+
             // If the UserModel instance is not null 
             if(user != null)
             {

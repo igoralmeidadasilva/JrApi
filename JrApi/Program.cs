@@ -51,6 +51,7 @@ internal class Program
         app.UseAuthorization();
 
         app.UseMiddleware<GlobalExceptionHandler>();
+        app.UseMiddleware<RequisitionTimeMiddleware>();
 
         app.MapControllers();
 
