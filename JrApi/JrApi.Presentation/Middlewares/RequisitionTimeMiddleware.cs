@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace JrApi.Presentation.Middlewares
 {
+    // Middleware replaced by a behavior.
     public class RequisitionTimeMiddleware
     {
         private readonly RequestDelegate _next;

@@ -24,6 +24,7 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateUserCommandValidator));
@@ -48,7 +49,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
-app.UseMiddleware<RequisitionTimeMiddleware>();
+// app.UseMiddleware<RequisitionTimeMiddleware>();
 
 app.UseHttpsRedirection();
 app.MapControllers();
