@@ -18,7 +18,7 @@ namespace JrApi.Infrastructure.Handlers.Commands
         {
             try
             {
-                bool result = await _user.Delete(request.Id);
+                var result = await _user.Delete(request.Id);
                 if(!result)
                 {
                     return false;

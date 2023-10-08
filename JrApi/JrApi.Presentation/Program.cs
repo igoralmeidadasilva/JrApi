@@ -18,7 +18,18 @@ builder.Services.AddTransient<IRequestHandler<DeleteUserCommand, bool>, DeleteUs
 builder.Services.AddTransient<IRequestHandler<UpdateUserCommand, UserModel>, UpdateUsersCommandHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllUsersQuery, IEnumerable<UserModel>>, GetAllUsersQueryHandler>();
 builder.Services.AddTransient<IRequestHandler<GetUserByIdQuery, UserModel>, GetUserByIdQueryHandler>();
+
+//Commands and Querys with MongoDB
+builder.Services.AddTransient<IRequestHandler<CreateUserMongoCommand, UserModel>, CreateUsersMongoCommandHandler>();
+builder.Services.AddTransient<IRequestHandler<UpdateUserMongoCommand, UserModel>, UpdateUsersMongoCommandHandler>();
+builder.Services.AddTransient<IRequestHandler<DeleteUserMongoCommand, bool>, DeleteUsersMongoCommandHandler>();
+builder.Services.AddTransient<IRequestHandler<GetAllUsersMongoQuery, IEnumerable<UserModel>>, GetAllUsersMongoQueryHandler>();
+builder.Services.AddTransient<IRequestHandler<GetUserByIdMongoQuery, UserModel>, GetUserByIdMongoQueryHandler>();
+
 builder.Services.Decorate<IDbRepository<UserModel>, CachingUserRepository>(); // Using Scrutor for implements Decorator Pattern
+builder.Services.AddScoped<IMongoDbServices<UserModel>, UserMongoService>();
+builder.Services.Decorate<IMongoDbServices<UserModel>, CachingUserMongoService>(); // Using Scrutor for implements Decorator Pattern
+
 
 builder.Services.AddMediatR(cfg => 
 {
@@ -35,7 +46,11 @@ builder.Services.AddStackExchangeRedisCache(options =>
     string connection = builder.Configuration
         .GetConnectionString("RedisConnectionString")!;
     options.Configuration = connection;
-});
+}); 
+
+// MongoDB connection
+builder.Services.Configure<UserDataBaseMongoSettings>(builder.Configuration.GetSection("MongoDbConnectionString"));
+builder.Services.AddSingleton<UserMongoService>();
 
 var app = builder.Build();
 app.UseMiddleware<GlobalExceptionHandler>();

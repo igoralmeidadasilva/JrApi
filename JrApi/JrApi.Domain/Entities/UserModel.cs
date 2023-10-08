@@ -1,11 +1,17 @@
 
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace JrApi.Domain.Entities
 {
     // User Entity Model Class
     //FEEDBACK: use 'init' keyword instead of 'set' to ensure immutability. This is not mandatory, but a good practice when dealing with entity classes.
+    [BsonIgnoreExtraElements]
     public sealed class UserModel
     {
         // Attributes
+        [BsonId]
+        [BsonRepresentation(BsonType.Int32)]
         public int Id { get; init; }
         public string? Name { get; set; }
         public string? LastName { get; set; }
@@ -29,6 +35,5 @@ namespace JrApi.Domain.Entities
         {
             Id = id;
         }
-
     }
 }

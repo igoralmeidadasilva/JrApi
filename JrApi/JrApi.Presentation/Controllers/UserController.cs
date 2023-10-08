@@ -1,7 +1,3 @@
-using JrApi.Application.Commands.Users;
-using JrApi.Application.Queries.Users;
-using JrApi.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JrApi.Controllers
@@ -9,8 +5,8 @@ namespace JrApi.Controllers
     // Defining route for /api/usuarios
     // FEEDBACK: Use IActionResult so you get free of defining the actual return type for every endpoint method.
     [Route("/api/usuarios")]
-    [ApiController]    
-    public class UserController : ControllerBase
+    [ApiController]
+    public sealed class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
         private readonly IMediator _mediator;
@@ -60,9 +56,13 @@ namespace JrApi.Controllers
         // Asynchronous HTTPPOST method that is responsible for inserting a record into the Database. For user validation, this method uses the static class UserValidation 
         // This method returns an Created() if successful, otherwise returns a BadRequest().
         [HttpPost]
-        public ActionResult<UserModel> InsertAsync([FromBody] CreateUserCommand userToInsert)
+        public ActionResult<UserModel> Insert([FromBody] CreateUserCommand userToInsert)
         {
             var user = _mediator.Send(userToInsert);
+            if(user.Result is null)
+            {
+                return BadRequest();
+            }
             return Created("Successfully created", user.Result); 
         }
 
@@ -70,10 +70,10 @@ namespace JrApi.Controllers
         // to search for the record. For use validation, this method the static class UserValidation.
         // This method returns an Ok() if successful, if validation errors occur, return BadRequest and a JSON with the errors that occurred and return NotFound if the user is not found.
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UpdateUserCommand userBody, int id)
+        public async Task<ActionResult<UserModel>> Update([FromBody] UpdateUserCommand userToUpdate, int id)
         {
-            userBody.Id = id;
-            var user = await _mediator.Send(userBody);
+            userToUpdate.Id = id;
+            var user = await _mediator.Send(userToUpdate);
             if (user is null)
             {
                 return NotFound("User not found");
@@ -83,10 +83,10 @@ namespace JrApi.Controllers
 
         // Asynchronous HTTPDELETE method that is responsible for deleting a record into the database. this method receives a user id.
         // This method returns an Ok() if sucessfull, otherwise returns a BadRequest().
-        [HttpDelete("id")]
-        public async Task<ActionResult<bool>> Delete(DeleteUserCommand userToDelete)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete(int id)
         {
-            var user = await _mediator.Send(userToDelete);
+            var user = await _mediator.Send(new DeleteUserCommand { Id = id });
             if (user)
             {
                 return Ok(user);
