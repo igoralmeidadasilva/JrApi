@@ -32,6 +32,12 @@ DELETE /api/users/{id}: Deletes a record based on the ID.
 The testing environment has been set up to test all requests that interact with the database, meaning that all endpoints have been tested.
 
 
+### Execute Migrations
+cd Jr.Presentation
+dotnet ef migrations add NewMigration --project ..\JrApi.Infrastructure\JrApi.Infrastructure.csproj
+dotnet ef database update
+
+
 
 
 
