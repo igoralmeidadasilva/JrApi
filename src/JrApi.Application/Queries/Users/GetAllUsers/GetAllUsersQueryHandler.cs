@@ -1,10 +1,9 @@
-using System;
-using JrApi.Application.Queries.Users;
+using JrApi.Application.Queries.Users.GetAllUsers;
 using JrApi.Domain.Interfaces.Repositories;
 using JrApi.Domain.Models;
 using MediatR;
 
-namespace JrApi.Infrastructure.Handlers.Queries
+namespace JrApi.Application.Queries.Users.GetAllUsers
 {
     public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<UserModel>>
     {

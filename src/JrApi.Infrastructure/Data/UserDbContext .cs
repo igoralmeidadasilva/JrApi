@@ -27,7 +27,6 @@ namespace JrApi.Infrastructure.Data
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlite(opt => opt.MigrationsAssembly("JrApi.Infrastructure"));
-                //optionsBuilder.UseSqlite("Data Source= SQLite/Database.db", b => b.MigrationsAssembly("JrApi.Infrastructure"));            
             }
 
             base.OnConfiguring(optionsBuilder);

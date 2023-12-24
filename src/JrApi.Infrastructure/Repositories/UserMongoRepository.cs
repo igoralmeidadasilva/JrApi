@@ -5,15 +5,15 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace JrApi.Infrastructure.Services
+namespace JrApi.Infrastructure.Repository
 {
     public sealed class UserMongoRepository : IMongoDbRepository<UserModel>
     {
         private readonly IMongoCollection<UserModel> _collection;
         public UserMongoRepository(IOptions<UserDataBaseMongoSettings> mongoDBSettings)
         {
-            MongoClient client = new MongoClient(mongoDBSettings.Value.ConnectionURI);
-            IMongoDatabase database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
+            var client = new MongoClient(mongoDBSettings.Value.ConnectionURI);
+            var database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
             _collection = database.GetCollection<UserModel>(mongoDBSettings.Value.CollectionName);
         }
 

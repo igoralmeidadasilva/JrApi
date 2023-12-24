@@ -30,4 +30,5 @@ namespace JrApi.Domain.Models
             Id = id;
         }
     }
+    
 }

@@ -2,6 +2,8 @@ using JrApi.Application.Commands.Users.CreateUser;
 using JrApi.Application.Commands.Users.DeleteUser;
 using JrApi.Application.Commands.Users.UpdateUser;
 using JrApi.Application.Queries.Users;
+using JrApi.Application.Queries.Users.GetAllUsers;
+using JrApi.Application.Queries.Users.GetUserById;
 using JrApi.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
