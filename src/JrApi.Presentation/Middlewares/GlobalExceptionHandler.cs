@@ -1,6 +1,6 @@
 using System.Net;
-using System.Text.Json;
 using FluentValidation;
+using Newtonsoft.Json;
 
 namespace JrApi.Presentation.Middlewares
 {
@@ -12,7 +12,6 @@ namespace JrApi.Presentation.Middlewares
         {
             _next = next;
             _logger = logger;
-
         }
 
         public async Task Invoke(HttpContext context)
@@ -48,7 +47,7 @@ namespace JrApi.Presentation.Middlewares
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
 
-            var errorMessage = JsonSerializer.Serialize(
+            var errorMessage = JsonConvert.SerializeObject(
                 new
                 {
                     Messages = e.Message.Split("\n"),
@@ -63,7 +62,7 @@ namespace JrApi.Presentation.Middlewares
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             context.Response.ContentType = "application/json";
 
-            var errorMessage = JsonSerializer.Serialize(
+            var errorMessage = JsonConvert.SerializeObject(
                 new
                 {
                     Messages = e.Message.Split("\n"),
@@ -78,7 +77,7 @@ namespace JrApi.Presentation.Middlewares
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
 
-            var errorMessage = JsonSerializer.Serialize(
+            var errorMessage = JsonConvert.SerializeObject(
                 new
                 {
                     Messages = e.Message.Split("\n"),

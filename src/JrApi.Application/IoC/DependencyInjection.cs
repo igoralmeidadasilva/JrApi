@@ -25,6 +25,7 @@ namespace JrApi.Application.IoC
             AddHandlersSqlite(services);
             AddHandlersMongo(services);
             AddMediatR(services);
+            AddValidators(services);
 
             return services;
         }
