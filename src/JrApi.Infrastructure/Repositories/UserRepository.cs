@@ -44,7 +44,7 @@ namespace JrApi.Infrastructure.Repository
         public async Task<bool> Delete(int id)
         {
             var userDelete = await GetItemById(id);
-            if(userDelete == null)
+            if(userDelete is null)
             {
                 return false;
             }

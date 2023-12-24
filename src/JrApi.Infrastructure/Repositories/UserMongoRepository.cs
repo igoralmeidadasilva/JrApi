@@ -42,7 +42,6 @@ namespace JrApi.Infrastructure.Repository
                 BirthDate = item.BirthDate
             };
 
-
             _collection.InsertOne(insert);
             return insert;
         }
