@@ -17,7 +17,7 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
     public DateTime DeletedOnUtc { get; private set; }
     public string FullName => string.Format("{0} {1}", FirstName, LastName);
 
-    public User(FirstName firstName, LastName lastName, Email email, Password hashedPassword, Address? address = default, UserRole role = UserRole.None) : base()
+    private User(FirstName firstName, LastName lastName, Email email, Password hashedPassword, Address? address, UserRole role) : base()
     {
         FirstName = firstName;
         LastName = lastName;
@@ -26,6 +26,16 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
         Address = address;
         Role = role;
     }
+
+    public static User Create(
+        FirstName firstName, 
+        LastName lastName, 
+        Email email, 
+        Password hashedPassword, 
+        Address? address = 
+        default, UserRole role = UserRole.None) => new(firstName, lastName, email, hashedPassword, address, role);
+
+    
 
     public User() : base()
     { }
