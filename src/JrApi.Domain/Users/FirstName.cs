@@ -26,4 +26,6 @@ public sealed record FirstName : ValueObject
     {
         yield return Value;
     }
+
+    public override string ToString() => Value;
 }
