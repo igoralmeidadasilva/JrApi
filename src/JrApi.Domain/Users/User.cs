@@ -33,9 +33,15 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
         Email email, 
         Password hashedPassword, 
         Address? address = 
-        default, UserRole role = UserRole.None) => new(firstName, lastName, email, hashedPassword, address, role);
+        default, UserRole role = UserRole.None)
+    {
+        ArgumentValidator.ThrowIfNull(firstName, nameof(firstName));
+        ArgumentValidator.ThrowIfNull(firstName, nameof(lastName));
+        ArgumentValidator.ThrowIfNull(firstName, nameof(email));
+        ArgumentValidator.ThrowIfNull(firstName, nameof(hashedPassword));
 
-    
+        return new(firstName, lastName, email, hashedPassword, address, role);
+    }
 
     public User() : base()
     { }
