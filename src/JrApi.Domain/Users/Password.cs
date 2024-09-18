@@ -15,9 +15,9 @@ public sealed record Password : ValueObject
 
     public static Password Create(string value)
     {
-        ArgumentValidator.ThrowIfNullOrWhitespace(value, nameof(value));
-        ArgumentValidator.ThrowIfOutOfRange(value.Length, nameof(value), PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE);
-        ArgumentValidator.ThrowIfPatternFails(value, PASSWORD_FORMAT, nameof(value));
+        ArgumentValidator.ThrowIfNullOrWhitespace(value, nameof(Password));
+        ArgumentValidator.ThrowIfOutOfRange(value.Length, nameof(Password), PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE);
+        ArgumentValidator.ThrowIfPatternFails(value, PASSWORD_FORMAT, nameof(Password));
         return new(value);
     }
 

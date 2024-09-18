@@ -15,8 +15,8 @@ public sealed record Email : ValueObject
 
     public static Email Create(string value)
     {
-        ArgumentValidator.ThrowIfNullOrWhitespace(value, nameof(value));
-        ArgumentValidator.ThrowIfOutOfRange(value.Length, nameof(value), 0, EMAIL_MAX_SIZE);
+        ArgumentValidator.ThrowIfNullOrWhitespace(value, nameof(Email));
+        ArgumentValidator.ThrowIfOutOfRange(value.Length, nameof(Email), 0, EMAIL_MAX_SIZE);
         return new(value);
     }
 

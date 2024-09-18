@@ -32,13 +32,13 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
         LastName lastName, 
         Email email, 
         Password hashedPassword, 
-        Address? address = 
-        default, UserRole role = UserRole.None)
+        Address? address = default, 
+        UserRole role = UserRole.None)
     {
         ArgumentValidator.ThrowIfNull(firstName, nameof(firstName));
-        ArgumentValidator.ThrowIfNull(firstName, nameof(lastName));
-        ArgumentValidator.ThrowIfNull(firstName, nameof(email));
-        ArgumentValidator.ThrowIfNull(firstName, nameof(hashedPassword));
+        ArgumentValidator.ThrowIfNull(lastName, nameof(lastName));
+        ArgumentValidator.ThrowIfNull(email, nameof(email));
+        ArgumentValidator.ThrowIfNull(hashedPassword, nameof(hashedPassword));
 
         return new(firstName, lastName, email, hashedPassword, address, role);
     }

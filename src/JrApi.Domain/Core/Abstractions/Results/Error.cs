@@ -6,12 +6,21 @@ public record Error
     public string Message { get; set; }
     public ErrorType Type { get; set; }
 
-    public Error(string code, string message, ErrorType type = ErrorType.Failure)
+    protected Error(string code, string message, ErrorType type)
     {
         Code = code;
         Message = message;
         Type = type;
     }
 
-    public static readonly Error None = new(string.Empty, string.Empty, ErrorType.None);
+    public static Error None()
+    { 
+        return new(string.Empty, string.Empty, ErrorType.None);
+    }
+
+    public static Error Create(string code, string message, ErrorType type = ErrorType.Failure)
+    {
+        return new(code, message, type);
+    }
+
 }

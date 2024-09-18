@@ -6,15 +6,15 @@ namespace JrApi.Domain.Users;
 
 public sealed record Address : ValueObject
 {
-    public string Street { get; init; } = string.Empty;
-    public string City { get; init; } = string.Empty;
-    public string District { get; init; } = string.Empty;
-    public int Number { get; init; }
-    public string State { get; init; } = string.Empty;
-    public string Country { get; init; } = string.Empty;
-    public string ZipCode { get; init; } = string.Empty;
+    public string? Street { get; init; }
+    public string? City { get; init; }
+    public string? District { get; init; }
+    public int? Number { get; init; }
+    public string? State { get; init; }
+    public string? Country { get; init; }
+    public string? ZipCode { get; init; }
 
-    private Address(string street, string city, string district, int number, string state, string country, string zipCode)
+    private Address(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
     {
         Street = street;
         City = city;
@@ -27,30 +27,45 @@ public sealed record Address : ValueObject
 
     private Address() { }
 
-    public static Address Create(string street, string city, string district, int number, string state, string country, string zipCode)
+    public static Address Create(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
     {
-        ArgumentValidator.ThrowIfZeroOrNegative(number, nameof(Number));
-        ArgumentValidator.ThrowIfPatternFails(zipCode, ZIP_CODE_FORMAT, nameof(ZipCode));
-
-        ArgumentValidator.ThrowIfOutOfRange(street.Length, nameof(Street), 0, STREET_MAX_SIZE);
-        ArgumentValidator.ThrowIfOutOfRange(city.Length, nameof(City), 0, CITY_MAX_SIZE);
-        ArgumentValidator.ThrowIfOutOfRange(district.Length, nameof(District), 0, DISTRICT_MAX_SIZE);
-        ArgumentValidator.ThrowIfOutOfRange(state.Length, nameof(State), 0, STATE_MAX_SIZE);
-        ArgumentValidator.ThrowIfOutOfRange(country.Length, nameof(Country), 0, COUNTRY_MAX_SIZE);
-        ArgumentValidator.ThrowIfValuesNotEquals(zipCode.Length, ZIP_CODE_SIZE, nameof(ZipCode));
+        ValidateAddress(street, city, district, number, state, country, zipCode);
 
         return new(street, city, district, number, state, country, zipCode);
     }
-    public static Address Create() => new();
+
+    private static void ValidateAddress(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
+    {
+        if (street != null)
+            ArgumentValidator.ThrowIfOutOfRange(street.Length, nameof(Street), 0, STREET_MAX_SIZE);
+
+        if (city != null)
+            ArgumentValidator.ThrowIfOutOfRange(city.Length, nameof(City), 0, CITY_MAX_SIZE);
+
+        if (district != null)
+            ArgumentValidator.ThrowIfOutOfRange(district.Length, nameof(District), 0, DISTRICT_MAX_SIZE);
+
+        if (number.HasValue)
+            ArgumentValidator.ThrowIfOutOfRange(number.Value, nameof(Number), 1, int.MaxValue);
+
+        if (state != null)
+            ArgumentValidator.ThrowIfOutOfRange(state.Length, nameof(State), 0, STATE_MAX_SIZE);
+
+        if (country != null)
+            ArgumentValidator.ThrowIfOutOfRange(country.Length, nameof(Country), 0, COUNTRY_MAX_SIZE);
+
+        if (zipCode != null)
+            ArgumentValidator.ThrowIfPatternFails(zipCode, ZIP_CODE_FORMAT, nameof(ZipCode));
+    }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return Street;
-        yield return City;
-        yield return District;
-        yield return Number;
-        yield return State;
-        yield return Country;
-        yield return ZipCode;
+        yield return Street ?? string.Empty;
+        yield return City ?? string.Empty;
+        yield return District ?? string.Empty;
+        yield return Number ?? 0;
+        yield return State ?? string.Empty;
+        yield return Country ?? string.Empty;
+        yield return ZipCode ?? string.Empty;
     }
 }

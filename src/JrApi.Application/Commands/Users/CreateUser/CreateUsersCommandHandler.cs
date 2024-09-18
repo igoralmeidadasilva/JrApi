@@ -1,27 +1,30 @@
-using FluentValidation;
-using JrApi.Domain.Interfaces.Repositories;
-using JrApi.Domain.Models;
+using JrApi.Application.Core.Interfaces;
+using JrApi.Domain.Core.Abstractions.Results;
+using JrApi.Domain.Users;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
-namespace JrApi.Application.Commands.Users.CreateUser{
-    public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserModel>
+namespace JrApi.Application.Commands.Users.CreateUser;
+
+public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Result<Unit>>
+{
+    private ILogger<CreateUserCommandHandler> _logger;
+
+    public CreateUserCommandHandler(ILogger<CreateUserCommandHandler> logger)
     {
-        private readonly IDbRepository<UserModel> _user;
+        _logger = logger;
+    }
 
-        public CreateUserCommandHandler(IDbRepository<UserModel> user)
-        {
-            _user = user;
-        }
+    public Task<Result<Unit>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    {
+        var firstName = FirstName.Create(request.FirstName);
+        var lastName = LastName.Create(request.LastName);
+        var email = Email.Create(request.Email);
+        var password = Password.Create(request.Password);
+        var address = Address.Create(request.Street, request.City, request.District, request.Number, request.State, request.Country, request.ZipCode);
 
-        public Task<UserModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-        {   
-            var user = new UserModel (
-                request.Name, 
-                request.LastName, 
-                request.BirthDate);
-                
-            _user.Insert(user);
-            return Task.FromResult(user);
-        }
+        var user = User.Create(firstName, lastName, email, password, address);
+
+        return Task.FromResult(Result.Success(Unit.Value));
     }
 }

@@ -3,14 +3,17 @@ using JrApi.Application.Commands.Users.DeleteUser;
 using JrApi.Application.Commands.Users.UpdateUser;
 using JrApi.Application.Queries.Users.GetAllUsers;
 using JrApi.Application.Queries.Users.GetUserById;
-using JrApi.Domain.Models;
+using JrApi.Domain.Core.Abstractions.Results;
+using JrApi.Domain.Users;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JrApi.Controllers
+namespace JrApi.Presentation.Controllers
 {
     [Route("/api/usuarios")]
     [ApiController]
+    [AllowAnonymous]
     public sealed class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
@@ -22,46 +25,51 @@ namespace JrApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserModel>>> GetAllUsers()
+        public async Task<ActionResult<List<User>>> GetAllUsers()
         {
             var users = await _mediator.Send(new GetAllUsersQuery());
 
-            if(users.Any())
+            if (users.Any())
             {
                 return Ok(users);
-            } 
-            else 
+            }
+            else
             {
                 return NotFound("Is Empty");
             }
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetItemById(int id)
+        public async Task<ActionResult<User>> GetItemById(int id)
         {
 
-            var user = await _mediator.Send(new GetUserByIdQuery {Id = id});
+            var user = await _mediator.Send(new GetUserByIdQuery { Id = id });
 
-            if(user is null)
+            if (user is null)
             {
                 return NotFound("User not found");
-            } 
+            }
             return Ok(user);
         }
 
         [HttpPost]
-        public ActionResult<UserModel> Insert([FromBody] CreateUserCommand userToInsert)
+        public async Task<IActionResult> Insert(CreateUserCommand command)
         {
-            var user = _mediator.Send(userToInsert);
-            if(user.Result is null)
-            {
-                return BadRequest();
-            }
-            return Created("Successfully created", user.Result); 
+            // TESTES
+            Result<string> resultSuccess = Result.Success("DASDAS");
+
+            var error = Error.Create("teste", "teste");
+
+            Result<string> resultFailure = Result.Failure<string>(error);
+
+            IEnumerable<string> teste1 = resultFailure.GetErrorsByCode("").ExtractErrorsMessages();
+
+
+            return Created();
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UpdateUserCommand userToUpdate, int id)
+        public async Task<ActionResult<User>> Update([FromBody] UpdateUserCommand userToUpdate, int id)
         {
             userToUpdate.Id = id;
             var user = await _mediator.Send(userToUpdate);
@@ -79,8 +87,8 @@ namespace JrApi.Controllers
             if (user)
             {
                 return Ok(user);
-            } 
-            else 
+            }
+            else
             {
                 return BadRequest("User not found");
             }

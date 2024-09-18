@@ -15,8 +15,8 @@ public sealed record FirstName : ValueObject
 
     public static FirstName Create(string value)
     { 
-        ArgumentValidator.ThrowIfNullOrWhitespace(value, nameof(value));
-        ArgumentValidator.ThrowIfOutOfRange(value.Length, nameof(value), 0, FIRST_NAME_MAX_SIZE);
+        ArgumentValidator.ThrowIfNullOrWhitespace(value, nameof(FirstName));
+        ArgumentValidator.ThrowIfOutOfRange(value.Length, nameof(FirstName), 0, FIRST_NAME_MAX_SIZE);
         return new(value);
     }
 

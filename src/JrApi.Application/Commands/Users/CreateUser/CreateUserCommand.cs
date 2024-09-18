@@ -1,12 +1,37 @@
-using JrApi.Domain.Models;
+using JrApi.Application.Core.Interfaces;
+using JrApi.Domain.Core.Abstractions.Results;
 using MediatR;
 
-namespace JrApi.Application.Commands.Users.CreateUser
+namespace JrApi.Application.Commands.Users.CreateUser;
+public sealed record CreateUserCommand : ICommand<Result<Unit>>
 {
-    public sealed class CreateUserCommand : IRequest<UserModel>
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
+    public string Email { get; init; }
+    public string Password { get; init; }
+    public DateTime BirthDate { get; init; }
+    public string? Street { get; init; }
+    public string? City { get; init; }
+    public string? District { get; init; }
+    public int? Number { get; init; }
+    public string? State { get; init; }
+    public string? Country { get; init; }
+    public string? ZipCode { get; init; }
+
+    public CreateUserCommand(string firstName, string lastName, string email, string password, DateTime birthDate, string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
     {
-        public string? Name { get; set; }
-        public string? LastName { get; set; }
-        public DateTime BirthDate { get; set; }
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        Password = password;
+        BirthDate = birthDate;
+        Street = street;
+        City = city;
+        District = district;
+        Number = number;
+        State = state;
+        Country = country;
+        ZipCode = zipCode;
     }
+
 }
