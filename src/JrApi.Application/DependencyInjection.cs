@@ -2,33 +2,34 @@ using FluentValidation;
 using JrApi.Application.Behaviors;
 using JrApi.Application.Commands.Users.CreateUser;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JrApi.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
-        services = AddMediatr(services);
-        services = AddValidators(services);
+        services = services.AddMediatr();
+        services = services.AddValidators();
 
         return services;
     }
 
-    private static IServiceCollection AddMediatr(IServiceCollection services)
+    private static IServiceCollection AddMediatr(this IServiceCollection services)
     {
         services.AddMediatR(opt =>
         {
             opt.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
                 .AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
-                .AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>)); ;
+                .AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
         return services;
     }
 
-    private static IServiceCollection AddValidators(IServiceCollection services)
+    private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
 

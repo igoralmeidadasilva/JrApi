@@ -3,9 +3,9 @@ using MediatR;
 
 namespace JrApi.Application.Core.Interfaces;
 
-public interface ICommandHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> 
+public interface ICommandHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
     where TRequest : ICommand<TResponse>
-    where TResponse : IResult
+    where TResponse : Result
 {
-    
+
 }

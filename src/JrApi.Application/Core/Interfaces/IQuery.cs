@@ -3,7 +3,7 @@ using MediatR;
 
 namespace JrApi.Application.Core.Interfaces;
 
-public interface IQuery<TResponse> : IRequest<TResponse> where TResponse : IResult
+public interface IQuery<TResponse> : IRequest<TResponse> where TResponse : Result
 {
     
 }

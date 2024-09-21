@@ -3,6 +3,7 @@ using JrApi.Domain.Core.Abstractions.Results;
 using MediatR;
 
 namespace JrApi.Application.Commands.Users.CreateUser;
+
 public sealed record CreateUserCommand : ICommand<Result<Unit>>
 {
     public string FirstName { get; init; }
@@ -25,13 +26,13 @@ public sealed record CreateUserCommand : ICommand<Result<Unit>>
         Email = email;
         Password = password;
         BirthDate = birthDate;
-        Street = street;
-        City = city;
-        District = district;
+        Street = street ?? string.Empty;
+        City = city ?? string.Empty;
+        District = district ?? string.Empty;
         Number = number;
-        State = state;
-        Country = country;
-        ZipCode = zipCode;
+        State = state ?? string.Empty;
+        Country = country ?? string.Empty;
+        ZipCode = zipCode ?? string.Empty;
     }
 
 }
