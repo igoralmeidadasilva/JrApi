@@ -2,6 +2,11 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,visualstudio
 
 ### VisualStudioCode ###
+
+database.db
+database.db-shm
+database.db-wal
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
