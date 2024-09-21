@@ -3,95 +3,94 @@ using JrApi.Application.Commands.Users.DeleteUser;
 using JrApi.Application.Commands.Users.UpdateUser;
 using JrApi.Application.Queries.Users.GetAllUsers;
 using JrApi.Application.Queries.Users.GetUserById;
-using JrApi.Domain.Core.Abstractions.Results;
-using JrApi.Domain.Users;
+using JrApi.Domain.Core.Interfaces.Services;
+using JrApi.Domain.Entities.Users;
+using JrApi.Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
-namespace JrApi.Presentation.Controllers
+namespace JrApi.Presentation.Controllers;
+
+[Route("/api/[controller]")]
+[ApiController]
+[AllowAnonymous]
+public sealed class UserController : ControllerBase
 {
-    [Route("/api/usuarios")]
-    [ApiController]
-    [AllowAnonymous]
-    public sealed class UserController : ControllerBase
+    private readonly ILogger<UserController> _logger;
+    private readonly IMediator _mediator;
+    public UserController(ILogger<UserController> logger, IMediator mediator)
     {
-        private readonly ILogger<UserController> _logger;
-        private readonly IMediator _mediator;
-        public UserController(ILogger<UserController> logger, IMediator mediator)
+        _logger = logger;
+        _mediator = mediator;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<User>>> GetAllUsers()
+    {
+        var users = await _mediator.Send(new GetAllUsersQuery());
+
+        if (users.Any())
         {
-            _logger = logger;
-            _mediator = mediator;
+            return Ok(users);
         }
-
-        [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        else
         {
-            var users = await _mediator.Send(new GetAllUsersQuery());
-
-            if (users.Any())
-            {
-                return Ok(users);
-            }
-            else
-            {
-                return NotFound("Is Empty");
-            }
+            return NotFound("Is Empty");
         }
+    }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetItemById(int id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User>> GetItemById(int id)
+    {
+
+        var user = await _mediator.Send(new GetUserByIdQuery { Id = id });
+
+        if (user is null)
         {
+            return NotFound("User not found");
+        }
+        return Ok(user);
+    }
 
-            var user = await _mediator.Send(new GetUserByIdQuery { Id = id });
+    [HttpPost]
+    public IActionResult Insert(CreateUserCommand command)
+    {
 
-            if (user is null)
-            {
-                return NotFound("User not found");
-            }
+        //var response = await _mediator.Send(command);
+
+        //if(response.IsFailure)
+        //{
+        //    return BadRequest(response.Errors);
+        //}
+
+        return Ok();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<User>> Update([FromBody] UpdateUserCommand userToUpdate, int id)
+    {
+        userToUpdate.Id = id;
+        var user = await _mediator.Send(userToUpdate);
+        if (user is null)
+        {
+            return NotFound("User not found");
+        }
+        return Ok(user);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<bool>> Delete(int id)
+    {
+        var user = await _mediator.Send(new DeleteUserCommand { Id = id });
+        if (user)
+        {
             return Ok(user);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Insert(CreateUserCommand command)
+        else
         {
-            // TESTES
-            Result<string> resultSuccess = Result.Success("DASDAS");
-
-            var error = Error.Create("teste", "teste");
-
-            Result<string> resultFailure = Result.Failure<string>(error);
-
-            IEnumerable<string> teste1 = resultFailure.GetErrorsByCode("").ExtractErrorsMessages();
-
-
-            return Created();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult<User>> Update([FromBody] UpdateUserCommand userToUpdate, int id)
-        {
-            userToUpdate.Id = id;
-            var user = await _mediator.Send(userToUpdate);
-            if (user is null)
-            {
-                return NotFound("User not found");
-            }
-            return Ok(user);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> Delete(int id)
-        {
-            var user = await _mediator.Send(new DeleteUserCommand { Id = id });
-            if (user)
-            {
-                return Ok(user);
-            }
-            else
-            {
-                return BadRequest("User not found");
-            }
+            return BadRequest("User not found");
         }
     }
 }
