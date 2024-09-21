@@ -1,13 +1,14 @@
 namespace JrApi.Domain.Core.Abstractions.Results;
 
-public class Result<TValue> : Result
+public class Result<TValue> : Result, IResult
 {
     public TValue? Value { get; private set; }
 
-    protected internal Result(TValue value, bool isSuccess, IEnumerable<Error> errors) : base(isSuccess, errors)
+    protected internal Result(TValue value, bool isSuccess, IList<Error> errors) : base(isSuccess, errors)
     {
         Value = value;
     }
+    public Result() { }
 
     public static Result<TValue> Success(TValue value)
     {
@@ -19,7 +20,7 @@ public class Result<TValue> : Result
         return new Result<TValue>(default!, false, [error]);
     }
 
-    public static new Result<TValue> Failure(IEnumerable<Error> errors)
+    public static new Result<TValue> Failure(IList<Error> errors)
     {
         return new Result<TValue>(default!, false, errors);
     }

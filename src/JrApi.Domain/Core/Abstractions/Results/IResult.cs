@@ -2,4 +2,6 @@
 
 public interface IResult
 {
+    bool IsSuccess { get; }
+    IList<Error> Errors { get; }
 }

@@ -4,13 +4,15 @@ public class Result : IResult
 {
     public bool IsSuccess { get; init; }
     public bool IsFailure => !IsSuccess;
-    public IEnumerable<Error> Errors { get; init; }
+    public IList<Error> Errors { get; init; } = [];
 
-    protected Result(bool isSuccess, IEnumerable<Error> errors)
+    protected Result(bool isSuccess, IList<Error> errors)
     {
         IsSuccess = isSuccess;
         Errors = errors;
     }
+
+    public Result() { }
 
     public static Result Success()
     {
@@ -22,7 +24,7 @@ public class Result : IResult
         return new Result(false, [error]);
     }
 
-    public static Result Failure(IEnumerable<Error> errors)
+    public static Result Failure(IList<Error> errors)
     {
         return new Result(false, errors);
     }
@@ -37,7 +39,7 @@ public class Result : IResult
         return new Result<TValue>(default!, false, [error]);
     }
 
-    public static Result<TValue> Failure<TValue>(IEnumerable<Error> errors)
+    public static Result<TValue> Failure<TValue>(IList<Error> errors)
     {
         return new Result<TValue>(default!, false, errors);
     }
@@ -59,7 +61,7 @@ public class Result : IResult
 
     public bool HasOneError()
     {
-        return Errors.Count() == 1;
+        return Errors.Count == 1;
     }
 
     public bool ErrorOrSucces()

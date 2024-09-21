@@ -9,6 +9,6 @@ public class ResultConvertionException : Exception
     public ResultConvertionException(string message) : base(message)
     { }
 
-    public ResultConvertionException(string message, Exception inner) : base(message)
+    public ResultConvertionException(string message, Exception inner) : base(message, inner)
     { }
 }
