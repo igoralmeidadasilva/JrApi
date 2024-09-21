@@ -2,7 +2,7 @@
 using JrApi.Domain.Core.Abstractions;
 using static JrApi.Domain.Constants.Constraints.User;
 
-namespace JrApi.Domain.Users;
+namespace JrApi.Domain.Entities.Users;
 
 public sealed record Email : ValueObject
 {

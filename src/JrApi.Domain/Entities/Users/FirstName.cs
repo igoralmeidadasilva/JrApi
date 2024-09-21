@@ -2,16 +2,19 @@
 using JrApi.Domain.Core.Abstractions;
 using static JrApi.Domain.Constants.Constraints.User;
 
-namespace JrApi.Domain.Users;
+namespace JrApi.Domain.Entities.Users;
 
 public sealed record FirstName : ValueObject
 {
-    public string Value { get; init; }
+    public string Value { get; init; } = string.Empty;
 
     private FirstName(string value)
     {
         Value = value;
     }
+
+    public FirstName()
+    { }
 
     public static FirstName Create(string value)
     { 

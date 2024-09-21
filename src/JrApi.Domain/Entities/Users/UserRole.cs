@@ -1,4 +1,4 @@
-﻿namespace JrApi.Domain.Users;
+﻿namespace JrApi.Domain.Entities.Users;
 
 [Flags]
 public enum UserRole

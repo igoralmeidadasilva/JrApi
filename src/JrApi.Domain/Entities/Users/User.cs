@@ -2,7 +2,7 @@ using JrApi.Domain.Core;
 using JrApi.Domain.Core.Abstractions;
 using JrApi.Domain.Core.Interfaces;
 
-namespace JrApi.Domain.Users;
+namespace JrApi.Domain.Entities.Users;
 
 public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
 {

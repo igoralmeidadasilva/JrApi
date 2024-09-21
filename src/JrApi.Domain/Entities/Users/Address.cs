@@ -2,7 +2,7 @@
 using JrApi.Domain.Core.Abstractions;
 using static JrApi.Domain.Constants.Constraints.User;
 
-namespace JrApi.Domain.Users;
+namespace JrApi.Domain.Entities.Users;
 
 public sealed record Address : ValueObject
 {
@@ -25,7 +25,7 @@ public sealed record Address : ValueObject
         ZipCode = zipCode;
     }
 
-    private Address() { }
+    public Address() { }
 
     public static Address Create(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
     {
@@ -36,25 +36,25 @@ public sealed record Address : ValueObject
 
     private static void ValidateAddress(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
     {
-        if (street != null)
+        if (street != null && street != string.Empty)
             ArgumentValidator.ThrowIfOutOfRange(street.Length, nameof(Street), 0, STREET_MAX_SIZE);
 
-        if (city != null)
+        if (city != null && city != string.Empty)
             ArgumentValidator.ThrowIfOutOfRange(city.Length, nameof(City), 0, CITY_MAX_SIZE);
 
-        if (district != null)
+        if (district != null && district != string.Empty)
             ArgumentValidator.ThrowIfOutOfRange(district.Length, nameof(District), 0, DISTRICT_MAX_SIZE);
 
         if (number.HasValue)
             ArgumentValidator.ThrowIfOutOfRange(number.Value, nameof(Number), 1, int.MaxValue);
 
-        if (state != null)
+        if (state != null && state != string.Empty)
             ArgumentValidator.ThrowIfOutOfRange(state.Length, nameof(State), 0, STATE_MAX_SIZE);
 
-        if (country != null)
+        if (country != null && country != string.Empty)
             ArgumentValidator.ThrowIfOutOfRange(country.Length, nameof(Country), 0, COUNTRY_MAX_SIZE);
 
-        if (zipCode != null)
+        if (zipCode != null && zipCode != string.Empty)
             ArgumentValidator.ThrowIfPatternFails(zipCode, ZIP_CODE_FORMAT, nameof(ZipCode));
     }
 
