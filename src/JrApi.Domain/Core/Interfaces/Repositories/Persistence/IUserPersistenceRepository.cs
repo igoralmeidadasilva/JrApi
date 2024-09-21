@@ -1,4 +1,4 @@
-﻿using JrApi.Domain.Users;
+﻿using JrApi.Domain.Entities.Users;
 
 namespace JrApi.Domain.Core.Interfaces.Repositories.Persistence;
 
