@@ -1,7 +1,6 @@
 using JrApi.Domain.Core.Interfaces;
-using JrApi.Infrastructure.Context;
 
-namespace JrApi.Infrastructure.UnitsOfWork;
+namespace JrApi.Infrastructure.Context;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
@@ -11,7 +10,6 @@ public sealed class UnitOfWork : IUnitOfWork
     {
         _context = context;
     }
-
 
     public void BeginTransaction() => _context.Database.BeginTransaction();
 
@@ -23,6 +21,6 @@ public sealed class UnitOfWork : IUnitOfWork
 
     public void SaveChanges() => _context?.SaveChanges();
 
-    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default) => await _context.SaveChangesAsync(cancellationToken);
 
 }

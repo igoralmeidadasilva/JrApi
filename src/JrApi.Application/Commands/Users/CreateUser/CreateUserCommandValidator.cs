@@ -1,6 +1,7 @@
 using FluentValidation;
 using JrApi.Application.Core.Errors;
 using JrApi.Application.Core.Extensions;
+using JrApi.Application.Models;
 using JrApi.Domain;
 
 namespace JrApi.Application.Commands.Users.CreateUser;
@@ -9,73 +10,48 @@ public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCom
 {
     public CreateUserCommandValidator()
     {
+        string commandName = nameof(CreateUserCommand).Replace("Command", string.Empty);
+
         RuleFor(x => x.FirstName)
             .NotEmpty()
-                .WithError(ValidationErrors.CreateUserErros.FirsNameIsRequired)
+                .WithError(ValidationErrors.CreateUserErrors.FirstNameIsRequired)
             .MaximumLength(Constants.Constraints.User.FIRST_NAME_MAX_SIZE)
-                .WithError(ValidationErrors.CreateUserErros.FirsNameMaxSize);
+                .WithError(ValidationErrors.CreateUserErrors.FirstNameMaxSize);
 
         RuleFor(x => x.LastName)
             .NotEmpty()
-                .WithError(ValidationErrors.CreateUserErros.LastNameIsRequired)
+                .WithError(ValidationErrors.CreateUserErrors.LastNameIsRequired)
             .MaximumLength(Constants.Constraints.User.LAST_NAME_MAX_SIZE)
-                .WithError(ValidationErrors.CreateUserErros.LastNameMaxSize);
+                .WithError(ValidationErrors.CreateUserErrors.LastNameMaxSize);
 
         RuleFor(x => x.Email)
             .NotEmpty()
-                .WithError(ValidationErrors.CreateUserErros.EmailIsRequired)
+                .WithError(ValidationErrors.CreateUserErrors.EmailIsRequired)
             .MaximumLength(Constants.Constraints.User.EMAIL_MAX_SIZE)
-                .WithError(ValidationErrors.CreateUserErros.EmailMaxSize)
+                .WithError(ValidationErrors.CreateUserErrors.EmailMaxSize)
             .EmailAddress()
-                .WithError(ValidationErrors.CreateUserErros.EmailFormat);
+                .WithError(ValidationErrors.CreateUserErrors.EmailFormat);
 
         RuleFor(x => x.Password)
             .NotEmpty()
-                .WithError(ValidationErrors.CreateUserErros.PasswordIsRequired)
+                .WithError(ValidationErrors.CreateUserErrors.PasswordIsRequired)
             .MinimumLength(Constants.Constraints.User.PASSWORD_MIN_SIZE)
-                .WithError(ValidationErrors.CreateUserErros.PasswordMinSize)
+                .WithError(ValidationErrors.CreateUserErrors.PasswordMinSize)
             .MaximumLength(Constants.Constraints.User.PASSWORD_MAX_SIZE)
-                .WithError(ValidationErrors.CreateUserErros.PasswordMaxSize)
+                .WithError(ValidationErrors.CreateUserErrors.PasswordMaxSize)
             .Must(x => x.Any(value => char.IsUpper(value)))
-                .WithError(ValidationErrors.CreateUserErros.PasswordFormatInvalidUpperCase)
+                .WithError(ValidationErrors.CreateUserErrors.PasswordFormatInvalidUpperCase)
             .Must(x => x.Any(value => char.IsLower(value)))
-                .WithError(ValidationErrors.CreateUserErros.PasswordFormatInvalidLowerCase)
+                .WithError(ValidationErrors.CreateUserErrors.PasswordFormatInvalidLowerCase)
             .Must(x => x.Any(value => char.IsDigit(value)))
-                .WithError(ValidationErrors.CreateUserErros.PasswordFormatInvalidNumber)
+                .WithError(ValidationErrors.CreateUserErrors.PasswordFormatInvalidNumber)
             .Matches(Constants.Constraints.User.PASSWORD_FORMAT)
-                .WithError(ValidationErrors.CreateUserErros.PasswordFormatNonAlphanumeric);
+                .WithError(ValidationErrors.CreateUserErrors.PasswordFormatNonAlphanumeric);
 
         RuleFor(x => x.BirthDate)
             .NotEmpty()
-                .WithError(ValidationErrors.CreateUserErros.BirthDateIsRequired);
+                .WithError(ValidationErrors.CreateUserErrors.BirthDateIsRequired);
 
-        RuleFor(x => x.Street)
-            .MaximumLength(Constants.Constraints.User.STREET_MAX_SIZE)
-                .WithError(ValidationErrors.CreateUserErros.AddressStreetMaxSize);
-
-        RuleFor(x => x.City)
-            .MaximumLength(Constants.Constraints.User.CITY_MAX_SIZE)
-                .WithError(ValidationErrors.CreateUserErros.AddressCityMaxSize);
-
-        RuleFor(x => x.District)
-            .MaximumLength(Constants.Constraints.User.DISTRICT_MAX_SIZE)
-            .WithError(ValidationErrors.CreateUserErros.AddressDistrictMaxSize);
-
-        RuleFor(x => x.Number)
-            .GreaterThan(0)
-            .WithError(ValidationErrors.CreateUserErros.AddressNumbertIsCannotLessThanZero);
-
-        RuleFor(x => x.State)
-            .MaximumLength(Constants.Constraints.User.STATE_MAX_SIZE)
-            .WithError(ValidationErrors.CreateUserErros.AddressStateMaxSize);
-
-        RuleFor(x => x.Country)
-            .MaximumLength(Constants.Constraints.User.COUNTRY_MAX_SIZE)
-            .WithError(ValidationErrors.CreateUserErros.AddressCountryMaxSize);
-
-        RuleFor(x => x.ZipCode)
-            .Matches(Constants.Constraints.User.ZIP_CODE_FORMAT)
-                .WithError(ValidationErrors.CreateUserErros.AddressZipCodeFormat)
-                .When(x => x.ZipCode != string.Empty);
+        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator(commandName));
     }
 }

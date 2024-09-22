@@ -1,30 +1,33 @@
-using System;
 using FluentValidation;
+using JrApi.Application.Core.Errors;
+using JrApi.Application.Core.Extensions;
+using JrApi.Application.Models;
+using JrApi.Domain;
 
-namespace JrApi.Application.Commands.Users.UpdateUser
+namespace JrApi.Application.Commands.Users.UpdateUser;
+
+public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
-    public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
+    public UpdateUserCommandValidator()
     {
-        public UpdateUserCommandValidator()
-        {
-            RuleFor(x => x.Name)
-                .NotNull().WithMessage("Id is Null.");
+        string commandName = nameof(UpdateUserCommand).Replace("Command", string.Empty);
 
-            RuleFor(x => x.Name)
-                .NotNull().WithMessage("Name is Null.")
-                .MinimumLength(2).WithMessage("Name it's to short.")
-                .MaximumLength(15).WithMessage("Name it's to long.")
-                .NotEmpty().WithMessage("Name Invalid!");
+        RuleFor(x => x.FirstName)
+            .NotEmpty()
+                .WithError(ValidationErrors.UpdateUserErrors.FirstNameIsRequired)
+            .MaximumLength(Constants.Constraints.User.FIRST_NAME_MAX_SIZE)
+                .WithError(ValidationErrors.UpdateUserErrors.FirstNameMaxSize);
 
-            RuleFor(x => x.LastName)
-                .NotNull().WithMessage("LastName is Null")
-                .MinimumLength(5).WithMessage("LastName it's to short.")
-                .MaximumLength(15).WithMessage("LastName it's to long.")
-                .NotEmpty().WithMessage("LastName Invalid!");
+        RuleFor(x => x.LastName)
+            .NotEmpty()
+                .WithError(ValidationErrors.UpdateUserErrors.LastNameIsRequired)
+            .MaximumLength(Constants.Constraints.User.LAST_NAME_MAX_SIZE)
+                .WithError(ValidationErrors.UpdateUserErrors.LastNameMaxSize);
 
-            RuleFor(x => x.BirthDate)
-                .NotNull().WithMessage("BirthDate is Null")
-                .NotEmpty().WithMessage("BirthDate Invalid!");
-        }
+        RuleFor(x => x.BirthDate)
+            .NotEmpty()
+                .WithError(ValidationErrors.UpdateUserErrors.BirthDateIsRequired);
+
+        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator(commandName));
     }
 }

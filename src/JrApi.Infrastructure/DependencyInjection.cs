@@ -7,7 +7,6 @@ using JrApi.Infrastructure.Models;
 using JrApi.Infrastructure.Repositories.Persistence;
 using JrApi.Infrastructure.Repositories.ReadOnly;
 using JrApi.Infrastructure.Services;
-using JrApi.Infrastructure.UnitsOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +20,6 @@ public static class DependencyInjection
     {
         services = services.AddSqLite(configuration);
         services = services.AddRepositories(configuration);
-        //services = services.AddPostgres(configuration);
         services = services.AddServices(configuration);
         services = services.AddUnitOfWork(configuration);
         services = services.AddOptions(configuration);

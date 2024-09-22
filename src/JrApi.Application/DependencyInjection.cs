@@ -1,6 +1,7 @@
 using FluentValidation;
 using JrApi.Application.Behaviors;
 using JrApi.Application.Commands.Users.CreateUser;
+using JrApi.Application.Commands.Users.UpdateUser;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ public static class DependencyInjection
     {
         services = services.AddMediatr();
         services = services.AddValidators();
+        services = services.AddAutoMapper();
 
         return services;
     }
@@ -32,7 +34,16 @@ public static class DependencyInjection
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
+        services.AddScoped<IValidator<UpdateUserCommand>, UpdateUserCommandValidator>();
+        // services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        
         return services;
     }
 }

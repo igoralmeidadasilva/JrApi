@@ -4,20 +4,13 @@ using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Entities.Users;
 using JrApi.Infrastructure.Context;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 
 namespace JrApi.Infrastructure.Repositories.ReadOnly;
 
 public sealed class UserReadOnlyRepository : BaseReadOnlyRepository<User>, IUserReadOnlyRepository
 {
-    private new readonly string _tableName;
     public UserReadOnlyRepository(ApplicationContext context) : base(context)
-    { 
-        var entityType = typeof(User);
-        var modelEntityType = context.Model.FindEntityType(entityType);
-
-        _tableName = modelEntityType!.GetSchemaQualifiedTableName()!;
-    }
+    { }
 
     public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
     {

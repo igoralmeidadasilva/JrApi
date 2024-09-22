@@ -1,4 +1,5 @@
 using JrApi.Application.Core.Interfaces;
+using JrApi.Application.Models;
 using JrApi.Domain.Core.Abstractions.Results;
 using MediatR;
 
@@ -11,13 +12,7 @@ public sealed record CreateUserCommand : ICommand<Result<Unit>>
     public string Email { get; init; }
     public string Password { get; init; }
     public DateTime BirthDate { get; init; }
-    public string? Street { get; init; }
-    public string? City { get; init; }
-    public string? District { get; init; }
-    public int? Number { get; init; }
-    public string? State { get; init; }
-    public string? Country { get; init; }
-    public string? ZipCode { get; init; }
+    public AddressCommandModel Address{ get; init; }
 
     public CreateUserCommand(
         string firstName,
@@ -25,26 +20,14 @@ public sealed record CreateUserCommand : ICommand<Result<Unit>>
         string email,
         string password,
         DateTime birthDate,
-        string? street,
-        string? city,
-        string? district,
-        int? number,
-        string? state,
-        string? country,
-        string? zipCode)
+        AddressCommandModel address)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Password = password;
-        BirthDate = birthDate;
-        Street = street ?? string.Empty;
-        City = city ?? string.Empty;
-        District = district ?? string.Empty;
-        Number = number;
-        State = state ?? string.Empty;
-        Country = country ?? string.Empty;
-        ZipCode = zipCode ?? string.Empty;
+        BirthDate = birthDate; ;
+        Address = address;
     }
 
 }

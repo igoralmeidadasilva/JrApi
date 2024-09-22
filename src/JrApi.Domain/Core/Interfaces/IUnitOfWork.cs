@@ -6,5 +6,5 @@ public interface IUnitOfWork : IDisposable
     void Commit();
     void Rollback();
     void SaveChanges();
-    Task SaveChangesAsync();
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

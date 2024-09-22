@@ -1,10 +1,8 @@
 ﻿using JrApi.Domain.Core.Abstractions;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Infrastructure.Context;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using static Dapper.SqlMapper;
 
 namespace JrApi.Infrastructure.Repositories.ReadOnly;
 
@@ -26,21 +24,15 @@ public abstract class BaseReadOnlyRepository<TEntity> : IReadOnlyRepository<TEnt
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        string query = $"SELECT * FROM {_tableName}";
-        using IDbConnection db = new SqliteConnection(_connectionString);
-        return await db.QueryAsync<TEntity>(query);
+        return await _context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken);
     }
     public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var query = $"SELECT * FROM {_tableName} WHERE id = @Id";
-        using IDbConnection db = new SqliteConnection(_connectionString);
-        return (await db.QuerySingleOrDefaultAsync<TEntity>(query, new { Id = id }))!;
+        return (await _context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken))!;
     }
     public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var query = $"SELECT 1 FROM {_tableName} WHERE id = @Id";
-        using IDbConnection db = new SqliteConnection(_connectionString);
-        return (await db.QuerySingleOrDefaultAsync<bool>(query, new { Id = id }))!;
+        return await _context.Set<TEntity>().AsNoTracking().AnyAsync(x => x.Id == id, cancellationToken);
     }
     public async Task<IEnumerable<TEntity>> FindAsync(Func<TEntity, bool> func, CancellationToken cancellationToken = default)
     {

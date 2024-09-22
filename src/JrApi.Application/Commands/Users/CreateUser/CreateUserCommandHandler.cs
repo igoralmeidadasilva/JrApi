@@ -47,13 +47,20 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         var lastName = LastName.Create(request.LastName);
         var email = Email.Create(request.Email);
         var password = Password.CreateHashingPassword(request.Password, _passworsHasher);
-        var address = Address.Create(request.Street, request.City, request.District, request.Number, request.State, request.Country, request.ZipCode);
+        var address = Address.Create(
+            request.Address.Street,
+            request.Address.City,
+            request.Address.District,
+            request.Address.Number,
+            request.Address.State,
+            request.Address.Country,
+            request.Address.ZipCode);
 
         var user = User.Create(firstName, lastName, email, password, request.BirthDate, address);
 
         _userPersistenceRepository.Insert(user);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("{RequestName} User was entered with id {UserId}.", 
             nameof(CreateUserCommand),

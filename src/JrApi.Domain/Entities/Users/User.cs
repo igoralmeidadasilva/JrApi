@@ -9,7 +9,7 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
     public FirstName? FirstName { get; set; }
     public LastName? LastName { get; set; }
     public Email? Email { get; set; }
-    public Password? HashedPassword { get; private set; }
+    public Password? HashedPassword { get; set; }
     public Address? Address { get; set; }
     public DateTime BirthDate { get; set; }
     public UserRole Role { get; set; }
@@ -64,10 +64,10 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
     {
         ArgumentValidator.ThrowIfNullOrDefault(entity, nameof(entity));
         
-        this.FirstName = entity.FirstName;
-        this.LastName = entity.LastName;
-        this.BirthDate = entity.BirthDate;
-        this.Address = entity.Address;
+        FirstName = entity.FirstName;
+        LastName = entity.LastName;
+        BirthDate = entity.BirthDate;
+        Address = entity.Address;
 
         return this;
     }
