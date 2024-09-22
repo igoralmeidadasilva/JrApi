@@ -1,10 +1,9 @@
-using System;
-using JrApi.Domain.Models;
+using JrApi.Domain.Entities.Users;
 using MediatR;
 
 namespace JrApi.Application.Queries.MongoDB.GetAllUsersMongo
 {
-    public sealed class GetAllUsersMongoQuery : IRequest<IEnumerable<UserModel>>
+    public sealed class GetAllUsersMongoQuery : IRequest<IEnumerable<User>>
     {
         
     }

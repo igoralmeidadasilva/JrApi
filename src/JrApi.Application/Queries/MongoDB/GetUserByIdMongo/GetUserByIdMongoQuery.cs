@@ -1,10 +1,9 @@
-using System;
-using JrApi.Domain.Models;
+using JrApi.Domain.Entities.Users;
 using MediatR;
 
 namespace JrApi.Application.Queries.MongoDB.GetUserByIdMongo
 {
-    public sealed class GetUserByIdMongoQuery : IRequest<UserModel>
+    public sealed class GetUserByIdMongoQuery : IRequest<User>
     {
         public int Id { get; set; }
     }

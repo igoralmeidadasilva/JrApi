@@ -10,7 +10,7 @@ public static class Constants
             public const int LAST_NAME_MAX_SIZE = 40;
             public const int EMAIL_MAX_SIZE = 60;
             public const int PASSWORD_MIN_SIZE = 8;
-            public const int PASSWORD_MAX_SIZE = 128;
+            public const int PASSWORD_MAX_SIZE = 64;
             public const string PASSWORD_FORMAT= "(?=.*[@#$%^&+=])";
             public const int STREET_MAX_SIZE = 60;
             public const int CITY_MAX_SIZE = 60;

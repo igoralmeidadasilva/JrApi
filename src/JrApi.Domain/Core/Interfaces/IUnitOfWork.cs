@@ -6,4 +6,5 @@ public interface IUnitOfWork : IDisposable
     void Commit();
     void Rollback();
     void SaveChanges();
+    Task SaveChangesAsync();
 }

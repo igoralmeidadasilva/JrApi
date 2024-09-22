@@ -11,9 +11,6 @@ public sealed class ApplicationContext : DbContext
     public ApplicationContext(DbContextOptions options) : base(options)
     { }
 
-    public ApplicationContext(DbContextOptionsBuilder options) 
-    { }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);

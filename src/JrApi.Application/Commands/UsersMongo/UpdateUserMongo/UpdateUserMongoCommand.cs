@@ -1,11 +1,10 @@
-using System;
 using System.Text.Json.Serialization;
-using JrApi.Domain.Models;
+using JrApi.Domain.Entities.Users;
 using MediatR;
 
 namespace JrApi.Application.Commands.UserMongo.UpdateUserMongo
 {
-    public sealed class UpdateUserMongoCommand : IRequest<UserModel>
+    public sealed class UpdateUserMongoCommand : IRequest<User>
     {
         [JsonIgnore]
         public int Id { get; set; }

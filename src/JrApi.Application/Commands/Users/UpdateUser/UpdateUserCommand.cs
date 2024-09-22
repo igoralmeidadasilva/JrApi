@@ -1,11 +1,10 @@
-using System;
 using System.Text.Json.Serialization;
-using JrApi.Domain.Models;
+using JrApi.Domain.Entities.Users;
 using MediatR;
 
 namespace JrApi.Application.Commands.Users.UpdateUser
 {
-    public sealed class UpdateUserCommand : IRequest<UserModel>
+    public sealed class UpdateUserCommand : IRequest<User>
     {
         [JsonIgnore]
         public int Id { get; set; }

@@ -1,3 +1,4 @@
+using JrApi.Domain.Core.Interfaces;
 using JrApi.Domain.Core.Interfaces.Repositories.Persistence;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Core.Interfaces.Services;
@@ -6,9 +7,11 @@ using JrApi.Infrastructure.Models;
 using JrApi.Infrastructure.Repositories.Persistence;
 using JrApi.Infrastructure.Repositories.ReadOnly;
 using JrApi.Infrastructure.Services;
+using JrApi.Infrastructure.UnitsOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace JrApi.Infrastructure;
 
@@ -17,8 +20,10 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services = services.AddSqLite(configuration);
+        services = services.AddRepositories(configuration);
         //services = services.AddPostgres(configuration);
         services = services.AddServices(configuration);
+        services = services.AddUnitOfWork(configuration);
         services = services.AddOptions(configuration);
         return services;
     }
@@ -53,15 +58,24 @@ public static class DependencyInjection
         return services;
     }
 
-    private static void AddRepositorys(IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUserReadOnlyRepository, UserReadOnlyRepository>();
         services.AddScoped<IUserPersistenceRepository, UserPersistenceRepository>();
+
+        return services;
     }
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<DatabaseSeedOptions>(configuration.GetSection(nameof(DatabaseSeedOptions)));
+
+        return services;
+    }
+
+    private static IServiceCollection AddUnitOfWork(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
@@ -94,12 +108,6 @@ public static class DependencyInjection
     //{
     //    services.Decorate<IDbRepository<User>, CachingUserRepository>();
     //    services.Decorate<IMongoRepository<User>, CachingUserMongoRepository>();
-    //}
-
-    //private static void AddRepositorys(IServiceCollection services)
-    //{
-    //    services.AddScoped<IDbRepository<User>, UserRepository>();
-    //    services.AddScoped<IMongoRepository<User>, UserMongoRepository>();
     //}
 
 }

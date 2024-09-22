@@ -1,27 +1,27 @@
-using System;
-using JrApi.Domain.Interfaces.Repositories;
-using JrApi.Domain.Models;
-using MediatR;
+//using System;
+//using JrApi.Domain.Core.Interfaces.Repositories.Mongo;
+//using JrApi.Domain.Users;
+//using MediatR;
 
-namespace JrApi.Application.Queries.MongoDB.GetUserByIdMongo
-{
-    public sealed class GetUserByIdMongoQueryHandler : IRequestHandler<GetUserByIdMongoQuery, UserModel>
-    {
-        private readonly IMongoDbRepository<UserModel> _mongo;
+//namespace JrApi.Application.Queries.MongoDB.GetUserByIdMongo
+//{
+//    public sealed class GetUserByIdMongoQueryHandler : IRequestHandler<GetUserByIdMongoQuery, User>
+//    {
+//        private readonly IMongoRepository<User> _mongo;
 
-        public GetUserByIdMongoQueryHandler(IMongoDbRepository<UserModel> mongo)
-        {
-            _mongo = mongo;
-        }
+//        public GetUserByIdMongoQueryHandler(IMongoRepository<User> mongo)
+//        {
+//            _mongo = mongo;
+//        }
 
-        public async Task<UserModel> Handle(GetUserByIdMongoQuery request, CancellationToken cancellationToken)
-        {
-            var result = await _mongo.GetItemById(request.Id);
-            if(result is null)
-            {
-                return default!;
-            }
-            return result;
-        }
-    }
-}
+//        public async Task<User> Handle(GetUserByIdMongoQuery request, CancellationToken cancellationToken)
+//        {
+//            var result = await _mongo.GetItemById(request.Id);
+//            if(result is null)
+//            {
+//                return default!;
+//            }
+//            return result;
+//        }
+//    }
+//}

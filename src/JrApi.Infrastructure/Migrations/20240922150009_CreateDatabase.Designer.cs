@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JrApi.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240921184028_CreateDatabase")]
+    [Migration("20240922150009_CreateDatabase")]
     partial class CreateDatabase
     {
         /// <inheritdoc />

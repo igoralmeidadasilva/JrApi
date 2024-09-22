@@ -1,33 +1,33 @@
-using System;
-using JrApi.Domain.Interfaces.Repositories;
-using JrApi.Domain.Models;
-using MediatR;
+//using System;
+//using JrApi.Domain.Core.Interfaces.Repositories.Mongo;
+//using JrApi.Domain.Users;
+//using MediatR;
 
-namespace JrApi.Application.Commands.UserMongo.CreateUserMongo
-{
-    public sealed class CreateUsersMongoCommandHandler : IRequestHandler<CreateUserMongoCommand, UserModel>
-    {
-        private readonly IMongoDbRepository<UserModel> _mongo;
+//namespace JrApi.Application.Commands.UserMongo.CreateUserMongo
+//{
+//    public sealed class CreateUsersMongoCommandHandler : IRequestHandler<CreateUserMongoCommand, User>
+//    {
+//        private readonly IMongoRepository<User> _mongo;
 
-        public CreateUsersMongoCommandHandler(IMongoDbRepository<UserModel> mongo)
-        {
-            _mongo = mongo;
-        }
+//        public CreateUsersMongoCommandHandler(IMongoRepository<User> mongo)
+//        {
+//            _mongo = mongo;
+//        }
 
-        public Task<UserModel> Handle(CreateUserMongoCommand request, CancellationToken cancellationToken)
-        {
-            var user = new UserModel (
-                request.Name, 
-                request.LastName, 
-                request.BirthDate);
+//        public Task<User> Handle(CreateUserMongoCommand request, CancellationToken cancellationToken)
+//        {
+//            var user = new UserModel (
+//                request.Name, 
+//                request.LastName, 
+//                request.BirthDate);
                 
-            var result = _mongo.Insert(user);
-            return Task.FromResult(result);
-        }
-    }
+//            var result = _mongo.Insert(user);
+//            return Task.FromResult(result);
+//        }
+//    }
 
-    internal interface IMongoDbServices<T>
-    {
-    }
+//    internal interface IMongoDbServices<T>
+//    {
+//    }
 
-}
+//}

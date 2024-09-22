@@ -19,7 +19,19 @@ public sealed record CreateUserCommand : ICommand<Result<Unit>>
     public string? Country { get; init; }
     public string? ZipCode { get; init; }
 
-    public CreateUserCommand(string firstName, string lastName, string email, string password, DateTime birthDate, string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
+    public CreateUserCommand(
+        string firstName,
+        string lastName,
+        string email,
+        string password,
+        DateTime birthDate,
+        string? street,
+        string? city,
+        string? district,
+        int? number,
+        string? state,
+        string? country,
+        string? zipCode)
     {
         FirstName = firstName;
         LastName = lastName;
