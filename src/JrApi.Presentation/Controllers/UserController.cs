@@ -21,14 +21,14 @@ public sealed class UserController : ApiController<UserController>
     public async Task<IActionResult> GetAll()
     {
         var response = await _mediator.Send(new GetAllUsersQuery());
-        return response.IsSuccess ? Ok(response.Value) : GenerateErrorResponse(response);
+        return response.IsSuccess ? Ok(response.Value!.Users) : GenerateErrorResponse(response);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var response = await _mediator.Send(new GetUserByIdQuery(id));
-        return response.IsSuccess ? Ok(response.Value) : GenerateErrorResponse(response);
+        return response.IsSuccess ? Ok(response.Value!.User) : GenerateErrorResponse(response);
     }
 
     [HttpPost]

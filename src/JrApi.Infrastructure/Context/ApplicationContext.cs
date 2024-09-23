@@ -15,6 +15,8 @@ public sealed class ApplicationContext : DbContext
     {
         modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
 
+        modelBuilder.Entity<User>().HasQueryFilter(u => !u.Role.Equals(UserRole.SuperAdmin));
+
         modelBuilder.Entity<User>()
             .HasIndex(u => u.IsDeleted)
             .HasFilter("IsDeleted = 0");
