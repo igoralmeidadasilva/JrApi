@@ -1,4 +1,5 @@
 using JrApi.Application.Commands.Users.CreateUser;
+using JrApi.Application.Commands.Users.DeleteUser;
 using JrApi.Application.Commands.Users.UpdateUser;
 using JrApi.Presentation.Core.Abstractions;
 using MediatR;
@@ -23,6 +24,13 @@ public sealed class UserController : ApiController<UserController>
 
     [HttpPut]
     public async Task<IActionResult> Update(UpdateUserCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return response.IsSuccess ? NoContent() : GenerateErrorResponse(response);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(DeleteUserCommand command)
     {
         var response = await _mediator.Send(command);
         return response.IsSuccess ? NoContent() : GenerateErrorResponse(response);

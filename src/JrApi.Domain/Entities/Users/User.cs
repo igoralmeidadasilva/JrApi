@@ -51,15 +51,10 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
 
     public void Delete()
     {
+        Role = UserRole.None;
         IsDeleted = true;
         DeletedOnUtc = DateTime.UtcNow;
     }
-
-    public void Restore()
-    {
-        IsDeleted = false;
-    }
-
     public override User Update(User entity)
     {
         ArgumentValidator.ThrowIfNullOrDefault(entity, nameof(entity));

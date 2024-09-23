@@ -12,6 +12,10 @@ public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCom
     {
         string commandName = nameof(UpdateUserCommand).Replace("Command", string.Empty);
 
+        RuleFor(x => x.Id)
+            .NotEmpty()
+                .WithError(ValidationErrors.UpdateUserErrors.FirstNameIsRequired);
+
         RuleFor(x => x.FirstName)
             .NotEmpty()
                 .WithError(ValidationErrors.UpdateUserErrors.FirstNameIsRequired)

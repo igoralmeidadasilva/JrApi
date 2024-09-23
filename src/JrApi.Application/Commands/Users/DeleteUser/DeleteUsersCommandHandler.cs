@@ -1,33 +1,55 @@
-//using System;
-//using JrApi.Domain.Core.Interfaces.Repositories;
-//using JrApi.Domain.Users;
-//using MediatR;
+using AutoMapper;
+using JrApi.Application.Core.Interfaces;
+using JrApi.Domain.Core.Abstractions.Results;
+using JrApi.Domain.Core.Errors;
+using JrApi.Domain.Core.Interfaces;
+using JrApi.Domain.Core.Interfaces.Repositories.Persistence;
+using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
+using MediatR;
+using Microsoft.Extensions.Logging;
 
-//namespace JrApi.Application.Commands.Users.DeleteUser
-//{
-//    public sealed class DeleteUsersCommandHandler : IRequestHandler<DeleteUserCommand, bool>
-//    {
-//        private readonly IDbRepository<User> _user;
-//        public DeleteUsersCommandHandler(IDbRepository<User> user)
-//        {
-//            _user = user;
-//        }
+namespace JrApi.Application.Commands.Users.DeleteUser;
 
-//        public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
-//        {
-//            try
-//            {
-//                var result = await _user.Delete(request.Id);
-//                if(!result)
-//                {
-//                    return false;
-//                }
-//                return true;
-//            } 
-//            catch
-//            {
-//                return false;
-//            }
-//        }
-//    }
-//}
+public sealed class DeleteUsersCommandHandler : ICommandHandler<DeleteUserCommand, Result<Unit>>
+{
+    private readonly ILogger<DeleteUsersCommandHandler> _logger;
+    private readonly IUserPersistenceRepository _userPersistenceRepository;
+    private readonly IUserReadOnlyRepository _userReadOnlyRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public DeleteUsersCommandHandler(
+        ILogger<DeleteUsersCommandHandler> logger,
+        IUserPersistenceRepository userPersistenceRepository,
+        IUserReadOnlyRepository userReadOnlyRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
+    {
+        _logger = logger;
+        _userPersistenceRepository = userPersistenceRepository;
+        _userReadOnlyRepository = userReadOnlyRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
+
+    public async Task<Result<Unit>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    {
+        if(!await _userReadOnlyRepository.ExistsAsync(request.Id, cancellationToken))
+        {
+            _logger.LogInformation("{RequestName} User with Id {UserId} not found.",
+                nameof(DeleteUsersCommandHandler),
+                request.Id);
+
+            return Result.Failure<Unit>(DomainErrors.User.IdNotFound);
+        }
+
+        _userPersistenceRepository.Delete(request.Id);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("{RequestName} User with ID {UserId} has been successfully deleted.",
+            nameof(DeleteUsersCommandHandler),
+            request.Id);
+
+        return Result.Success(Unit.Value);
+    }
+}

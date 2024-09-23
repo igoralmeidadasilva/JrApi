@@ -3,6 +3,7 @@ using JrApi.Domain.Core.Interfaces.Repositories.Persistence;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Core.Interfaces.Services;
 using JrApi.Infrastructure.Context;
+using JrApi.Infrastructure.Interceptors;
 using JrApi.Infrastructure.Models;
 using JrApi.Infrastructure.Repositories.Persistence;
 using JrApi.Infrastructure.Repositories.ReadOnly;
@@ -28,10 +29,13 @@ public static class DependencyInjection
 
     private static IServiceCollection AddSqLite(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSingleton<SoftDeleteInterceptor>();
+
         var connection = configuration.GetConnectionString("Sqlite");
-        services.AddDbContext<ApplicationContext>(options =>
+        services.AddDbContext<ApplicationContext>((serviceProvider, options) =>
         {
-            options.UseSqlite(connection);
+            options.UseSqlite(connection)
+                .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());;
         });
 
         return services;
@@ -39,10 +43,13 @@ public static class DependencyInjection
 
     private static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSingleton<SoftDeleteInterceptor>();
+
         var connection = configuration.GetConnectionString("Postgres");
-        services.AddDbContext<ApplicationContext>(options =>
+        services.AddDbContext<ApplicationContext>((serviceProvider, options) =>
         {
-            options.UseNpgsql(connection);
+            options.UseNpgsql(connection)
+                .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
         });
 
         return services;
@@ -77,35 +84,5 @@ public static class DependencyInjection
 
         return services;
     }
-
-    //private static IServiceCollection AddRedisConfiguration(this IServiceCollection services, IConfiguration configuration)
-    //{
-    //    services.AddStackExchangeRedisCache(options =>
-    //    {
-    //        var connection = configuration
-    //            .GetConnectionString("RedisConnectionString")!;
-    //        options.Configuration = connection;
-    //    });
-
-    //    return services;
-    //}
-
-    //private static IServiceCollection AddMongoConfiguration(this IServiceCollection services, IConfiguration configuration)
-    //{
-    //    services.Configure<UserDataBaseMongoSettings>(options =>
-    //    {
-    //        options.ConnectionURI = configuration.GetSection("ConnectionStrings:MongoConnectionString:ConnectionURI").Value;
-    //        options.DatabaseName = configuration.GetSection("ConnectionStrings:MongoConnectionString:DatabaseName").Value;
-    //        options.CollectionName = configuration.GetSection("ConnectionStrings:MongoConnectionString:CollectionName").Value;
-    //    });
-
-    //    return services;
-    //}
-
-    //private static void AddCachingRepositoryDecorator(IServiceCollection services)
-    //{
-    //    services.Decorate<IDbRepository<User>, CachingUserRepository>();
-    //    services.Decorate<IMongoRepository<User>, CachingUserMongoRepository>();
-    //}
 
 }

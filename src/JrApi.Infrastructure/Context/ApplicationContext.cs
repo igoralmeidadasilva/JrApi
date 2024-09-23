@@ -15,6 +15,10 @@ public sealed class ApplicationContext : DbContext
     {
         modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
 
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.IsDeleted)
+            .HasFilter("IsDeleted = 0");
+
         modelBuilder.ApplyConfiguration(new UserConfiguration());
 
         base.OnModelCreating(modelBuilder);

@@ -1,14 +1,15 @@
-using System;
 using FluentValidation;
+using JrApi.Application.Core.Errors;
+using JrApi.Application.Core.Extensions;
 
-namespace JrApi.Application.Commands.Users.DeleteUser
+namespace JrApi.Application.Commands.Users.DeleteUser;
+
+public sealed class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
 {
-    public sealed class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
+    public DeleteUserCommandValidator()
     {
-        public DeleteUserCommandValidator()
-        {
-            RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Id is Empty");
-        }
+        RuleFor(x => x.Id)
+            .NotEmpty()
+                .WithError(ValidationErrors.UpdateUserErrors.IdIsRequired);
     }
 }

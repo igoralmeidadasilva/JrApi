@@ -59,6 +59,8 @@ public static class ValidationErrors
     public static class UpdateUserErrors
     {
         private const string ENTITY = nameof(Domain.Entities.Users.User); 
+        public static Error IdIsRequired
+            => Error.Create("UpdateUser.Id.IsRequired", GeneralErrorsMessages.IsRequired(ENTITY, "Id"));
         public static Error FirstNameIsRequired 
             => Error.Create("UpdateUser.FirstName.IsRequired", GeneralErrorsMessages.IsRequired(ENTITY, "FirstName"), ErrorType.Validation);
         public static Error FirstNameMaxSize
