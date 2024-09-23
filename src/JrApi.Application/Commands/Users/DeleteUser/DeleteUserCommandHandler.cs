@@ -10,16 +10,16 @@ using Microsoft.Extensions.Logging;
 
 namespace JrApi.Application.Commands.Users.DeleteUser;
 
-public sealed class DeleteUsersCommandHandler : ICommandHandler<DeleteUserCommand, Result<Unit>>
+public sealed class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand, Result<Unit>>
 {
-    private readonly ILogger<DeleteUsersCommandHandler> _logger;
+    private readonly ILogger<DeleteUserCommandHandler> _logger;
     private readonly IUserPersistenceRepository _userPersistenceRepository;
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public DeleteUsersCommandHandler(
-        ILogger<DeleteUsersCommandHandler> logger,
+    public DeleteUserCommandHandler(
+        ILogger<DeleteUserCommandHandler> logger,
         IUserPersistenceRepository userPersistenceRepository,
         IUserReadOnlyRepository userReadOnlyRepository,
         IUnitOfWork unitOfWork,
@@ -37,7 +37,7 @@ public sealed class DeleteUsersCommandHandler : ICommandHandler<DeleteUserComman
         if(!await _userReadOnlyRepository.ExistsAsync(request.Id, cancellationToken))
         {
             _logger.LogInformation("{RequestName} User with Id {UserId} not found.",
-                nameof(DeleteUsersCommandHandler),
+                nameof(DeleteUserCommandHandler),
                 request.Id);
 
             return Result.Failure<Unit>(DomainErrors.User.IdNotFound);
@@ -47,7 +47,7 @@ public sealed class DeleteUsersCommandHandler : ICommandHandler<DeleteUserComman
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("{RequestName} User with ID {UserId} has been successfully deleted.",
-            nameof(DeleteUsersCommandHandler),
+            nameof(DeleteUserCommandHandler),
             request.Id);
 
         return Result.Success(Unit.Value);
