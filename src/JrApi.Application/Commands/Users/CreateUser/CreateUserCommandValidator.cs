@@ -10,8 +10,6 @@ public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCom
 {
     public CreateUserCommandValidator()
     {
-        string commandName = nameof(CreateUserCommand).Replace("Command", string.Empty);
-
         RuleFor(x => x.FirstName)
             .NotEmpty()
                 .WithError(ValidationErrors.CreateUserErrors.FirstNameIsRequired)
@@ -52,6 +50,6 @@ public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCom
             .NotEmpty()
                 .WithError(ValidationErrors.CreateUserErrors.BirthDateIsRequired);
 
-        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator(commandName));
+        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator("CreateUser"));
     }
 }

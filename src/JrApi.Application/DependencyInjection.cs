@@ -1,7 +1,10 @@
 using FluentValidation;
 using JrApi.Application.Behaviors;
 using JrApi.Application.Commands.Users.CreateUser;
+using JrApi.Application.Commands.Users.DeleteUser;
 using JrApi.Application.Commands.Users.UpdateUser;
+using JrApi.Application.Dtos;
+using JrApi.Application.Queries.Users.GetUserById;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +38,9 @@ public static class DependencyInjection
     {
         services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
         services.AddScoped<IValidator<UpdateUserCommand>, UpdateUserCommandValidator>();
-        // services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
+        services.AddScoped<IValidator<DeleteUserCommand>, DeleteUserCommandValidator>();
+
+        services.AddScoped<IValidator<GetUserByIdQuery>, GetUserByIdQueryValidator>();
 
         return services;
     }

@@ -10,11 +10,9 @@ public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCom
 {
     public UpdateUserCommandValidator()
     {
-        string commandName = nameof(UpdateUserCommand).Replace("Command", string.Empty);
-
         RuleFor(x => x.Id)
             .NotEmpty()
-                .WithError(ValidationErrors.UpdateUserErrors.FirstNameIsRequired);
+                .WithError(ValidationErrors.GeneralEntityErrors.IdIsRequired("UpdateUser", "User"));
 
         RuleFor(x => x.FirstName)
             .NotEmpty()
@@ -32,6 +30,6 @@ public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCom
             .NotEmpty()
                 .WithError(ValidationErrors.UpdateUserErrors.BirthDateIsRequired);
 
-        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator(commandName));
+        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator("UpdateUser"));
     }
 }

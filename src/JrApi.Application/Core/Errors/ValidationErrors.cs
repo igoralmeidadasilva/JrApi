@@ -21,6 +21,13 @@ public static class ValidationErrors
         internal static string Format(string entity, string property, string mask)
             => $"{entity} {property} format is not valid ({mask}).";
     }
+    
+    public static class GeneralEntityErrors
+    {
+        public static Error IdIsRequired(string request, string entity)
+            => Error.Create($"{request}.Id.IsRequired", GeneralErrorsMessages.IsRequired(entity, "Id"), ErrorType.Validation);
+    }
+    
     public static class CreateUserErrors
     {
         private const string ENTITY = nameof(Domain.Entities.Users.User); 
@@ -59,8 +66,6 @@ public static class ValidationErrors
     public static class UpdateUserErrors
     {
         private const string ENTITY = nameof(Domain.Entities.Users.User); 
-        public static Error IdIsRequired
-            => Error.Create("UpdateUser.Id.IsRequired", GeneralErrorsMessages.IsRequired(ENTITY, "Id"));
         public static Error FirstNameIsRequired 
             => Error.Create("UpdateUser.FirstName.IsRequired", GeneralErrorsMessages.IsRequired(ENTITY, "FirstName"), ErrorType.Validation);
         public static Error FirstNameMaxSize
@@ -72,6 +77,7 @@ public static class ValidationErrors
         public static Error BirthDateIsRequired
             => Error.Create("UpdateUser.BirthDate.IsRequired", GeneralErrorsMessages.IsRequired(ENTITY, "BirthDate"), ErrorType.Validation);
     }
+    
     public static class AddressErrors
     {
         private const string ENTITY = nameof(Domain.Entities.Users.User); 
@@ -90,4 +96,5 @@ public static class ValidationErrors
         public static Error AddressZipCodeFormat(string command)
             => Error.Create($"{command}.Address.ZipCode.Format", GeneralErrorsMessages.Format(ENTITY, "ZipCode", "XXXXX-XXX"), ErrorType.Validation);
     }
+
 }

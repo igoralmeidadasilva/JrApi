@@ -29,4 +29,6 @@ public sealed record Email : ValueObject
     {
         yield return Value;
     }
+
+    public override string ToString() => Value;
 }
