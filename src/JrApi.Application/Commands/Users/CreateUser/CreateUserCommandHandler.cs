@@ -9,25 +9,25 @@ using JrApi.Domain.Entities.Users;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-
 namespace JrApi.Application.Commands.Users.CreateUser;
 
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Result<Unit>>
 {
     private readonly ILogger<CreateUserCommandHandler> _logger;
-    private readonly IPasswordHashingService _passworsHasher;
+    private readonly IPasswordHashingService _passwordHasher;
     private readonly IUserPersistenceRepository _userPersistenceRepository;
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateUserCommandHandler(ILogger<CreateUserCommandHandler> logger,
-                                    IPasswordHashingService passworsHasher,
-                                    IUserPersistenceRepository userPersistenceRepository,
-                                    IUserReadOnlyRepository userReadOnlyRepository,
-                                    IUnitOfWork unitOfWork)
+    public CreateUserCommandHandler(
+        ILogger<CreateUserCommandHandler> logger,
+        IPasswordHashingService passwordHasher,
+        IUserPersistenceRepository userPersistenceRepository,
+        IUserReadOnlyRepository userReadOnlyRepository,
+        IUnitOfWork unitOfWork)
     {
         _logger = logger;
-        _passworsHasher = passworsHasher;
+        _passwordHasher = passwordHasher;
         _userPersistenceRepository = userPersistenceRepository;
         _userReadOnlyRepository = userReadOnlyRepository;
         _unitOfWork = unitOfWork;
@@ -46,7 +46,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         var firstName = FirstName.Create(request.FirstName);
         var lastName = LastName.Create(request.LastName);
         var email = Email.Create(request.Email);
-        var password = Password.CreateHashingPassword(request.Password, _passworsHasher);
+        var password = Password.CreateHashingPassword(request.Password, _passwordHasher);
         var address = Address.Create(
             request.Address.Street,
             request.Address.City,

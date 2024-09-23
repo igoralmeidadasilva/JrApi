@@ -1,4 +1,5 @@
 ﻿using JrApi.Domain.Core.Interfaces.Services;
+using JrApi.Domain.Entities.Users;
 using JrApi.Infrastructure.Context;
 using JrApi.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -37,8 +38,55 @@ public sealed class DatabaseSeedService : IDatabaseSeedService
         _logger.LogInformation("Migration executed successfully.");
     }
 
-    public Task ExecuteSeedAsync(CancellationToken cancellationToken = default)
+    public async Task ExecuteSeedAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await ExecuteUsersSeedAsync(cancellationToken);
     }
+
+    private async Task ExecuteUsersSeedAsync(CancellationToken cancellationToken = default)
+    {
+        if(!_options.IsUserSeedingActive)
+        {
+            _logger.LogInformation("The option to automatically seeding database with users is disabled, skipping seeding.");
+            return;
+        }
+
+        if(_options.Users is null)
+        {
+            _logger.LogInformation("The list of users is empty, skipping seeding.");
+            return;
+        }
+
+        using IServiceScope scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetService<ApplicationContext>()
+            ?? throw new Exception("An error occurred when trying to recover the Database.");
+
+        if(context.Users.AsNoTracking().Any())
+        {
+            _logger.LogInformation("The Database has records for users, skipping seeding.");
+            return;
+        }
+
+        var passwordHasher = scope.ServiceProvider.GetService<IPasswordHashingService>()
+            ?? throw new Exception("An error occurred when trying to recover the Password Hasher Service.");
+
+        List<User> users = _options.Users
+        .Select(user => 
+        {
+            Password password = Password.CreateHashingPassword(user.HashedPassword!, passwordHasher);
+            user.HashedPassword = password;
+            
+            return user;
+        })
+        .ToList();
+       
+        await context.AddRangeAsync(users, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("User seeding completed successfully. {UsersCount} records were inserted.",
+            _options.Users.Count);
+
+    }
+
 }

@@ -6,12 +6,15 @@ namespace JrApi.Domain.Entities.Users;
 
 public sealed record Email : ValueObject
 {
-    public string Value { get; init; }
+    public string Value { get; init; } = string.Empty;
 
     private Email(string value)
     {
         Value = value;
     }
+
+    public Email()
+    { }
 
     public static Email Create(string value)
     {

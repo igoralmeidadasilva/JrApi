@@ -7,12 +7,15 @@ namespace JrApi.Domain.Entities.Users;
 
 public sealed record Password : ValueObject
 {
-    public string Value { get; init; }
+    public string Value { get; init; } = string.Empty;
 
     private Password(string value)
     {
         Value = value;
     }
+
+    public Password()
+    { }
 
     public static Password Create(string value)
     {

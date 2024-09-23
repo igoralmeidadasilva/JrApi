@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
 var seeder = app.Services.GetService<IDatabaseSeedService>();
 
 await seeder!.ExecuteMigrationAsync();
-//await seeder!.ExecuteSeedAsync();
+await seeder!.ExecuteSeedAsync();
 
 app.UseHttpsRedirection();
 app.MapControllers();

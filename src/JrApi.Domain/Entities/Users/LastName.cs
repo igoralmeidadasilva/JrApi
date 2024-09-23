@@ -6,12 +6,15 @@ namespace JrApi.Domain.Entities.Users;
 
 public sealed record LastName : ValueObject
 {
-    public string Value { get; init; }
+    public string Value { get; init; } = string.Empty;
 
     private LastName(string value)
     {
         Value = value;
     }
+
+    public LastName()
+    { }
 
     public static LastName Create(string value)
     {
