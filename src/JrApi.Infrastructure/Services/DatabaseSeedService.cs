@@ -1,7 +1,7 @@
 ﻿using JrApi.Domain.Core.Interfaces.Services;
 using JrApi.Domain.Entities.Users;
 using JrApi.Infrastructure.Context;
-using JrApi.Infrastructure.Models;
+using JrApi.Infrastructure.Core.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

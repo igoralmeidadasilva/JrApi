@@ -1,6 +1,6 @@
 ﻿using JrApi.Domain.Entities.Users;
 
-namespace JrApi.Infrastructure.Models;
+namespace JrApi.Infrastructure.Core.Options;
 
 public sealed record DatabaseSeedOptions
 {
