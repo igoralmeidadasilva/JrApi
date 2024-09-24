@@ -1,11 +1,11 @@
-using System;
-using JrApi.Domain.Models;
-using MediatR;
+namespace JrApi.Application.Queries.Users.GetUserById;
 
-namespace JrApi.Application.Queries.Users.GetUserById
+public record GetUserByIdQuery : IQuery<Result<GetUserByIdQueryResponse>>
 {
-    public sealed class GetUserByIdQuery : IRequest<UserModel>
+    public Guid Id { get; init; }
+
+    public GetUserByIdQuery(Guid id)
     {
-        public int Id { get; set; }    
+        Id = id;
     }
 }

@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Development",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\src\\JrApi.Presentation\\JrApi.Presentation.csproj",
+            "launchConfigurationId": "TargetFramework=;Development"
+        },
+        {
+            "name": "Production",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\src\\JrApi.Presentation\\JrApi.Presentation.csproj",
+            "launchConfigurationId": "TargetFramework=;Production"
+        }
+    ]
+}

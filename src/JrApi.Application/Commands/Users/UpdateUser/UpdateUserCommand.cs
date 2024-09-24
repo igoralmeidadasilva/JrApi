@@ -1,16 +1,28 @@
-using System;
 using System.Text.Json.Serialization;
-using JrApi.Domain.Models;
-using MediatR;
+using JrApi.Application.Models;
 
-namespace JrApi.Application.Commands.Users.UpdateUser
+namespace JrApi.Application.Commands.Users.UpdateUser;
+
+public sealed record UpdateUserCommand : ICommand<Result<Unit>>
 {
-    public sealed class UpdateUserCommand : IRequest<UserModel>
+    [JsonIgnore]
+    public Guid Id { get; set; }
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
+    public DateTime BirthDate { get; init; }
+    public AddressCommandModel Address{ get; init; }
+
+    public UpdateUserCommand(
+        string firstName,
+        string lastName,
+        DateTime birthDate,
+        AddressCommandModel address)
     {
-        [JsonIgnore]
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? LastName { get; set; }
-        public DateTime BirthDate { get; set; }
+
+        FirstName = firstName;
+        LastName = lastName;
+        BirthDate = birthDate;
+        Address = address;
     }
+
 }

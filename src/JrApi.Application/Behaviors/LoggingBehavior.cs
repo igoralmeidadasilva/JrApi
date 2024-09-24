@@ -1,39 +1,43 @@
-using System.Diagnostics;
-using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
-namespace JrApi.Application.Behaviors
+namespace JrApi.Application.Behaviors;
+
+public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
-    public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+    private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger = logger;
+
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        private readonly ILogger<TRequest> _logger;
+        string requestName = typeof(TRequest).Name;
+        DateTime timestamp = DateTime.Now;
+        Stopwatch stopwatch = Stopwatch.StartNew();
 
-        public LoggingBehavior(ILogger<TRequest> logger)
+        try
         {
-            _logger = logger;
-        }
+            _logger.LogInformation("Starting request: {RequestName} at {Timestamp}",
+                requestName,
+                timestamp);
+            TResponse? response = await next();
+            _logger.LogInformation("Request {RequestName} successful.",
+                requestName);
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-        {
-            var requestName = request.GetType().Name;
-            _logger.LogInformation($"[START] {requestName}");
-            TResponse response;
-            try 
-            {
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                response = await next();
-                stopwatch.Stop();
-                TimeSpan ts = stopwatch.Elapsed; 
-                _logger.LogInformation($"--- Time Span ---");
-                _logger.LogInformation($"Requisition Time: {ts.Seconds} : {ts.Milliseconds} : {ts.Nanoseconds}");
-            }
-            finally
-            {
-                _logger.LogInformation($"[END] {requestName}");
-            }
             return response;
+        }
+        catch (Exception)
+        {
+            _logger.LogError("Request {RequestName} failed.",
+                requestName);
+            throw;
+        }
+        finally
+        {
+            stopwatch.Stop();
+            _logger.LogInformation("Ending request: {RequestName} at {Timestamp} - duration: {Stopwatch} miliseconds.",
+                requestName,
+                timestamp,
+                stopwatch.ElapsedMilliseconds);
         }
     }
 }

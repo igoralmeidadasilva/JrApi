@@ -1,11 +1,7 @@
-using System;
-using JrApi.Domain.Models;
-using MediatR;
+namespace JrApi.Application.Queries.Users.GetAllUsers;
 
-namespace JrApi.Application.Queries.Users.GetAllUsers
+public sealed record GetAllUsersQuery : IQuery<Result<GetAllUsersQueryResponse>>
 {
-    public sealed class GetAllUsersQuery : IRequest<IEnumerable<UserModel>>
-    {
-        
-    }
+    
 }
+

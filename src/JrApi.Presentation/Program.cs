@@ -1,28 +1,29 @@
-using JrApi.Application.IoC;
-using JrApi.Infrastructure.IoC;
-using JrApi.Presentation.Middlewares;
+using JrApi.Application;
+using JrApi.Domain.Core.Interfaces.Services;
+using JrApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services
-    .AddApplication()
+    .AddApplication(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
-app.UseMiddleware<GlobalExceptionHandler>();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
+var seeder = app.Services.GetService<IDatabaseSeedService>();
+
+await seeder!.ExecuteMigrationAsync();
+await seeder!.ExecuteSeedAsync();
 
 app.UseHttpsRedirection();
 app.MapControllers();

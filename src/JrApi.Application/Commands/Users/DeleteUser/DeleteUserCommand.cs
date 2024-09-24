@@ -1,10 +1,11 @@
-using System;
-using MediatR;
+namespace JrApi.Application.Commands.Users.DeleteUser;
 
-namespace JrApi.Application.Commands.Users.DeleteUser
+public sealed record DeleteUserCommand : ICommand<Result<Unit>>
 {
-    public sealed class DeleteUserCommand : IRequest<bool>
+    public Guid Id { get; init; }
+
+    public DeleteUserCommand(Guid id)
     {
-        public int Id { get; set; }
+        Id = id;
     }
 }
