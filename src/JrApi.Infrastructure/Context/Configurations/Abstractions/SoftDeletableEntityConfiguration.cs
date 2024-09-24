@@ -1,6 +1,4 @@
-﻿using JrApi.Domain.Core.Abstractions;
-using JrApi.Domain.Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace JrApi.Infrastructure.Context.Configurations.Abstractions;

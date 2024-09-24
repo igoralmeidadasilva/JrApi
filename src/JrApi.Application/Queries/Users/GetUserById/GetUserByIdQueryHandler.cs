@@ -1,7 +1,5 @@
 using AutoMapper;
-using JrApi.Application.Core.Interfaces;
 using JrApi.Application.Dtos;
-using JrApi.Domain.Core.Abstractions.Results;
 using JrApi.Domain.Core.Errors;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Models;
@@ -52,11 +50,11 @@ public sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, Re
     {
         IEnumerable<EntityLinks> links =
         [
-            new() { Rel = "self", Href = $"/api/User/{id}", Method = HttpMethod.Get.ToString() },
-            new() { Rel = "all-users", Href = "/api/User", Method = HttpMethod.Get.ToString() },
-            new() { Rel = "create", Href = "/api/User", Method = HttpMethod.Post.ToString() },
-            new() { Rel = "update", Href = "/api/User", Method = HttpMethod.Put.ToString() },
-            new() { Rel = "delete", Href = "/api/User", Method = HttpMethod.Delete.ToString() }
+            new() { Rel = "self", Href = $"/api/users/{id}", Method = HttpMethod.Get.ToString() },
+            new() { Rel = "all-users", Href = "/api/users", Method = HttpMethod.Get.ToString() },
+            new() { Rel = "create", Href = "/api/users", Method = HttpMethod.Post.ToString() },
+            new() { Rel = "update", Href = $"/api/users/{id}", Method = HttpMethod.Put.ToString() },
+            new() { Rel = "delete", Href = $"/api/users/{id}", Method = HttpMethod.Delete.ToString() }
         ];
         
         return links;

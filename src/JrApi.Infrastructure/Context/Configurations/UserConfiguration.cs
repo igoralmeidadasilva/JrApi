@@ -1,6 +1,5 @@
 using JrApi.Domain.Entities.Users;
 using JrApi.Infrastructure.Context.Configurations.Abstractions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static JrApi.Domain.Constants;
 

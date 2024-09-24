@@ -1,6 +1,5 @@
 ﻿using JrApi.Domain.Core.Interfaces.Repositories.Persistence;
 using JrApi.Domain.Entities.Users;
-using JrApi.Infrastructure.Context;
 
 namespace JrApi.Infrastructure.Repositories.Persistence;
 

@@ -1,6 +1,5 @@
 ﻿using JrApi.Domain.Entities.Users;
 using JrApi.Infrastructure.Context.Configurations;
-using Microsoft.EntityFrameworkCore;
 
 namespace JrApi.Infrastructure.Context;
 

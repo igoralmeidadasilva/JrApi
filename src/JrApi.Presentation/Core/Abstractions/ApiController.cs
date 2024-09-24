@@ -1,19 +1,16 @@
-using JrApi.Domain.Core.Abstractions.Results;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace JrApi.Presentation.Core.Abstractions;
 
 [ApiController]
+[Route("api")]
 public abstract class ApiController<TController> : ControllerBase
 {
-    protected readonly ILogger<TController> _logger;
-    protected readonly IMediator _mediator;
+    protected readonly ILogger<TController> Logger;
+    protected readonly IMediator Mediator;
 
     protected ApiController(ILogger<TController> logger, IMediator mediator)
     {
-        _logger = logger;
-        _mediator = mediator;
+        Logger = logger;
+        Mediator = mediator;
     }
 
     protected IActionResult GenerateErrorResponse(Result result, bool isEmpty = false)

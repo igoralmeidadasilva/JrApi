@@ -1,11 +1,8 @@
 using AutoMapper;
-using JrApi.Application.Core.Interfaces;
-using JrApi.Domain.Core.Abstractions.Results;
 using JrApi.Domain.Core.Errors;
 using JrApi.Domain.Core.Interfaces;
 using JrApi.Domain.Core.Interfaces.Repositories.Persistence;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace JrApi.Application.Commands.Users.DeleteUser;

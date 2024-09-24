@@ -1,7 +1,5 @@
 using AutoMapper;
-using JrApi.Application.Core.Interfaces;
 using JrApi.Application.Dtos;
-using JrApi.Domain.Core.Abstractions.Results;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Entities.Users;
 using Microsoft.Extensions.Logging;

@@ -6,6 +6,7 @@
 database.db
 database.db-shm
 database.db-wal
+*.todo
 
 .vscode/*
 !.vscode/settings.json

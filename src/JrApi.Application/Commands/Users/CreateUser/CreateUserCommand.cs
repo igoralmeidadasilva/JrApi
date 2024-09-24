@@ -1,7 +1,4 @@
-using JrApi.Application.Core.Interfaces;
 using JrApi.Application.Models;
-using JrApi.Domain.Core.Abstractions.Results;
-using MediatR;
 
 namespace JrApi.Application.Commands.Users.CreateUser;
 
