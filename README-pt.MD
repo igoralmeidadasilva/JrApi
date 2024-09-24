@@ -1,7 +1,6 @@
 # Jr.API
 Bem-vindo à **Jr.Api**! Este projeto foi originalmente desenvolvido como parte de um teste técnico para o nível Junior e, com o tempo, evoluiu para um espaço onde pratico boas práticas de programação. A Jr.Api é uma API RESTful que permite o gerenciamento de usuários, oferecendo operações completas de CRUD (Create, Read, Update, Delete) em um banco de dados SQLite. O objetivo é aplicar conceitos como arquitetura limpa, domain driven design, boas práticas de código, e garantir uma API eficiente e fácil de usar. Espero que gostem! 😄
 
-
 ## ✔ Funcionalidades Implementadas
 * CRUD (Create, Read, Update e Delete) em uma tabela de usuários cadastrados.
 
@@ -18,7 +17,6 @@ Nível 1 - Recursos: No nível 1, a API já trata elementos do sistema como recu
 Nível 2 - Verbos HTTP: APIs de nível 2 começam a utilizar corretamente os verbos HTTP (GET, POST, PUT, DELETE), melhorando a semântica das operações e se aproximando do estilo RESTful.
 
 Nível 3 - HATEOAS: O nível mais alto de maturidade é atingido quando a API fornece hipermídia (HATEOAS) como parte das respostas, permitindo que o cliente navegue pelos recursos de forma dinâmica, tornando a interação com a API autodescritiva e mais robusta.
-
 
 **Referências**: [1](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api), [2](https://www.sensedia.com.br/pillar/historia-das-apis#:~:text=REST%20foi%20como%20um%20sopro,recursos%20web%20de%20forma%20harmoniosa.) e [3](https://rivaildojunior.medium.com/modelo-de-maturidade-de-richardson-para-apis-rest-8845f93b288)
 
@@ -66,11 +64,59 @@ A Jr.Api adota o padrão Unit of Work para gerenciar as transações no contexto
 
 **Referências**: [1](https://blog.balta.io/dapper-unit-of-work-repository-pattern/)
 
+## Versionamento da API
+
+O versionamento de uma API REST é uma prática essencial para garantir que mudanças e melhorias possam ser introduzidas sem impactar negativamente os clientes que dependem de versões anteriores da API. No **Jr.Api**, seguimos as melhores práticas de versionamento para garantir compatibilidade e estabilidade ao longo do tempo.
+
+### Estratégias de Versionamento Utilizadas
+
+No **Jr.Api**, o versionamento é feito através da URL. Dessa forma, cada nova versão da API é acessada por meio de um caminho distinto, como mostrado abaixo:
+
+- `/api/v1/users`: Acessa a versão 1 da API para recursos relacionados a usuários.
+- `/api/v2/users`: Acessa a versão 2, com possíveis mudanças ou adições.
+
+Essa abordagem garante que clientes que utilizam a versão 1 da API possam continuar funcionando mesmo após a liberação de versões mais recentes, sem a necessidade de ajustes imediatos.
+
+Além disso, o versionamento de API permite a introdução de novas funcionalidades ou mudanças na estrutura de dados, mantendo a compatibilidade com clientes que ainda dependem de versões anteriores.
+
+**Referências**: [1](https://dev.to/iamrule/comprehensive-guide-to-api-versioning-in-net-8-1i9j) e [2](https://github.com/dotnet/aspnet-api-versioning/tree/main)
+
+---
+
+## Documentação via Swagger
+
+A documentação é um aspecto fundamental no desenvolvimento de APIs, garantindo que os consumidores possam entender e interagir corretamente com os endpoints disponíveis. No **Jr.Api**, utilizamos o **Swagger** para fornecer uma documentação clara e interativa.
+
+O **Swagger** oferece uma interface gráfica onde os desenvolvedores podem visualizar e testar todos os endpoints da API diretamente pelo navegador, facilitando o processo de desenvolvimento e integração.
+
+### Acessando a Documentação
+
+A documentação gerada pelo Swagger pode ser acessada diretamente ao rodar o projeto. Para visualizar a interface, basta acessar o seguinte endereço no seu navegador:
+
+```
+https://localhost:5230/swagger/index.html
+```
+
+Na interface do Swagger, você encontrará informações detalhadas sobre:
+
+- Todos os endpoints disponíveis (GET, POST, PUT, DELETE).
+- Parâmetros necessários para cada requisição.
+- Estrutura de resposta e possíveis códigos de status HTTP retornados.
+- Exemplos de uso e resultados esperados.
+
+A documentação via Swagger facilita o entendimento da API, tornando-a mais acessível para desenvolvedores e usuários.
+
+**Referências**: [1](https://medium.com/@celery_liu/asp-net-core-web-api-with-swagger-api-versioning-for-dotnet-8-c8ce2fd7808c) e [2](https://github.com/renatogroffe/ASPNETCore7-REST_API-Swagger-Versioning-Dockerfile_ContagemAcessos)
+
+---
+
 ## 🎯 Pré-Requisitos
 Antes de iniciar a configuração e execução da JrApi, certifique-se de que os seguintes pré-requisitos estão atendidos:
 
 * [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 * [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/) ou outra IDE da sua preferência.
+
+---
 
 ## 🎥 Executando o Projeto
 
@@ -105,8 +151,12 @@ dotnet run --launch-profile "Development"
 http://localhost:5230/swagger/index.html
 ```
 
+---
+
 #### Produção
 Ainda não implementado
+
+---
 
 ### Migrações
 O projeto utiliza o Entity Framework Core para gerenciar as migrações do banco de dados. Para aplicar as migrações, certifique-se de estar dentro de src/JrApi.Presentation e siga os passos abaixo:
@@ -130,6 +180,8 @@ dotnet ef database update
     "IsMigrationActive": true
 }
 ```
+
+---
 
 ### Data Seeder
 Para popular o banco de dados com dados iniciais (como usuários padrão, permissões, etc.), o projeto conta com um Data Seeder. Para executar o seeder, siga as etapas abaixo:
@@ -173,6 +225,8 @@ Dados pré-definidos: O seeder incluirá dados básicos para testar a API em amb
 ```
 
 Note que o objeto "Users" é uma lista, por tanto fique a vontade para criar mais objetos 😃.
+
+---
 
 ## ⚙ Endpoints
 
@@ -247,6 +301,8 @@ Sem conteúdo para resposta
 ]
 ```
 
+---
+
 #### Update
 URL: /api/users/{id}
 
@@ -317,6 +373,8 @@ Sem conteúdo para resposta
 ]
 ```
 
+---
+
 #### Delete
 URL: /api/users/{id}
 
@@ -358,6 +416,8 @@ Sem conteúdo para resposta
 ]
 ```
 
+---
+
 #### GetAll
 URL: /api/users
 
@@ -387,6 +447,8 @@ Sem conteúdo no corpo da requisição
   }
 ]
 ```
+
+---
 
 #### GetById
 URL: /api/users/{id}
@@ -449,6 +511,8 @@ Sem conteúdo no corpo da requisição
 ]
 ```
 
+---
+
 ## 🤲 Agradecimentos
 Gostaria de expressar minha gratidão a todos que contribuíram para o desenvolvimento deste projeto:
 
@@ -458,6 +522,7 @@ Família e amigos: Pelo apoio contínuo e incentivo durante a criação deste pr
 * Você: Por dedicar seu tempo para explorar este projeto. Espero que ele sirva de aprendizado ou inspiração de alguma forma.
 A todos, meu sincero muito obrigado!
 
+---
 
 ## 🧔 Sobre Mim
 Me chamo **Igor Almeida da Silva**, sou um desenvolvedor backend especializado na plataforma **.NET** e graduando em **Bacharelado em Sistemas de Informação pelo Instituto Federal do Espírito Santo (IFES)**, com conclusão prevista para dezembro de 2024.
