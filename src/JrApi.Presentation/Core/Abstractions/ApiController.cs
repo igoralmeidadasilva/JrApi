@@ -1,7 +1,11 @@
+using Asp.Versioning;
+
 namespace JrApi.Presentation.Core.Abstractions;
 
 [ApiController]
-[Route("api")]
+[ApiVersion("2.0")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}")]
 public abstract class ApiController<TController> : ControllerBase
 {
     protected readonly ILogger<TController> Logger;

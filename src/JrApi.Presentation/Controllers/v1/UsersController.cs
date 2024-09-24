@@ -1,15 +1,16 @@
+using Asp.Versioning;
 using JrApi.Application.Commands.Users.CreateUser;
 using JrApi.Application.Commands.Users.DeleteUser;
 using JrApi.Application.Commands.Users.UpdateUser;
 using JrApi.Application.Dtos;
 using JrApi.Application.Queries.Users.GetAllUsers;
 using JrApi.Application.Queries.Users.GetUserById;
-
 using JrApi.Presentation.Routes;
 
-namespace JrApi.Presentation.Controllers;
+namespace JrApi.Presentation.Controllers.v1;
 
 [AllowAnonymous]
+[ApiVersion("1.0")]
 public sealed class UsersController : ApiController<UsersController>
 {
     public UsersController(ILogger<UsersController> logger, IMediator mediator) : base(logger, mediator)
@@ -49,7 +50,7 @@ public sealed class UsersController : ApiController<UsersController>
     public async Task<IActionResult> Update(Guid userId, UpdateUserCommand command)
     {
         command.Id = userId;
-                
+
         var response = await Mediator.Send(command);
         return response.IsSuccess ? NoContent() : GenerateErrorResponse(response);
     }
