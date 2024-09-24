@@ -1,17 +1,13 @@
-using JrApi.Domain.Core.Interfaces;
 using JrApi.Domain.Core.Interfaces.Repositories.Persistence;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Core.Interfaces.Services;
-using JrApi.Infrastructure.Context;
+using JrApi.Infrastructure.Core.Options;
 using JrApi.Infrastructure.Interceptors;
-using JrApi.Infrastructure.Models;
 using JrApi.Infrastructure.Repositories.Persistence;
 using JrApi.Infrastructure.Repositories.ReadOnly;
 using JrApi.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 
 namespace JrApi.Infrastructure;
 
@@ -36,20 +32,6 @@ public static class DependencyInjection
         {
             options.UseSqlite(connection)
                 .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());;
-        });
-
-        return services;
-    }
-
-    private static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddSingleton<SoftDeleteInterceptor>();
-
-        var connection = configuration.GetConnectionString("Postgres");
-        services.AddDbContext<ApplicationContext>((serviceProvider, options) =>
-        {
-            options.UseNpgsql(connection)
-                .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
         });
 
         return services;
