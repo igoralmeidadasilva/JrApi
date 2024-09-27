@@ -65,7 +65,8 @@ public static class DependencyInjection
     private static IServiceCollection AddApiHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHealthChecks()
-            .AddSqlite(connectionString: configuration.GetConnectionString("Sqlite")!, name: "SQLite Check", tags: ["db", "tags"]);
+            .AddSqlite(connectionString: configuration.GetConnectionString("Sqlite")!, name: "SQLite Check", tags: ["db", "tags"])
+            .AddRedis(redisConnectionString: configuration.GetConnectionString("Redis")!, name: "Redis Check", tags: ["db", "tags"]);
 
         services.AddHealthChecksUI(options =>
         {
