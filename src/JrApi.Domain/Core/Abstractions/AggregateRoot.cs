@@ -7,7 +7,10 @@ public abstract class AggregateRoot<T> : Entity<T>
     private readonly List<IDomainEvent> _events = [];
     public IReadOnlyCollection<IDomainEvent> Events => _events.AsReadOnly();
 
-    public AggregateRoot() : base()
+    protected AggregateRoot() //ORM
+    { }
+
+    protected AggregateRoot(Guid id, DateTime createdOnUtc) : base(id, createdOnUtc)
     { }
 
     public void ClearDomainEvents() => _events.Clear();

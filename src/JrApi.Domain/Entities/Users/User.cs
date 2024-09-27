@@ -17,7 +17,16 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
     public DateTime DeletedOnUtc { get; private set; }
     public string FullName => string.Format("{0} {1}", FirstName, LastName);
 
-    private User(FirstName firstName, LastName lastName, Email email, Password hashedPassword, DateTime birthDate, Address? address, UserRole role) : base()
+    private User(
+        Guid id, 
+        DateTime createdOnUtc, 
+        FirstName firstName, 
+        LastName lastName, 
+        Email email, 
+        Password hashedPassword, 
+        DateTime birthDate, 
+        Address? address, 
+        UserRole role) : base(id, createdOnUtc)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -43,10 +52,10 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
         ArgumentValidator.ThrowIfNull(hashedPassword, nameof(hashedPassword));
         ArgumentValidator.ThrowIfNull(birthDate, nameof(birthDate));
 
-        return new(firstName, lastName, email, hashedPassword, birthDate, address, role);
+        return new(Guid.NewGuid(), DateTime.UtcNow, firstName, lastName, email, hashedPassword, birthDate, address, role);
     }
 
-    public User() : base()
+    public User() // ORM
     { }
 
     public void Delete()
