@@ -105,6 +105,14 @@ Swagger documentation makes understanding the API easier, making it more accessi
 
 **Referências**: [1](https://medium.com/@celery_liu/asp-net-core-web-api-with-swagger-api-versioning-for-dotnet-8-c8ce2fd7808c) e [2](https://github.com/renatogroffe/ASPNETCore7-REST_API-Swagger-Versioning-Dockerfile_ContagemAcessos)
 
+### Distributed Cache with Redis
+Distributed caching is a technique used to improve the performance and scalability of an API by storing data in memory for quick and efficient access. In Jr.Api, Redis was chosen as the distributed cache solution due to its high performance and easy integration with .NET applications.
+
+**Performance**: Redis stores data in memory, allowing for extremely fast read and write times.
+**Scalability**: As a distributed solution, Redis allows the cache to be shared among multiple instances of the API, making the system more robust and efficient under high load scenarios.
+
+The integration with Redis in Jr.Api is done using the StackExchange.Redis package, which is the official client for .NET.
+
 ---
 
 ## 🎯 Prerequisites
