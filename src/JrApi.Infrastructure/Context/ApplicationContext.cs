@@ -7,7 +7,7 @@ public sealed class ApplicationContext : DbContext
 {
     public DbSet<User> Users { get; init; }
 
-    public ApplicationContext(DbContextOptions options) : base(options)
+    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
