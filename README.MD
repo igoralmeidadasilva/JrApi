@@ -2,7 +2,15 @@
 Welcome to **Jr.Api**! This project was originally developed as part of a technical test for the Junior level and, over time, has evolved into a space where I practice good programming practices. Jr.Api is a RESTful API that allows user management, offering complete CRUD (Create, Read, Update, Delete) operations on a SQLite database. The goal is to apply concepts such as clean architecture, domain-driven design, good coding practices, and ensure an efficient and easy-to-use API. I hope you enjoy it! 😄
 
 ## ✔ Implemented Features
-* CRUD (Create, Read, Update, and Delete) operations on a registered users table.
+* CRUD (Create, Read, Update, and Delete) in a registered users table.
+* CQRS with MediatR
+* MediatR Behaviors
+* Validations with Fluent Validation
+* Read and write repositories
+* API versioning
+* Distributed cache with Redis
+* Global Exception Handler
+* API Health Check
 
 ## 🏃‍♂️ Practices Used
 ### REST API
@@ -20,30 +28,42 @@ Level 3 - HATEOAS: The highest level of maturity is reached when the API provide
 
 **References**: [1](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api), [2](https://www.sensedia.com.br/pillar/historia-das-apis#:~:text=REST%20foi%20como%20um%20sopro,recursos%20web%20de%20forma%20harmoniosa.), and [3](https://rivaildojunior.medium.com/modelo-de-maturidade-de-richardson-para-apis-rest-8845f93b288)
 
+---
+
 ### Domain Driven Design
 Jr.Api adopts the principles of Domain Driven Design (DDD) to organize business logic efficiently and scalably. DDD focuses on creating a robust domain model, where the application's rules and operations are centralized. This facilitates code understanding and evolution, allowing business concepts to be represented clearly and concisely.
 
 **References**: [1](https://medium.com/beelabacademy/implementando-na-pr%C3%A1tica-rest-api-com-conceitos-de-ddd-net-2160291a44b7), [2](https://www.macoratti.net/20/07/aspnc_ucddd1.htm), [3](https://medium.com/beelabacademy/implementando-na-pr%C3%A1tica-rest-api-com-conceitos-de-ddd-net-2160291a44b7), and [4](https://www.milanjovanovic.tech/blog/value-objects-in-dotnet-ddd-fundamentals)
+
+---
 
 ### Clean Architecture
 The project structure follows Clean Architecture standards, which aim to separate application responsibilities into independent layers. This promotes decoupled and maintainable code, facilitating testability and allowing the exchange of frameworks and technologies without impacting business rules. This approach ensures that implementation decisions are isolated from domain rules. DDD and Clean Architecture have a close relationship, with Clean Architecture using many DDD principles in its lower layer.
 
 **References**: [1](https://www.youtube.com/watch?v=1Lcr2c3MVF4&feature=youtu.be), [2](https://www.milanjovanovic.tech/blog/clean-architecture-folder-structure), and [3](https://www.linkedin.com/pulse/como-estruturo-pastas-utilizando-o-clean-architecture-william-g-silva/)
 
+---
+
 ### CQRS
 Jr.Api implements the CQRS (Command Query Responsibility Segregation) pattern to separate read and write operations, ensuring better organization and clarity in executing operations. With CQRS, commands (write operations) and queries (read operations) are handled independently, allowing for more granular optimization and facilitating the API's evolution without compromising code integrity.
 
 **References**: [1](https://codewithmukesh.com/blog/cqrs-and-mediatr-in-aspnet-core/) and [2](https://www.milanjovanovic.tech/blog/cqrs-pattern-with-mediatr)
+
+---
 
 ### Result Pattern
 Jr.Api uses the Result Pattern to standardize operation returns, ensuring that methods return a result object instead of throwing exceptions directly. This approach allows for centralized and more efficient handling of errors and successes in operations, increasing the API's robustness and predictability. A custom library was developed to facilitate response handling, containing detailed information about success, failure, and possible error messages.
 
 **References**: [1](https://www.milanjovanovic.tech/blog/functional-error-handling-in-dotnet-with-the-result-pattern), [2](https://www.milanjovanovic.tech/blog/functional-error-handling-in-dotnet-with-the-result-pattern), [3](https://code-maze.com/aspnetcore-result-pattern/), [4](https://medium.com/@wgyxxbf/result-pattern-a01729f42f8c), and [5](https://github.com/altmann/FluentResults)
 
+---
+
 ### Soft Delete
 The API implements the Soft Delete strategy in the database, meaning that instead of permanently deleting records, they are marked as deleted. This allows data to be recovered in case of accidental deletion or maintained for auditing and history. An additional field is added to tables to indicate the deletion status of records, and global filters in Entity Framework Core ensure that deleted records are not returned in regular queries.
 
 **References**: [1](https://www.milanjovanovic.tech/blog/implementing-soft-delete-with-ef-core)
+
+---
 
 ### Repository Pattern
 Jr.Api follows the Repository Pattern to decouple data access logic from upper layers. The project uses Entity Framework Core to implement two types of repositories: ReadOnlyRepository and PersistenceRepository.
@@ -56,17 +76,19 @@ The separation of these repositories allows for a more flexible and optimized ar
 
 **References**: [1](https://learn.microsoft.com/pt-br/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implementation-entity-framework-core), [2](https://codewithmukesh.com/blog/repository-pattern-in-aspnet-core/), and [3](https://blog.balta.io/dapper-unit-of-work-repository-pattern/)
 
+---
+
 ### Unit Of Work
 Jr.Api adopts the Unit of Work pattern to manage transactions within the database context. This pattern ensures that all operations performed in a unit of work (such as multiple write operations) are treated as a single transaction. If all operations are successful, the changes are persisted in the database; otherwise, they are rolled back. This pattern offers greater control and security, preventing data inconsistencies and ensuring that modifications are applied atomically. The Unit of Work implementation is built on top of Entity Framework Core, which facilitates transaction management and provides an additional layer of abstraction for data manipulation.
 
 **References**: [1](https://blog.balta.io/dapper-unit-of-work-repository-pattern/)
 
-## API Versioning
+---
 
+### API Versioning
 Versioning a REST API is essential to ensure that changes and improvements can be introduced without negatively impacting clients that depend on previous versions of the API. At **Jr.Api**, we follow best practices for versioning to ensure compatibility and stability over time.
 
-### Versioning Strategies Used
-
+#### Versioning Strategies Used
 At **Jr.Api**, versioning is done through the URL. This way, each new version of the API is accessed through a distinct path, as shown below:
 
 - `/api/v1/users`: Accesses version 1 of the API for user-related resources.
@@ -76,17 +98,17 @@ This approach ensures that clients using version 1 of the API can continue to fu
 
 Additionally, API versioning allows for the introduction of new features or changes in the data structure while maintaining compatibility with clients that still depend on previous versions.
 
-**Referências**: [1](https://dev.to/iamrule/comprehensive-guide-to-api-versioning-in-net-8-1i9j) e [2](https://github.com/dotnet/aspnet-api-versioning/tree/main)
+**References**: [1](https://dev.to/iamrule/comprehensive-guide-to-api-versioning-in-net-8-1i9j) e [2](https://github.com/dotnet/aspnet-api-versioning/tree/main)
 
 ---
 
-## Documentation via Swagger
+### Documentation via Swagger
 
 Documentation is a fundamental aspect of API development, ensuring that consumers can understand and correctly interact with the available endpoints. At **Jr.Api**, we use **Swagger** to provide clear and interactive documentation.
 
 **Swagger** offers a graphical interface where developers can view and test all API endpoints directly from the browser, facilitating the development and integration process.
 
-### Accessing the Documentation
+#### Accessing the Documentation
 
 The documentation generated by Swagger can be accessed directly when running the project. To view the interface, simply access the following address in your browser:
 
@@ -103,7 +125,9 @@ In the Swagger interface, you will find detailed information about:
 
 Swagger documentation makes understanding the API easier, making it more accessible for developers and users.
 
-**Referências**: [1](https://medium.com/@celery_liu/asp-net-core-web-api-with-swagger-api-versioning-for-dotnet-8-c8ce2fd7808c) e [2](https://github.com/renatogroffe/ASPNETCore7-REST_API-Swagger-Versioning-Dockerfile_ContagemAcessos)
+**References**: [1](https://medium.com/@celery_liu/asp-net-core-web-api-with-swagger-api-versioning-for-dotnet-8-c8ce2fd7808c) e [2](https://github.com/renatogroffe/ASPNETCore7-REST_API-Swagger-Versioning-Dockerfile_ContagemAcessos)
+
+---
 
 ### Distributed Cache with Redis
 Distributed caching is a technique used to improve the performance and scalability of an API by storing data in memory for quick and efficient access. In Jr.Api, Redis was chosen as the distributed cache solution due to its high performance and easy integration with .NET applications.
@@ -114,6 +138,22 @@ Distributed caching is a technique used to improve the performance and scalabili
 The integration with Redis in Jr.Api is done using the StackExchange.Redis package, which is the official client for .NET.
 
 ---
+
+### Health Checks
+
+To ensure the availability and proper functioning of Jr.Api components, we use the Health Checks functionality offered by ASP.NET Core. Through the AspNetCore.HealthChecks and AspNetCore.HealthChecks.UI packages, we can monitor the health of the application and display an interactive control panel. The endpoint to check the health of the application is:
+```
+http://localhost:5230/health
+```
+
+You can also check the Health Check through the Dashboard at:
+```
+http://localhost:5230/dashboard
+```
+
+Currently, JrApi has health checks implemented for SQLite and Redis.
+
+**References**: [1](https://blog.balta.io/aspnet-health-check/) e [2](https://www.youtube.com/watch?v=fuECFrryH68)
 
 ## 🎯 Prerequisites
 Before setting up and running JrApi, make sure the following prerequisites are met:
