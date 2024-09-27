@@ -40,5 +40,20 @@ public static class DependencyInjection
 
         return services;
     } 
+
+    public static WebApplication ConfigureSwaggerUI(this WebApplication app)
+    {
+        app.UseSwaggerUI(
+        options =>
+        {
+            var descriptions = app.DescribeApiVersions();
+            foreach (var description in descriptions)
+            {
+                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+            }
+        });
+
+        return app;
+    } 
     
 }
