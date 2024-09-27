@@ -11,17 +11,17 @@ public abstract class BasePersistenceRepository<TEntity> : IPersistenceRepositor
         Context = context;
     }
 
-    public void Insert(TEntity entity)
+    public virtual void Insert(TEntity entity)
         => Context.Set<TEntity>().Add(entity);
     
 
-    public void InsertRange(IEnumerable<TEntity> entities)
+    public virtual void InsertRange(IEnumerable<TEntity> entities)
         => Context.Set<TEntity>().AddRange(entities);
 
-    public void Update(TEntity entity)
+    public virtual void Update(TEntity entity)
         => Context.Set<TEntity>().Update(entity);
 
-    public void Delete(Guid id)
+    public virtual void Delete(Guid id)
     {
         var item = Context.Set<TEntity>().Find(id);
         if (item != null)

@@ -4,7 +4,9 @@ using JrApi.Domain.Core.Interfaces.Services;
 using JrApi.Infrastructure.Core.Options;
 using JrApi.Infrastructure.Interceptors;
 using JrApi.Infrastructure.Repositories.Persistence;
+using JrApi.Infrastructure.Repositories.Persistence.Cache;
 using JrApi.Infrastructure.Repositories.ReadOnly;
+using JrApi.Infrastructure.Repositories.ReadOnly.Cache;
 using JrApi.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,9 @@ public static class DependencyInjection
         services = services.AddServices(configuration);
         services = services.AddUnitOfWork(configuration);
         services = services.AddOptions(configuration);
+        services = services.AddRedis(configuration);
+        services = services.AddCachingDecorator(configuration);
+
         return services;
     }
 
@@ -27,10 +32,9 @@ public static class DependencyInjection
     {
         services.AddSingleton<SoftDeleteInterceptor>();
 
-        var connection = configuration.GetConnectionString("Sqlite");
         services.AddDbContext<ApplicationContext>((serviceProvider, options) =>
         {
-            options.UseSqlite(connection)
+            options.UseSqlite(configuration.GetConnectionString("Sqlite"))
                 .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());;
         });
 
@@ -56,6 +60,7 @@ public static class DependencyInjection
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<DatabaseSeedOptions>(configuration.GetSection(nameof(DatabaseSeedOptions)));
+        services.Configure<DistributedCacheOptions>(configuration.GetSection(nameof(DistributedCacheOptions)));
 
         return services;
     }
@@ -63,6 +68,24 @@ public static class DependencyInjection
     private static IServiceCollection AddUnitOfWork(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis");;
+        }); 
+
+        return services;
+    }
+
+    private static IServiceCollection AddCachingDecorator(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Decorate<IUserReadOnlyRepository, CacheUserReadOnlyRepository>();
+        services.Decorate<IUserPersistenceRepository, CacheUserPersistenceRepository>();
 
         return services;
     }

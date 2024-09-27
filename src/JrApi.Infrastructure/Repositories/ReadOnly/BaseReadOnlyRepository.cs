@@ -19,19 +19,19 @@ public abstract class BaseReadOnlyRepository<TEntity> : IReadOnlyRepository<TEnt
         TableName = modelEntityType!.GetSchemaQualifiedTableName()!;
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await Context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken);
     }
-    public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return (await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken))!;
     }
-    public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
+    public virtual async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await Context.Set<TEntity>().AsNoTracking().AnyAsync(x => x.Id == id, cancellationToken);
     }
-    public async Task<IEnumerable<TEntity>> FindAsync(Func<TEntity, bool> func, CancellationToken cancellationToken = default)
+    public virtual async Task<IEnumerable<TEntity>> FindAsync(Func<TEntity, bool> func, CancellationToken cancellationToken = default)
     {
         return await Task.FromResult(Context.Set<TEntity>().AsNoTracking().Where(func).AsEnumerable()); 
     }

@@ -52,7 +52,7 @@ namespace JrApi.Infrastructure.Migrations
 
             modelBuilder.Entity("JrApi.Domain.Entities.Users.User", b =>
                 {
-                    b.OwnsOne("JrApi.Domain.Entities.Users.Address", "Address", b1 =>
+                    b.OwnsOne("JrApi.Domain.Entities.Users.User.Address#JrApi.Domain.Entities.Users.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("TEXT");
@@ -114,13 +114,13 @@ namespace JrApi.Infrastructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("users");
+                            b1.ToTable("users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("JrApi.Domain.Entities.Users.Email", "Email", b1 =>
+                    b.OwnsOne("JrApi.Domain.Entities.Users.User.Email#JrApi.Domain.Entities.Users.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("TEXT");
@@ -136,13 +136,13 @@ namespace JrApi.Infrastructure.Migrations
                             b1.HasIndex("Value")
                                 .IsUnique();
 
-                            b1.ToTable("users");
+                            b1.ToTable("users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("JrApi.Domain.Entities.Users.FirstName", "FirstName", b1 =>
+                    b.OwnsOne("JrApi.Domain.Entities.Users.User.FirstName#JrApi.Domain.Entities.Users.FirstName", "FirstName", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("TEXT");
@@ -155,32 +155,13 @@ namespace JrApi.Infrastructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("users");
+                            b1.ToTable("users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("JrApi.Domain.Entities.Users.LastName", "LastName", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(40)
-                                .HasColumnType("TEXT")
-                                .HasColumnName("last_name");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("JrApi.Domain.Entities.Users.Password", "HashedPassword", b1 =>
+                    b.OwnsOne("JrApi.Domain.Entities.Users.User.HashedPassword#JrApi.Domain.Entities.Users.Password", "HashedPassword", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("TEXT");
@@ -193,7 +174,26 @@ namespace JrApi.Infrastructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("users");
+                            b1.ToTable("users", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsOne("JrApi.Domain.Entities.Users.User.LastName#JrApi.Domain.Entities.Users.LastName", "LastName", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("last_name");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

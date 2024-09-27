@@ -12,15 +12,14 @@ public sealed class ApplicationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
-
-        modelBuilder.Entity<User>().HasQueryFilter(u => !u.Role.Equals(UserRole.SuperAdmin));
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        
+        modelBuilder.Entity<User>()
+            .HasQueryFilter(u => !u.IsDeleted && !u.Role.Equals(UserRole.SuperAdmin));
 
         modelBuilder.Entity<User>()
             .HasIndex(u => u.IsDeleted)
             .HasFilter("IsDeleted = 0");
-
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }
