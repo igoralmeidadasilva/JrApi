@@ -26,6 +26,8 @@ if (app.Environment.IsDevelopment())
     app.ConfigureSwaggerUI();
 }
 
+app.ConfigureHealthCheck();
+
 var seeder = app.Services.GetService<IDatabaseSeedService>();
 
 await seeder!.ExecuteMigrationAsync();
@@ -33,6 +35,5 @@ await seeder!.ExecuteSeedAsync();
 
 app.UseHttpsRedirection();
 app.MapControllers();
-
 
 app.Run();

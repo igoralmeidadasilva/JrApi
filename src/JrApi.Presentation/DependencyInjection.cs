@@ -1,5 +1,7 @@
 using Asp.Versioning;
+using HealthChecks.UI.Client;
 using JrApi.Presentation.Core.Options;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -11,6 +13,8 @@ public static class DependencyInjection
     {
         services = services.AddAspVersioning(configuration);
         services = services.AddSwaggerConfiguration(configuration);
+        services = services.AddApiHealthCheck(configuration);
+        
         return services;
     }
 
@@ -23,9 +27,11 @@ public static class DependencyInjection
 
     private static IServiceCollection AddAspVersioning(this IServiceCollection services, IConfiguration configuration)
     {
+        const int CURRENT_VERSION = 2;
+
         services.AddApiVersioning(options =>
         {
-            options.DefaultApiVersion = new ApiVersion(2, 0);
+            options.DefaultApiVersion = new ApiVersion(CURRENT_VERSION, 0);
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.ReportApiVersions = true;
             options.ApiVersionReader = ApiVersionReader.Combine(
@@ -39,7 +45,7 @@ public static class DependencyInjection
         });
 
         return services;
-    } 
+    }
 
     public static WebApplication ConfigureSwaggerUI(this WebApplication app)
     {
@@ -55,5 +61,34 @@ public static class DependencyInjection
 
         return app;
     } 
+
+    private static IServiceCollection AddApiHealthCheck(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHealthChecks()
+            .AddSqlite(connectionString: configuration.GetConnectionString("Sqlite")!, name: "SQLite Check", tags: ["db", "tags"]);
+
+        services.AddHealthChecksUI(options =>
+        {
+            options.SetEvaluationTimeInSeconds(5);
+            options.MaximumHistoryEntriesPerEndpoint(10);
+            options.AddHealthCheckEndpoint("JrApi Health Check", "/health");
+        })
+        .AddInMemoryStorage();
+
+        return services;
+    }
+
+    public static WebApplication ConfigureHealthCheck(this WebApplication app)
+    {
+        app.UseHealthChecks("/health", new HealthCheckOptions
+        {
+            Predicate = p => true,
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
+
+        app.UseHealthChecksUI(options => { options.UIPath = "/dashboard"; });
+
+        return app;
+    }
     
 }
