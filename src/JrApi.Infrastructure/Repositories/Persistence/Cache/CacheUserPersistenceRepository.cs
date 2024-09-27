@@ -8,13 +8,13 @@ namespace JrApi.Infrastructure.Repositories.Persistence.Cache;
 
 public sealed class CacheUserPersistenceRepository : BasePersistenceRepository<User>, IUserPersistenceRepository
 {
-    private readonly UserPersistenceRepository _decorated;
+    private readonly IUserPersistenceRepository _decorated;
     private readonly IDistributedCache _distributedCache;
     private readonly DistributedCacheOptions _options; 
 
     public CacheUserPersistenceRepository(
         ApplicationContext context, 
-        UserPersistenceRepository decorated, 
+        IUserPersistenceRepository decorated, 
         IDistributedCache distributedCache,
         IOptions<DistributedCacheOptions> options) : base(context)
     {

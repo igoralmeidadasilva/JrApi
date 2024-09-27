@@ -9,13 +9,13 @@ namespace JrApi.Infrastructure.Repositories.ReadOnly.Cache;
 
 public sealed class CacheUserReadOnlyRepository : BaseReadOnlyRepository<User>, IUserReadOnlyRepository
 {
-    private readonly UserReadOnlyRepository _decorated;
+    private readonly IUserReadOnlyRepository _decorated;
     private readonly IDistributedCache _distributedCache;
     private readonly DistributedCacheOptions _options;
 
     public CacheUserReadOnlyRepository(
         ApplicationContext context,
-        UserReadOnlyRepository decorated,
+        IUserReadOnlyRepository decorated,
         IDistributedCache distributedCache,
         IOptions<DistributedCacheOptions> options) : base(context)
     {
