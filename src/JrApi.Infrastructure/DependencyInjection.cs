@@ -23,7 +23,7 @@ public static class DependencyInjection
         services = services.AddUnitOfWork(configuration);
         services = services.AddOptions(configuration);
         services = services.AddRedis(configuration);
-        // services = services.AddCachingDecorator(configuration);
+        services = services.AddCachingDecorator(configuration);
 
         return services;
     }
