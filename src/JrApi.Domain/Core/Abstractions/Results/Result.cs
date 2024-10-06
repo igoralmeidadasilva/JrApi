@@ -14,59 +14,25 @@ public class Result : IResult
 
     public Result() { }
 
-    public static Result Success()
-    {
-        return new Result(true, []);
-    }
+    public static Result Success() => new Result(true, []);
+    public static Result Failure(Error error) => new Result(false, [error]);
 
-    public static Result Failure(Error error)
-    {
-        return new Result(false, [error]);
-    }
+    public static Result Failure(IList<Error> errors) => new Result(false, errors);
 
-    public static Result Failure(IList<Error> errors)
-    {
-        return new Result(false, errors);
-    }
+    public static Result<TValue> Success<TValue>(TValue value) => new Result<TValue>(value, true, []);
 
-    public static Result<TValue> Success<TValue>(TValue value)
-    {
-        return new Result<TValue>(value, true, []);
-    }
+    public static Result<TValue> Failure<TValue>(Error error) => new Result<TValue>(default!, false, [error]);
 
-    public static Result<TValue> Failure<TValue>(Error error)
-    {
-        return new Result<TValue>(default!, false, [error]);
-    }
+    public static Result<TValue> Failure<TValue>(IList<Error> errors) => new Result<TValue>(default!, false, errors);
 
-    public static Result<TValue> Failure<TValue>(IList<Error> errors)
-    {
-        return new Result<TValue>(default!, false, errors);
-    }
+    public Error FirstError() => Errors.FirstOrDefault()!;
 
-    public Error FirstError()
-    {
-        return Errors.FirstOrDefault()!;
-    }
+    public bool HasError() => Errors.Any();
 
-    public bool HasError()
-    {
-        return Errors.Any();
-    }
+    public bool HasManyErrors() => Errors.Count > 1;
 
-    public bool HasManyErrors()
-    {
-        return Errors.Count() > 1;
-    }
+    public bool HasOneError() => Errors.Count == 1;
 
-    public bool HasOneError()
-    {
-        return Errors.Count == 1;
-    }
-
-    public bool ErrorOrSucces()
-    {
-        return !Errors.Any();
-    }
+    public bool ErrorOrSucces() => !Errors.Any();
 
 }

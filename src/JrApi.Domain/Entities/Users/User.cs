@@ -6,13 +6,13 @@ namespace JrApi.Domain.Entities.Users;
 
 public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
 {
-    public FirstName? FirstName { get; set; }
-    public LastName? LastName { get; set; }
-    public Email? Email { get; set; }
-    public Password? HashedPassword { get; set; }
-    public Address? Address { get; set; }
-    public DateTime BirthDate { get; set; }
-    public UserRole Role { get; set; }
+    public FirstName? FirstName { get; private set; }
+    public LastName? LastName { get; private set; }
+    public Email? Email { get; private set; }
+    public Password? Password { get; private set; }
+    public Address? Address { get; private set; }
+    public DateTime BirthDate { get; private set; }
+    public UserRole Role { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime DeletedOnUtc { get; private set; }
     public string FullName => string.Format("{0} {1}", FirstName, LastName);
@@ -31,7 +31,7 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        HashedPassword = hashedPassword;
+        Password = hashedPassword;
         Address = address;
         Role = role;
         BirthDate = birthDate;

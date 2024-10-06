@@ -17,5 +17,5 @@ public record GetUserByIdDto
     public string? State { get; init; }
     public string? Country { get; init; }
     public string? ZipCode { get; init; }
-    public IEnumerable<EntityLinks>? Links { get; set; }
+    public IEnumerable<Link>? Links { get; set; }
 }

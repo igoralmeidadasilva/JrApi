@@ -46,9 +46,9 @@ public sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, Re
         return Result.Success(response);
     }
 
-    private static IEnumerable<EntityLinks> GenerateUserLinks(Guid id)
+    private static IEnumerable<Link> GenerateUserLinks(Guid id)
     {
-        IEnumerable<EntityLinks> links =
+        IEnumerable<Link> links =
         [
             new() { Rel = "self", Href = $"/api/users/{id}", Method = HttpMethod.Get.ToString() },
             new() { Rel = "all-users", Href = "/api/users", Method = HttpMethod.Get.ToString() },

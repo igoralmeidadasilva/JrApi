@@ -74,13 +74,11 @@ public sealed class DatabaseSeedService : IDatabaseSeedService
         List<User> users = _options.Users
         .Select(user => 
         {
-            Password password = Password.CreateHashingPassword(user.HashedPassword!, passwordHasher);
-            user.HashedPassword = password;
-            
-            return user;
-        })
-        .ToList();
-       
+            user.Password!.Hashing(passwordHasher);            
+            return User.Create(user.FirstName!, user.LastName!, user.Email!, user.Password.Hashing(passwordHasher), user.BirthDate, user.Address, user.Role);
+        }).ToList();
+
+
         await context.AddRangeAsync(users, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 

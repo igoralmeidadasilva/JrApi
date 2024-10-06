@@ -43,7 +43,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         var firstName = FirstName.Create(request.FirstName);
         var lastName = LastName.Create(request.LastName);
         var email = Email.Create(request.Email);
-        var password = Password.CreateHashingPassword(request.Password, _passwordHasher);
+        var password = Password.Create(request.Password).Hashing(_passwordHasher);
         var address = Address.Create(
             request.Address.Street,
             request.Address.City,

@@ -35,7 +35,7 @@ public sealed class UserConfiguration : SoftDeletableEntityConfiguration<User>
             .HasIndex(e => e.Value)
             .IsUnique();
 
-        builder.OwnsOne(e => e.HashedPassword)
+        builder.OwnsOne(e => e.Password)
            .Property(e => e.Value)
            .HasColumnName("password")
            .HasMaxLength(Constraints.User.PASSWORD_MAX_SIZE)

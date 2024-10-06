@@ -23,7 +23,7 @@ public static class DependencyInjection
         services = services.AddUnitOfWork(configuration);
         services = services.AddOptions(configuration);
         services = services.AddRedis(configuration);
-        services = services.AddCachingDecorator(configuration);
+        // services = services.AddCachingDecorator(configuration);
 
         return services;
     }
@@ -59,7 +59,8 @@ public static class DependencyInjection
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<DatabaseSeedOptions>(configuration.GetSection(nameof(DatabaseSeedOptions)));
+        services.Configure<DatabaseSeedOptions>(options => configuration.GetSection(nameof(DatabaseSeedOptions))
+            .Bind(options, c => c.BindNonPublicProperties = true));
         services.Configure<DistributedCacheOptions>(configuration.GetSection(nameof(DistributedCacheOptions)));
 
         return services;

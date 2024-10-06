@@ -23,11 +23,9 @@ public sealed record Password : ValueObject
         return new(value);
     }
 
-    public static Password CreateHashingPassword(string value, IPasswordHashingService hasher)
+    public Password Hashing(IPasswordHashingService hasher)
     {
-        ValidadePassword(value);
-        string hashValue = hasher.HashPassword(value);
-
+        string hashValue = hasher.HashPassword(this.Value);
         return new(hashValue);
     }
 
