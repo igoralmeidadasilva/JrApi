@@ -30,7 +30,6 @@ public sealed class CacheUserPersistenceRepository : BasePersistenceRepository<U
         _decorated.Insert(user);
     }
 
-
     public override void InsertRange(IEnumerable<User> users)
     {
         _distributedCache.Remove(_options.UsersKey);

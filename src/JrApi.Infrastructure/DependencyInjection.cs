@@ -85,8 +85,13 @@ public static class DependencyInjection
 
     private static IServiceCollection AddCachingDecorator(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Decorate<IUserReadOnlyRepository, CacheUserReadOnlyRepository>();
-        services.Decorate<IUserPersistenceRepository, CacheUserPersistenceRepository>();
+        bool isActive = configuration.GetValue<bool>("DistributedCacheOptions:IsCacheActive");
+
+        if(isActive)
+        {
+            services.Decorate<IUserReadOnlyRepository, CacheUserReadOnlyRepository>();
+            services.Decorate<IUserPersistenceRepository, CacheUserPersistenceRepository>();
+        }
 
         return services;
     }
