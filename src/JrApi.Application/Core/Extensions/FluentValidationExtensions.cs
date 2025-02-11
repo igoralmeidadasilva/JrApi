@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using JrApi.Domain.Core.Abstractions.Results;
+using JrApi.SharedKernel.Results;
 
 namespace JrApi.Application.Core.Extensions;
 
@@ -12,5 +12,4 @@ public static class FluentValidationExtensions
 
         return rule.WithErrorCode(error.Code).WithMessage(error.Message);
     }
-
 }

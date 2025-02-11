@@ -1,5 +1,5 @@
-﻿namespace JrApi.Application.Core.Interfaces;
+﻿using JrApi.SharedKernel.Results;
 
-public interface ICommandResponse
-{
-}
+namespace JrApi.Application.Core.Interfaces;
+
+public interface ICommandResponse : IResult;

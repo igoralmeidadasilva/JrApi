@@ -1,6 +1,3 @@
 namespace JrApi.Domain.Core.Interfaces.Repositories.Mongo;
 
-public interface IMongoRepository<T>
-{ 
-
-}
+public interface IMongoRepository<T>;

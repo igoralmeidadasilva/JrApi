@@ -17,7 +17,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services = services.AddSqLite(configuration);
+        services = services.AddDatabase(configuration);
         services = services.AddRepositories(configuration);
         services = services.AddServices(configuration);
         services = services.AddUnitOfWork(configuration);
@@ -28,24 +28,39 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddSqLite(this IServiceCollection services, IConfiguration configuration)
+    // private static IServiceCollection AddSqLite(this IServiceCollection services, IConfiguration configuration)
+    // {
+    //     services.AddSingleton<SoftDeleteInterceptor>();
+
+    //     services.AddDbContext<ApplicationContext>((serviceProvider, options) =>
+    //     {
+    //         options.UseSqlServer(configuration.GetConnectionString("DefaultDatabase")!)
+    //             .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
+    //     });
+
+    //     return services;
+    // }
+
+    private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<SoftDeleteInterceptor>();
+        // services.AddSingleton<SoftDeleteInterceptor>();
+        var teste = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<ApplicationContext>((serviceProvider, options) =>
         {
-            options.UseSqlite(configuration.GetConnectionString("Sqlite"))
-                .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());;
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")!);
+                // .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
         });
 
         return services;
     }
 
+    
+
     private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IPasswordHashingService, PasswordHashingService>();
-        services.AddSingleton<IDatabaseSeedService, DatabaseSeedService>();
-
+        //services.AddSingleton<IDatabaseSeedService, DatabaseSeedService>();
         return services;
     }
 
@@ -53,7 +68,6 @@ public static class DependencyInjection
     {
         services.AddScoped<IUserReadOnlyRepository, UserReadOnlyRepository>();
         services.AddScoped<IUserPersistenceRepository, UserPersistenceRepository>();
-
         return services;
     }
 
@@ -62,14 +76,12 @@ public static class DependencyInjection
         services.Configure<DatabaseSeedOptions>(options => configuration.GetSection(nameof(DatabaseSeedOptions))
             .Bind(options, c => c.BindNonPublicProperties = true));
         services.Configure<DistributedCacheOptions>(configuration.GetSection(nameof(DistributedCacheOptions)));
-
         return services;
     }
 
     private static IServiceCollection AddUnitOfWork(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
         return services;
     }
 
@@ -78,22 +90,18 @@ public static class DependencyInjection
         services.AddStackExchangeRedisCache(options =>
         {
             options.Configuration = configuration.GetConnectionString("Redis");
-        }); 
-
+        });
         return services;
     }
 
     private static IServiceCollection AddCachingDecorator(this IServiceCollection services, IConfiguration configuration)
     {
         bool isActive = configuration.GetValue<bool>("DistributedCacheOptions:IsCacheActive");
-
         if(isActive)
         {
             services.Decorate<IUserReadOnlyRepository, CacheUserReadOnlyRepository>();
             services.Decorate<IUserPersistenceRepository, CacheUserPersistenceRepository>();
         }
-
         return services;
     }
-
 }

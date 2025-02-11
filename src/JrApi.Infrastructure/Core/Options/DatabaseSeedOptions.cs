@@ -8,4 +8,3 @@ public sealed record DatabaseSeedOptions
     public bool IsUserSeedingActive { get; init; }
     public ICollection<User>? Users { get; init; }
 }
-

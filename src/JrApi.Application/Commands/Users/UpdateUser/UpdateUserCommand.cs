@@ -1,11 +1,9 @@
-using System.Text.Json.Serialization;
 using JrApi.Application.Models;
 
 namespace JrApi.Application.Commands.Users.UpdateUser;
 
-public sealed record UpdateUserCommand : ICommand<Result<Unit>>
+public sealed record UpdateUserCommand : ICommand<UpdateUserCommandResponse>
 {
-    [JsonIgnore]
     public Guid Id { get; set; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
@@ -18,11 +16,9 @@ public sealed record UpdateUserCommand : ICommand<Result<Unit>>
         DateTime birthDate,
         AddressCommandModel address)
     {
-
         FirstName = firstName;
         LastName = lastName;
         BirthDate = birthDate;
         Address = address;
     }
-
 }

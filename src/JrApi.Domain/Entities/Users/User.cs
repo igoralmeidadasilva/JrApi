@@ -1,79 +1,66 @@
-using JrApi.Domain.Core;
 using JrApi.Domain.Core.Abstractions;
 using JrApi.Domain.Core.Interfaces;
+using JrApi.SharedKernel.Guards;
 
 namespace JrApi.Domain.Entities.Users;
 
 public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
 {
-    public FirstName? FirstName { get; private set; }
-    public LastName? LastName { get; private set; }
+    public Name? Name { get; private set; }
     public Email? Email { get; private set; }
-    public Password? Password { get; private set; }
+    public PasswordHash? Password { get; private set; }
     public Address? Address { get; private set; }
     public DateTime BirthDate { get; private set; }
-    public UserRole Role { get; private set; }
-    public bool IsDeleted { get; private set; }
-    public DateTime DeletedOnUtc { get; private set; }
-    public string FullName => string.Format("{0} {1}", FirstName, LastName);
+    public EUserRole Role { get; private set; }
+    public bool IsDeleted { get; set; }
+    public DateTime DeletedOnUtc { get; set; }
 
+    public User() { } // ORM
     private User(
-        Guid id, 
-        DateTime createdOnUtc, 
-        FirstName firstName, 
-        LastName lastName, 
-        Email email, 
-        Password hashedPassword, 
-        DateTime birthDate, 
-        Address? address, 
-        UserRole role) : base(id, createdOnUtc)
+       Guid id, 
+       DateTime createdOnUtc, 
+       Name name, 
+       Email email, 
+       PasswordHash passwordHash, 
+       DateTime birthDate, 
+       Address? address, 
+       EUserRole role) : base(id, createdOnUtc)
     {
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        Password = hashedPassword;
-        Address = address;
-        Role = role;
-        BirthDate = birthDate;
+       Guard.ThrowIfNull(Name, nameof(Name));
+       Guard.ThrowIfNull(email, nameof(email));
+       Guard.ThrowIfNull(passwordHash, nameof(passwordHash));
+       Guard.ThrowIfNull(birthDate, nameof(birthDate));
+
+       Name = name;
+       Email = email;
+       Password = passwordHash;
+       Address = address;
+       Role = role;
+       BirthDate = birthDate;
     }
 
     public static User Create(
-        FirstName firstName, 
-        LastName lastName, 
-        Email email, 
-        Password hashedPassword,
-        DateTime birthDate, 
-        Address? address = default, 
-        UserRole role = UserRole.None)
-    {
-        ArgumentValidator.ThrowIfNull(firstName, nameof(firstName));
-        ArgumentValidator.ThrowIfNull(lastName, nameof(lastName));
-        ArgumentValidator.ThrowIfNull(email, nameof(email));
-        ArgumentValidator.ThrowIfNull(hashedPassword, nameof(hashedPassword));
-        ArgumentValidator.ThrowIfNull(birthDate, nameof(birthDate));
-
-        return new(Guid.NewGuid(), DateTime.UtcNow, firstName, lastName, email, hashedPassword, birthDate, address, role);
-    }
-
-    public User() // ORM
-    { }
+       Name name, 
+       Email email, 
+       PasswordHash passwordHash,
+       DateTime birthDate, 
+       Address? address = default, 
+       EUserRole role = EUserRole.None) => new(Guid.NewGuid(), DateTime.UtcNow, name, email, passwordHash, birthDate, address, role);
 
     public void Delete()
     {
-        Role = UserRole.None;
+        Role = EUserRole.None;
         IsDeleted = true;
         DeletedOnUtc = DateTime.UtcNow;
     }
-    public override User Update(User entity)
+    
+    public User Update(User entity)
     {
-        ArgumentValidator.ThrowIfNullOrDefault(entity, nameof(entity));
-        
-        FirstName = entity.FirstName;
-        LastName = entity.LastName;
-        BirthDate = entity.BirthDate;
-        Address = entity.Address;
-
-        return this;
+       Guard.ThrowIfNullOrDefault(entity, nameof(entity));
+       Name = entity.Name;
+       BirthDate = entity.BirthDate;
+       Address = entity.Address;
+       return this;
     }
 
     public User ChangePassword()

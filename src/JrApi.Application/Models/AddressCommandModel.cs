@@ -21,7 +21,5 @@ public record AddressCommandModel
         ZipCode = zipCode ?? string.Empty;
     }
 
-    public AddressCommandModel()
-    { }
-
+    public AddressCommandModel() { }
 }

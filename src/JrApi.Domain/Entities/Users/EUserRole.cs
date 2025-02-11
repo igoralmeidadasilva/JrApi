@@ -1,7 +1,7 @@
 ﻿namespace JrApi.Domain.Entities.Users;
 
 [Flags]
-public enum UserRole
+public enum EUserRole
 {
     SuperAdmin = 0,
     Admin = 1,

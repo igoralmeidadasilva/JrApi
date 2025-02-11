@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace JrApi.Infrastructure.Context.Configurations.Abstractions;
 
@@ -17,7 +16,5 @@ public abstract class SoftDeletableEntityConfiguration<TEntity> : EntityConfigur
         builder.Property(e => e.DeletedOnUtc)
             .HasColumnName("deleted_on_utc")
             .IsRequired();
-
     }
 }
-

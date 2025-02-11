@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace JrApi.Infrastructure.Interceptors;
 
-
 public sealed class SoftDeleteInterceptor : SaveChangesInterceptor, ISingletonInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(

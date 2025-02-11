@@ -30,7 +30,7 @@ public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
 
             return response;
         }
-        catch (Exception)
+        catch
         {
             _logger.LogError("Request {RequestName} failed.",
                 requestName);

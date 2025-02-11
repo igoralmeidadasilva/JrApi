@@ -1,12 +1,12 @@
 using Asp.Versioning;
 using HealthChecks.UI.Client;
-using JrApi.Presentation.Core.Options;
-using JrApi.Presentation.Routes;
+using JrApi.Presentation.Api.Core.Options;
+using JrApi.Presentation.Api.Routes;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace JrApi.Presentation;
+namespace JrApi.Presentation.Api;
 
 public static class DependencyInjection
 {
@@ -14,15 +14,13 @@ public static class DependencyInjection
     {
         services = services.AddAspVersioning(configuration);
         services = services.AddSwaggerConfiguration(configuration);
-        services = services.AddApiHealthCheck(configuration);
-        
+        //services = services.AddApiHealthCheck(configuration);
         return services;
     }
 
     private static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-
         return services;
     }
 
@@ -44,7 +42,6 @@ public static class DependencyInjection
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
         });
-
         return services;
     }
 
@@ -59,15 +56,14 @@ public static class DependencyInjection
                 options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
             }
         });
-
         return app;
     } 
 
     private static IServiceCollection AddApiHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHealthChecks()
-            .AddSqlite(connectionString: configuration.GetConnectionString("Sqlite")!, name: "SQLite Check", tags: ["db", "tags"])
-            .AddRedis(redisConnectionString: configuration.GetConnectionString("Redis")!, name: "Redis Check", tags: ["db", "tags"]);
+        //services.AddHealthChecks()
+        //    .AddSqlite(connectionString: configuration.GetConnectionString("Sqlite")!, name: "SQLite Check", tags: ["db", "tags"])
+        //    .AddRedis(redisConnectionString: configuration.GetConnectionString("Redis")!, name: "Redis Check", tags: ["db", "tags"]);
 
         services.AddHealthChecksUI(options =>
         {
@@ -76,21 +72,18 @@ public static class DependencyInjection
             options.AddHealthCheckEndpoint("JrApi Health Check", ApiRoutes.Health.HEALTH);
         })
         .AddInMemoryStorage();
-
         return services;
     }
 
-    public static WebApplication ConfigureHealthCheck(this WebApplication app)
-    {
-        app.UseHealthChecks(ApiRoutes.Health.HEALTH, new HealthCheckOptions
-        {
-            Predicate = p => true,
-            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-        });
+    //public static WebApplication ConfigureHealthCheck(this WebApplication app)
+    //{
+    //    app.UseHealthChecks(ApiRoutes.Health.HEALTH, new HealthCheckOptions
+    //    {
+    //        Predicate = p => true,
+    //        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    //    });
 
-        app.UseHealthChecksUI(options => { options.UIPath = ApiRoutes.Health.DASHBOARD; });
-
-        return app;
-    }
-    
+    //    app.UseHealthChecksUI(options => { options.UIPath = ApiRoutes.Health.DASHBOARD; });
+    //    return app;
+    //}
 }

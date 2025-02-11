@@ -1,0 +1,54 @@
+networks:
+  jrapi.network:
+    driver: bridge
+    name: signalrchat.network
+
+services:
+  blazorwasm-signalrchat:
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+    container_name: signalrchat.web 
+    restart: always
+    depends_on:
+      - sqlserver
+      - webapi-signalrchat
+    ports:
+      - 8080:8080
+    networks:
+      - signalrchat.network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  webapi-signalrchat:
+    build:
+      context: ..
+      dockerfile: deploy/api.Dockerfile
+    container_name: signalrchat.api 
+    restart: always
+    depends_on:
+      - sqlserver
+    ports:
+      - 8200:8080
+    networks:
+      - signalrchat.network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: signalrchat.sqlserver 
+    environment:
+      MSSQL_SA_PASSWORD: "SqlServer2022!"
+      ACCEPT_EULA: "Y"
+    networks:
+      - signalrchat.network
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:
+    driver: local
+    name: signalrchat.sqlserver.volume

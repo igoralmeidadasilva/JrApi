@@ -1,6 +1,6 @@
 namespace JrApi.Application.Queries.Users.GetUserById;
 
-public record GetUserByIdQuery : IQuery<Result<GetUserByIdQueryResponse>>
+public record GetUserByIdQuery : IQuery<GetUserByIdQueryResponse>
 {
     public Guid Id { get; init; }
 

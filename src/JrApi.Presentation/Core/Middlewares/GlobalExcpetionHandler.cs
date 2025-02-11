@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace JrApi.Presentation.Core.Middlewares;
+namespace JrApi.Presentation.Api.Core.Middlewares;
 
 public sealed class GlobalExcpetionHandler : IExceptionHandler
 {
@@ -15,19 +15,14 @@ public sealed class GlobalExcpetionHandler : IExceptionHandler
     {
         _logger.LogError(exception, "Exception occurred: {Message}", 
             exception.Message);
-
         var problemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
-            Title = "Internal Server error"
+            Title = "Internal Server Error"
         };
-
         httpContext.Response.StatusCode = problemDetails.Status.Value;
-
         await httpContext.Response
             .WriteAsJsonAsync(problemDetails, cancellationToken);
-
         return true;
     }
-
 }

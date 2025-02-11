@@ -3,6 +3,7 @@ using System;
 using JrApi.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,44 +12,51 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JrApi.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240922150009_CreateDatabase")]
-    partial class CreateDatabase
+    [Migration("20250211011907_v2")]
+    partial class v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("JrApi.Domain.Entities.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("datetime2")
                         .HasColumnName("birthdate");
 
                     b.Property<DateTime>("CreatedOnUtc")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_on_utc");
 
                     b.Property<DateTime>("DeletedOnUtc")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("datetime2")
                         .HasColumnName("deleted_on_utc");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("bit")
                         .HasColumnName("is_deleted");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("role");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("is_deleted = 0");
 
                     b.ToTable("users", (string)null);
                 });
@@ -58,56 +66,61 @@ namespace JrApi.Infrastructure.Migrations
                     b.OwnsOne("JrApi.Domain.Entities.Users.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(60)
+                                .HasColumnType("nvarchar(60)")
                                 .HasDefaultValue("")
-                                .HasColumnName("city");
+                                .HasColumnName("address_city");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(60)
+                                .HasColumnType("nvarchar(60)")
                                 .HasDefaultValue("")
-                                .HasColumnName("country");
+                                .HasColumnName("address_country");
 
                             b1.Property<string>("District")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(60)
+                                .HasColumnType("nvarchar(60)")
                                 .HasDefaultValue("")
-                                .HasColumnName("district");
+                                .HasColumnName("address_district");
 
-                            b1.Property<int?>("Number")
-                                .IsRequired()
+                            b1.Property<int>("Number")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER")
+                                .HasColumnType("int")
                                 .HasDefaultValue(0)
-                                .HasColumnName("number");
+                                .HasColumnName("address_number");
 
                             b1.Property<string>("State")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(60)
+                                .HasColumnType("nvarchar(60)")
                                 .HasDefaultValue("")
-                                .HasColumnName("state");
+                                .HasColumnName("address_state");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(60)
+                                .HasColumnType("nvarchar(60)")
                                 .HasDefaultValue("")
-                                .HasColumnName("street");
+                                .HasColumnName("address_street");
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(9)
+                                .HasColumnType("nvarchar(9)")
                                 .HasDefaultValue("")
-                                .HasColumnName("zip_code");
+                                .HasColumnName("address_zip_code");
 
                             b1.HasKey("UserId");
 
@@ -120,47 +133,41 @@ namespace JrApi.Infrastructure.Migrations
                     b.OwnsOne("JrApi.Domain.Entities.Users.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(60)
+                                .HasColumnType("nvarchar(60)")
                                 .HasColumnName("email");
 
                             b1.HasKey("UserId");
 
+                            b1.HasIndex("Value")
+                                .IsUnique()
+                                .HasFilter("[email] IS NOT NULL");
+
                             b1.ToTable("users");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("JrApi.Domain.Entities.Users.FirstName", "FirstName", b1 =>
+                    b.OwnsOne("JrApi.Domain.Entities.Users.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("Value")
+                            b1.Property<string>("FirstName")
                                 .IsRequired()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)")
                                 .HasColumnName("first_name");
 
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("JrApi.Domain.Entities.Users.LastName", "LastName", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("Value")
+                            b1.Property<string>("LastName")
                                 .IsRequired()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(40)
+                                .HasColumnType("nvarchar(40)")
                                 .HasColumnName("last_name");
 
                             b1.HasKey("UserId");
@@ -171,14 +178,15 @@ namespace JrApi.Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("JrApi.Domain.Entities.Users.Password", "HashedPassword", b1 =>
+                    b.OwnsOne("JrApi.Domain.Entities.Users.PasswordHash", "Password", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasColumnType("TEXT")
+                                .HasMaxLength(64)
+                                .HasColumnType("nvarchar(64)")
                                 .HasColumnName("password");
 
                             b1.HasKey("UserId");
@@ -193,11 +201,9 @@ namespace JrApi.Infrastructure.Migrations
 
                     b.Navigation("Email");
 
-                    b.Navigation("FirstName");
+                    b.Navigation("Name");
 
-                    b.Navigation("HashedPassword");
-
-                    b.Navigation("LastName");
+                    b.Navigation("Password");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,7 @@
 using Asp.Versioning;
+using JrApi.SharedKernel.Results;
 
-namespace JrApi.Presentation.Core.Abstractions;
+namespace JrApi.Presentation.Api.Core.Abstractions;
 
 [ApiController]
 [ApiVersion("2.0")]
@@ -23,15 +24,13 @@ public abstract class ApiController<TController> : ControllerBase
 
         return error.Type switch
         {
-            ErrorType.NotFound => NotFound(isEmpty ? string.Empty : result.Errors),
-            ErrorType.Validation => BadRequest(isEmpty ? string.Empty : result.Errors),
-            ErrorType.Conflict => Conflict(isEmpty ? string.Empty : result.Errors),
-            ErrorType.Forbidden => Forbid(isEmpty ? string.Empty : error.Message),
-            ErrorType.Unauthorized => Unauthorized(isEmpty ? string.Empty : result.Errors),
-            ErrorType.Unexpected => BadRequest(isEmpty ? string.Empty : result.Errors),
+            EErrorType.NotFound => NotFound(isEmpty ? string.Empty : result.Errors),
+            EErrorType.Validation => BadRequest(isEmpty ? string.Empty : result.Errors),
+            EErrorType.Conflict => Conflict(isEmpty ? string.Empty : result.Errors),
+            EErrorType.Forbidden => Forbid(isEmpty ? string.Empty : error.Message),
+            EErrorType.Unauthorized => Unauthorized(isEmpty ? string.Empty : result.Errors),
+            EErrorType.Unexpected => BadRequest(isEmpty ? string.Empty : result.Errors),
             _ => BadRequest(isEmpty ? string.Empty : result.Errors),
         };
-
     }
-
 }

@@ -3,9 +3,7 @@ using JrApi.Application.Behaviors;
 using JrApi.Application.Commands.Users.CreateUser;
 using JrApi.Application.Commands.Users.DeleteUser;
 using JrApi.Application.Commands.Users.UpdateUser;
-using JrApi.Application.Dtos;
 using JrApi.Application.Queries.Users.GetUserById;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -48,7 +46,6 @@ public static class DependencyInjection
     private static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        
         return services;
     }
 }

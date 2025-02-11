@@ -13,7 +13,6 @@ public abstract class BasePersistenceRepository<TEntity> : IPersistenceRepositor
 
     public virtual void Insert(TEntity entity)
         => Context.Set<TEntity>().Add(entity);
-    
 
     public virtual void InsertRange(IEnumerable<TEntity> entities)
         => Context.Set<TEntity>().AddRange(entities);

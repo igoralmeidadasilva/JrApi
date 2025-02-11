@@ -1,4 +1,4 @@
-namespace JrApi.Presentation.Routes;
+namespace JrApi.Presentation.Api.Routes;
 
 public static class ApiRoutes
 {

@@ -16,19 +16,19 @@ public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCom
 
         RuleFor(x => x.FirstName)
             .NotEmpty()
-                .WithError(ValidationErrors.UpdateUserErrors.FirstNameIsRequired)
+                .WithError(UpdateUserCommandValidationErrors.FirstNameIsRequired)
             .MaximumLength(Constants.Constraints.User.FIRST_NAME_MAX_SIZE)
-                .WithError(ValidationErrors.UpdateUserErrors.FirstNameMaxSize);
+                .WithError(UpdateUserCommandValidationErrors.FirstNameMaxSize);
 
         RuleFor(x => x.LastName)
             .NotEmpty()
-                .WithError(ValidationErrors.UpdateUserErrors.LastNameIsRequired)
+                .WithError(UpdateUserCommandValidationErrors.LastNameIsRequired)
             .MaximumLength(Constants.Constraints.User.LAST_NAME_MAX_SIZE)
-                .WithError(ValidationErrors.UpdateUserErrors.LastNameMaxSize);
+                .WithError(UpdateUserCommandValidationErrors.LastNameMaxSize);
 
         RuleFor(x => x.BirthDate)
             .NotEmpty()
-                .WithError(ValidationErrors.UpdateUserErrors.BirthDateIsRequired);
+                .WithError(UpdateUserCommandValidationErrors.BirthDateIsRequired);
 
         RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator("UpdateUser"));
     }

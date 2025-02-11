@@ -14,7 +14,7 @@ public sealed class UserTests
         var hashedPassword = Password.Create("@Password123");
         var birthDate = new DateTime(1990, 1, 1);
         var address = Address.Create("Street", "City", "District", 99, "State", "Country", "99888-777");
-        var role = UserRole.Admin;
+        var role = EUserRole.Admin;
 
         // Act
         var user = User.Create(firstName, lastName, email, hashedPassword, birthDate, address, role);
@@ -41,7 +41,7 @@ public sealed class UserTests
 
         // Assert
         Assert.True(user.IsDeleted);
-        Assert.Equal(UserRole.None, user.Role);
+        Assert.Equal(EUserRole.None, user.Role);
         Assert.NotEqual(default(DateTime), user.DeletedOnUtc);
     }
 

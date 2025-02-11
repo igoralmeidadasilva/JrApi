@@ -1,5 +1,5 @@
-﻿using JrApi.Domain.Core;
-using JrApi.Domain.Core.Abstractions;
+﻿using JrApi.Domain.Core.Abstractions;
+using JrApi.SharedKernel.Guards;
 using static JrApi.Domain.Constants.Constraints.User;
 
 namespace JrApi.Domain.Entities.Users;
@@ -8,27 +8,18 @@ public sealed record Email : ValueObject
 {
     public string Value { get; init; } = string.Empty;
 
+    public Email() { } // ORM
     private Email(string value)
     {
+        Guard.ThrowIfNullOrWhitespace(value, nameof(Email));
+        Guard.ThrowIfOutOfRange(value.Length, nameof(Email), 0, EMAIL_MAX_SIZE);
         Value = value;
     }
 
-    public Email()
-    { }
-
-    public static Email Create(string value)
-    {
-        ArgumentValidator.ThrowIfNullOrWhitespace(value, nameof(Email));
-        ArgumentValidator.ThrowIfOutOfRange(value.Length, nameof(Email), 0, EMAIL_MAX_SIZE);
-        return new(value);
-    }
-
-    public static implicit operator string(Email email) => email?.Value ?? string.Empty;
+    public static Email Create(string value) => new(value);
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
     }
-
-    public override string ToString() => Value;
 }

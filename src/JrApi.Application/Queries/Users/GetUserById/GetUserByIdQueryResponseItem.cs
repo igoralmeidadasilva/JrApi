@@ -1,8 +1,8 @@
 using JrApi.Domain.Models;
 
-namespace JrApi.Application.Dtos;
+namespace JrApi.Application.Queries.Users.GetUserById;
 
-public record GetUserByIdDto
+public sealed record GetUserByIdQueryResponseItem
 {
     public Guid Id { get; init; }
     public DateTime CreatedOnUtc { get; init; }

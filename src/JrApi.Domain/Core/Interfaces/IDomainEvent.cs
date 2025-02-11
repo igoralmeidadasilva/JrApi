@@ -1,6 +1,3 @@
 ﻿namespace JrApi.Domain.Core.Interfaces;
 
-public interface IDomainEvent
-{
-
-}
+public interface IDomainEvent;

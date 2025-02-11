@@ -73,5 +73,4 @@ public sealed class CacheUserReadOnlyRepository : BaseReadOnlyRepository<User>, 
     {
         return await _decorated.EmailExistsAsync(email, cancellationToken);
     }
-
 }

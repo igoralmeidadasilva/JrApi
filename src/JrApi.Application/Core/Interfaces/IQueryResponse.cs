@@ -1,5 +1,5 @@
-﻿namespace JrApi.Application.Core.Interfaces;
+﻿using JrApi.SharedKernel.Results;
 
-public interface IQueryResponse
-{
-}
+namespace JrApi.Application.Core.Interfaces;
+
+public interface IQueryResponse : IResult;

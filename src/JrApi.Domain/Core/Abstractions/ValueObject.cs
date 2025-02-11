@@ -13,7 +13,6 @@ public abstract record ValueObject
 
     protected static bool NotEqualOperator(ValueObject left, ValueObject right)
         => !(EqualOperator(left, right));
-    
 
     public override int GetHashCode()
         => GetEqualityComponents()

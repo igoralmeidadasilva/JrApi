@@ -5,7 +5,5 @@ namespace JrApi.Infrastructure.Repositories.Persistence;
 
 public sealed class UserPersistenceRepository : BasePersistenceRepository<User>, IUserPersistenceRepository
 {
-    public UserPersistenceRepository(ApplicationContext context) : base(context)
-    {
-    }
+    public UserPersistenceRepository(ApplicationContext context) : base(context) { }
 }

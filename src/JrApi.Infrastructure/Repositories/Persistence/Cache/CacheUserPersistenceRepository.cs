@@ -23,7 +23,6 @@ public sealed class CacheUserPersistenceRepository : BasePersistenceRepository<U
         _options = options.Value;
     }
 
-
     public override void Insert(User user)
     {
         _distributedCache.Remove(_options.UsersKey);
@@ -47,5 +46,4 @@ public sealed class CacheUserPersistenceRepository : BasePersistenceRepository<U
         _distributedCache.Remove(DistributedCacheOptions.GetEntityByIdKey(_options.UserByIdKey, id));
         _decorated.Delete(id);
     }
-
 }

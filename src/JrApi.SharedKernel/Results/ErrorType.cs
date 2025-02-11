@@ -1,6 +1,6 @@
-namespace JrApi.Domain.Core.Abstractions.Results;
+namespace JrApi.SharedKernel.Results;
 
-public enum ErrorType
+public enum EErrorType
 {
     None,
     Failure,

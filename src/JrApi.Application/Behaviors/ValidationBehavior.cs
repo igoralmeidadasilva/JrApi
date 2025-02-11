@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
+using JrApi.SharedKernel.Results;
 
 namespace JrApi.Application.Behaviors;
 

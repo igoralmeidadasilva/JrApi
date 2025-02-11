@@ -2,7 +2,7 @@ using JrApi.Application.Models;
 
 namespace JrApi.Application.Commands.Users.CreateUser;
 
-public sealed record CreateUserCommand : ICommand<Result<Unit>>
+public sealed record CreateUserCommand : ICommand<CreateUserCommandResponse>
 {
     public string FirstName { get; init; }
     public string LastName { get; init; }
@@ -23,8 +23,7 @@ public sealed record CreateUserCommand : ICommand<Result<Unit>>
         LastName = lastName;
         Email = email;
         Password = password;
-        BirthDate = birthDate; ;
+        BirthDate = birthDate;
         Address = address;
     }
-
 }

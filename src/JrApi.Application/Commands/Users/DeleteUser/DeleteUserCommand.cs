@@ -1,6 +1,6 @@
 namespace JrApi.Application.Commands.Users.DeleteUser;
 
-public sealed record DeleteUserCommand : ICommand<Result<Unit>>
+public sealed record DeleteUserCommand : ICommand<DeleteUserCommandResponse>
 {
     public Guid Id { get; init; }
 

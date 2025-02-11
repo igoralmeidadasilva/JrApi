@@ -1,5 +1,5 @@
-﻿using JrApi.Domain.Core;
-using JrApi.Domain.Core.Abstractions;
+﻿using JrApi.Domain.Core.Abstractions;
+using JrApi.SharedKernel.Guards;
 using static JrApi.Domain.Constants.Constraints.User;
 
 namespace JrApi.Domain.Entities.Users;
@@ -14,8 +14,12 @@ public sealed record Address : ValueObject
     public string? Country { get; init; }
     public string? ZipCode { get; init; }
 
+    public Address() { } // ORM
+
     private Address(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
     {
+        ValidateAddress(street, city, district, number, state, country, zipCode);
+
         Street = street;
         City = city;
         District = district;
@@ -25,37 +29,31 @@ public sealed record Address : ValueObject
         ZipCode = zipCode;
     }
 
-    public Address() { }
-
     public static Address Create(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
-    {
-        ValidateAddress(street, city, district, number, state, country, zipCode);
-
-        return new(street, city, district, number, state, country, zipCode);
-    }
+        => new(street, city, district, number, state, country, zipCode);
 
     private static void ValidateAddress(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)
     {
         if (street != null && street != string.Empty)
-            ArgumentValidator.ThrowIfOutOfRange(street.Length, nameof(Street), 0, STREET_MAX_SIZE);
+            Guard.ThrowIfOutOfRange(street.Length, nameof(Street), 0, STREET_MAX_SIZE);
 
         if (city != null && city != string.Empty)
-            ArgumentValidator.ThrowIfOutOfRange(city.Length, nameof(City), 0, CITY_MAX_SIZE);
+            Guard.ThrowIfOutOfRange(city.Length, nameof(City), 0, CITY_MAX_SIZE);
 
         if (district != null && district != string.Empty)
-            ArgumentValidator.ThrowIfOutOfRange(district.Length, nameof(District), 0, DISTRICT_MAX_SIZE);
+            Guard.ThrowIfOutOfRange(district.Length, nameof(District), 0, DISTRICT_MAX_SIZE);
 
         if (number.HasValue)
-            ArgumentValidator.ThrowIfOutOfRange(number.Value, nameof(Number), 1, int.MaxValue);
+            Guard.ThrowIfOutOfRange(number.Value, nameof(Number), 1, int.MaxValue);
 
         if (state != null && state != string.Empty)
-            ArgumentValidator.ThrowIfOutOfRange(state.Length, nameof(State), 0, STATE_MAX_SIZE);
+            Guard.ThrowIfOutOfRange(state.Length, nameof(State), 0, STATE_MAX_SIZE);
 
         if (country != null && country != string.Empty)
-            ArgumentValidator.ThrowIfOutOfRange(country.Length, nameof(Country), 0, COUNTRY_MAX_SIZE);
+            Guard.ThrowIfOutOfRange(country.Length, nameof(Country), 0, COUNTRY_MAX_SIZE);
 
         if (zipCode != null && zipCode != string.Empty)
-            ArgumentValidator.ThrowIfPatternFails(zipCode, ZIP_CODE_FORMAT, nameof(ZipCode));
+            Guard.ThrowIfPatternFails(zipCode, ZIP_CODE_FORMAT, nameof(ZipCode));
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

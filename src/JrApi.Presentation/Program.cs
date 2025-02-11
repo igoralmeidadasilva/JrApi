@@ -1,8 +1,8 @@
 using JrApi.Application;
 using JrApi.Domain.Core.Interfaces.Services;
 using JrApi.Infrastructure;
-using JrApi.Presentation;
-using JrApi.Presentation.Core.Middlewares;
+using JrApi.Presentation.Api;
+using JrApi.Presentation.Api.Core.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,12 +26,12 @@ if (app.Environment.IsDevelopment())
     app.ConfigureSwaggerUI();
 }
 
-app.ConfigureHealthCheck();
+//app.ConfigureHealthCheck();
 
-var seeder = app.Services.GetService<IDatabaseSeedService>();
+// var seeder = app.Services.GetService<IDatabaseSeedService>();
 
-await seeder!.ExecuteMigrationAsync();
-await seeder!.ExecuteSeedAsync();
+// await seeder!.ExecuteMigrationAsync();
+// await seeder!.ExecuteSeedAsync();
 
 app.UseHttpsRedirection();
 app.MapControllers();
