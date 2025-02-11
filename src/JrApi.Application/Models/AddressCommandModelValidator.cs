@@ -4,37 +4,37 @@ using JrApi.Domain;
 
 namespace JrApi.Application.Models;
 
-public sealed class AddressCommandModelValidator : AbstractValidator<AddressCommandModel>
-{
+public class AddressCommandModelValidator<T> : AbstractValidator<T> where T : class
+{            
     public AddressCommandModelValidator(string commandName)
     {
-        RuleFor(x => x.Street)
+        RuleFor(x => x.GetType().GetProperty("Street")!.GetValue(x) as string)
             .MaximumLength(Constants.Constraints.User.STREET_MAX_SIZE)
-                .WithError(AddressCommandModelValidationErrors.AddressStreetMaxSize(commandName));
+            .WithError(AddressCommandModelValidationErrors.AddressStreetMaxSize(commandName));
 
-        RuleFor(x => x.City)
+        RuleFor(x => x.GetType().GetProperty("City")!.GetValue(x) as string)
             .MaximumLength(Constants.Constraints.User.CITY_MAX_SIZE)
-                .WithError(AddressCommandModelValidationErrors.AddressCityMaxSize(commandName));
+            .WithError(AddressCommandModelValidationErrors.AddressCityMaxSize(commandName));
 
-        RuleFor(x => x.District)
+        RuleFor(x => x.GetType().GetProperty("District")!.GetValue(x) as string)
             .MaximumLength(Constants.Constraints.User.DISTRICT_MAX_SIZE)
             .WithError(AddressCommandModelValidationErrors.AddressDistrictMaxSize(commandName));
 
-        RuleFor(x => x.Number)
+        RuleFor(x => x.GetType().GetProperty("Number")!.GetValue(x) as int?)
             .GreaterThan(0)
             .WithError(AddressCommandModelValidationErrors.AddressNumbertIsCannotLessThanZero(commandName));
 
-        RuleFor(x => x.State)
+        RuleFor(x => x.GetType().GetProperty("State")!.GetValue(x) as string)
             .MaximumLength(Constants.Constraints.User.STATE_MAX_SIZE)
             .WithError(AddressCommandModelValidationErrors.AddressStateMaxSize(commandName));
 
-        RuleFor(x => x.Country)
+       RuleFor(x => x.GetType().GetProperty("Country")!.GetValue(x) as string)
             .MaximumLength(Constants.Constraints.User.COUNTRY_MAX_SIZE)
             .WithError(AddressCommandModelValidationErrors.AddressCountryMaxSize(commandName));
 
-        RuleFor(x => x.ZipCode)
+        RuleFor(x => x.GetType().GetProperty("ZipCode")!.GetValue(x) as string)
             .Matches(Constants.Constraints.User.ZIP_CODE_FORMAT)
-                .WithError(AddressCommandModelValidationErrors.AddressZipCodeFormat(commandName))
-                .When(x => x.ZipCode != string.Empty);
+            .WithError(AddressCommandModelValidationErrors.AddressZipCodeFormat(commandName))
+            .When(x => (x.GetType().GetProperty("ZipCode")!.GetValue(x) as string) != string.Empty);
     }
 }

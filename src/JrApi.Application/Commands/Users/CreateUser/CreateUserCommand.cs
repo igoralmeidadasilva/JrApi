@@ -9,7 +9,13 @@ public sealed record CreateUserCommand : ICommand<CreateUserCommandResponse>
     public string Email { get; init; }
     public string Password { get; init; }
     public DateTime BirthDate { get; init; }
-    public AddressCommandModel Address{ get; init; }
+    public string? Street { get; init; } 
+    public string? City { get; init; }
+    public string? District { get; init; }
+    public int? Number { get; init; }
+    public string? State { get; init; }
+    public string? Country { get; init; }
+    public string? ZipCode { get; init; }
 
     public CreateUserCommand(
         string firstName,
@@ -17,13 +23,25 @@ public sealed record CreateUserCommand : ICommand<CreateUserCommandResponse>
         string email,
         string password,
         DateTime birthDate,
-        AddressCommandModel address)
+        string? street,
+        string? city,
+        string? district,
+        int? number,
+        string? state,
+        string? country,
+        string? zipCode)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Password = password;
         BirthDate = birthDate;
-        Address = address;
+        Street = street;
+        City = city;
+        District = district;
+        Number = number;
+        State = state;
+        Country = country;
+        ZipCode = zipCode;
     }
 }

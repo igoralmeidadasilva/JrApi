@@ -10,6 +10,6 @@ public sealed class DeleteUserCommandValidator : AbstractValidator<DeleteUserCom
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-                .WithError(ValidationErrors.GeneralEntityErrors.IdIsRequired("DeleteUser", "User"));
+                .WithError(ValidationErrors.GenericEntityErrors.IdIsRequired("DeleteUser", "User"));
     }
 }

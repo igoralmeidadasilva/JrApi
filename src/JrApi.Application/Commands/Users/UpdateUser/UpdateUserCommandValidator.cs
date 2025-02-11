@@ -12,24 +12,22 @@ public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCom
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-                .WithError(ValidationErrors.GeneralEntityErrors.IdIsRequired("UpdateUser", "User"));
+            .WithError(ValidationErrors.GenericEntityErrors.IdIsRequired("UpdateUser", "User"));
 
         RuleFor(x => x.FirstName)
             .NotEmpty()
-                .WithError(UpdateUserCommandValidationErrors.FirstNameIsRequired)
+            .WithError(UpdateUserCommandValidationErrors.FirstNameIsRequired)
             .MaximumLength(Constants.Constraints.User.FIRST_NAME_MAX_SIZE)
-                .WithError(UpdateUserCommandValidationErrors.FirstNameMaxSize);
+            .WithError(UpdateUserCommandValidationErrors.FirstNameMaxSize);
 
         RuleFor(x => x.LastName)
             .NotEmpty()
-                .WithError(UpdateUserCommandValidationErrors.LastNameIsRequired)
+            .WithError(UpdateUserCommandValidationErrors.LastNameIsRequired)
             .MaximumLength(Constants.Constraints.User.LAST_NAME_MAX_SIZE)
-                .WithError(UpdateUserCommandValidationErrors.LastNameMaxSize);
+            .WithError(UpdateUserCommandValidationErrors.LastNameMaxSize);
 
         RuleFor(x => x.BirthDate)
             .NotEmpty()
-                .WithError(UpdateUserCommandValidationErrors.BirthDateIsRequired);
-
-        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator("UpdateUser"));
+            .WithError(UpdateUserCommandValidationErrors.BirthDateIsRequired);
     }
 }

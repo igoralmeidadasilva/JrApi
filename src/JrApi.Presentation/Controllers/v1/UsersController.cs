@@ -27,7 +27,7 @@ public sealed class UsersController : ApiController<UsersController>
     [HttpGet(ApiRoutes.Users.GET_BY_ID)]
     [ProducesResponseType(typeof(GetUserByIdQueryResponseItem ), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(Guid userId)
+    public async Task<IActionResult> GetUserById(Guid userId)
     {
         var response = await Mediator.Send(new GetUserByIdQuery(userId));
         return response.IsSuccess ? Ok(response.Value) : GenerateErrorResponse(response);
@@ -37,10 +37,10 @@ public sealed class UsersController : ApiController<UsersController>
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> Create(CreateUserCommand command)
+    public async Task<IActionResult> CreateUser(CreateUserCommand command)
     {
         var response = await Mediator.Send(command);
-        return response.IsSuccess ? Created(nameof(GetById), response.Value) : GenerateErrorResponse(response);
+        return response.IsSuccess ? Created(nameof(GetUserById), response.Value) : GenerateErrorResponse(response);
     }
 
     // [HttpPut(ApiRoutes.Users.UPDATE)]

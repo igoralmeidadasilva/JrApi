@@ -1,5 +1,4 @@
 using FluentValidation;
-using JrApi.Application.Core.Errors;
 using JrApi.Application.Core.Extensions;
 using JrApi.Application.Models;
 using JrApi.Domain;
@@ -12,44 +11,46 @@ public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCom
     {
         RuleFor(x => x.FirstName)
             .NotEmpty()
-                .WithError(CreateUserCommandValidationErrors.FirstNameIsRequired)
+            .WithError(CreateUserCommandValidationErrors.FirstNameIsRequired)
             .MaximumLength(Constants.Constraints.User.FIRST_NAME_MAX_SIZE)
-                .WithError(CreateUserCommandValidationErrors.FirstNameMaxSize);
+            .WithError(CreateUserCommandValidationErrors.FirstNameMaxSize);
 
         RuleFor(x => x.LastName)
             .NotEmpty()
-                .WithError(CreateUserCommandValidationErrors.LastNameIsRequired)
+            .WithError(CreateUserCommandValidationErrors.LastNameIsRequired)
             .MaximumLength(Constants.Constraints.User.LAST_NAME_MAX_SIZE)
-                .WithError(CreateUserCommandValidationErrors.LastNameMaxSize);
+            .WithError(CreateUserCommandValidationErrors.LastNameMaxSize);
 
         RuleFor(x => x.Email)
             .NotEmpty()
-                .WithError(CreateUserCommandValidationErrors.EmailIsRequired)
+            .WithError(CreateUserCommandValidationErrors.EmailIsRequired)
             .MaximumLength(Constants.Constraints.User.EMAIL_MAX_SIZE)
-                .WithError(CreateUserCommandValidationErrors.EmailMaxSize)
+            .WithError(CreateUserCommandValidationErrors.EmailMaxSize)
             .EmailAddress()
-                .WithError(CreateUserCommandValidationErrors.EmailFormat);
+            .WithError(CreateUserCommandValidationErrors.EmailFormat);
 
         RuleFor(x => x.Password)
             .NotEmpty()
-                .WithError(CreateUserCommandValidationErrors.PasswordIsRequired)
+            .WithError(CreateUserCommandValidationErrors.PasswordIsRequired)
             .MinimumLength(Constants.Constraints.User.PASSWORD_MIN_SIZE)
-                .WithError(CreateUserCommandValidationErrors.PasswordMinSize)
+            .WithError(CreateUserCommandValidationErrors.PasswordMinSize)
             .MaximumLength(Constants.Constraints.User.PASSWORD_MAX_SIZE)
-                .WithError(CreateUserCommandValidationErrors.PasswordMaxSize)
+            .WithError(CreateUserCommandValidationErrors.PasswordMaxSize)
             .Must(x => x.Any(value => char.IsUpper(value)))
-                .WithError(CreateUserCommandValidationErrors.PasswordFormatInvalidUpperCase)
+            .WithError(CreateUserCommandValidationErrors.PasswordFormatInvalidUpperCase)
             .Must(x => x.Any(value => char.IsLower(value)))
-                .WithError(CreateUserCommandValidationErrors.PasswordFormatInvalidLowerCase)
+            .WithError(CreateUserCommandValidationErrors.PasswordFormatInvalidLowerCase)
             .Must(x => x.Any(value => char.IsDigit(value)))
-                .WithError(CreateUserCommandValidationErrors.PasswordFormatInvalidNumber)
+            .WithError(CreateUserCommandValidationErrors.PasswordFormatInvalidNumber)
             .Matches(Constants.Constraints.User.PASSWORD_FORMAT)
-                .WithError(CreateUserCommandValidationErrors.PasswordFormatNonAlphanumeric);
+            .WithError(CreateUserCommandValidationErrors.PasswordFormatNonAlphanumeric);
 
         RuleFor(x => x.BirthDate)
             .NotEmpty()
-                .WithError(CreateUserCommandValidationErrors.BirthDateIsRequired);
+            .WithError(CreateUserCommandValidationErrors.BirthDateIsRequired);
 
-        RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator("CreateUser"));
+        Include(new AddressCommandModelValidator<CreateUserCommand>("CreateUser"));      
+
+        // RuleFor(x => x.Address).SetValidator(new AddressCommandModelValidator("CreateUser"));
     }
 }

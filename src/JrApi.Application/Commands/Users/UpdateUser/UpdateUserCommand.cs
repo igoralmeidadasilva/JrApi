@@ -8,17 +8,14 @@ public sealed record UpdateUserCommand : ICommand<UpdateUserCommandResponse>
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public DateTime BirthDate { get; init; }
-    public AddressCommandModel Address{ get; init; }
 
     public UpdateUserCommand(
         string firstName,
         string lastName,
-        DateTime birthDate,
-        AddressCommandModel address)
+        DateTime birthDate)
     {
         FirstName = firstName;
         LastName = lastName;
         BirthDate = birthDate;
-        Address = address;
     }
 }

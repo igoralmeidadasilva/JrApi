@@ -10,6 +10,6 @@ public sealed class GetUserByIdQueryValidator : AbstractValidator<GetUserByIdQue
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-                .WithError(ValidationErrors.GeneralEntityErrors.IdIsRequired("GetUserById", "User"));
+            .WithError(ValidationErrors.GenericEntityErrors.IdIsRequired("GetUserById", "User"));
     }
 }

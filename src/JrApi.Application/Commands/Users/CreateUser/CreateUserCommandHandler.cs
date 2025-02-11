@@ -32,32 +32,32 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
 
    public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
    {
-       if(await _userReadOnlyRepository.EmailExistsAsync(request.Email, cancellationToken))
-       {
-           _logger.LogInformation("{RequestName} User email already exists.",
-               nameof(CreateUserCommand));
-           return CreateUserCommandResponse.Failure(DomainErrors.User.EmailAlreadyExists);
-       }
+        if(await _userReadOnlyRepository.EmailExistsAsync(request.Email, cancellationToken))
+        {
+            _logger.LogInformation("{RequestName} User email already exists.",
+                nameof(CreateUserCommand));
+            return CreateUserCommandResponse.Failure(DomainErrors.User.EmailAlreadyExists);
+        }
 
-       var name = Name.Create(request.FirstName, request.LastName);
-       var email = Email.Create(request.Email);
-       var password = PasswordHash.Create(request.Password).Hashing(_passwordHasher);
-       var address = Address.Create(
-           request.Address.Street,
-           request.Address.City,
-           request.Address.District,
-           request.Address.Number,
-           request.Address.State,
-           request.Address.Country,
-           request.Address.ZipCode);
+        var name = Name.Create(request.FirstName, request.LastName);
+        var email = Email.Create(request.Email);
+        var password = PasswordHash.Create(request.Password).Hashing(_passwordHasher);
+        var address = Address.Create(
+            request.Street,
+            request.City,
+            request.District,
+            request.Number,
+            request.State,
+            request.Country,
+            request.ZipCode);
 
-       var user = User.Create(name, email, password, request.BirthDate, address);
-       _userPersistenceRepository.Insert(user);
-       await _unitOfWork.SaveChangesAsync(cancellationToken);
+        var user = User.Create(name, email, password, request.BirthDate, address);
+        _userPersistenceRepository.Insert(user);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-       _logger.LogInformation("{RequestName} User was entered with id {UserId}.", 
-           nameof(CreateUserCommand),
-           user.Id);
-       return CreateUserCommandResponse.Success(Unit.Value);
+        _logger.LogInformation("{RequestName} User was entered with id {UserId}.", 
+            nameof(CreateUserCommand),
+            user.Id);
+        return CreateUserCommandResponse.Success(Unit.Value);
    }
 }

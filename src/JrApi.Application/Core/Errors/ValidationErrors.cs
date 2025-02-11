@@ -1,11 +1,10 @@
 ﻿using JrApi.SharedKernel.Results;
-using static JrApi.Domain.Constants.Constraints;
 
 namespace JrApi.Application.Core.Errors;
 
 public static class ValidationErrors
 {
-    internal static class GeneralErrorsMessages
+    internal static class GenericErrorsMessages
     {
         internal static string IsRequired(string entity, string property)
             => $"{entity} {property} is required.";
@@ -22,9 +21,9 @@ public static class ValidationErrors
             => $"{entity} {property} format is not valid ({mask}).";
     }
     
-    public static class GeneralEntityErrors
+    internal static class GenericEntityErrors
     {
-        public static Error IdIsRequired(string request, string entity)
-            => Error.Create($"{request}.Id.IsRequired", GeneralErrorsMessages.IsRequired(entity, "Id"), EErrorType.Validation);
+        internal static Error IdIsRequired(string request, string entity)
+            => Error.Create($"{request}.Id.IsRequired", GenericErrorsMessages.IsRequired(entity, "Id"), EErrorType.Validation);
     }
 }
