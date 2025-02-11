@@ -20,13 +20,13 @@ public sealed record Address : ValueObject
     {
         ValidateAddress(street, city, district, number, state, country, zipCode);
 
-        Street = street;
-        City = city;
-        District = district;
-        Number = number;
-        State = state;
-        Country = country;
-        ZipCode = zipCode;
+        Street = street ?? string.Empty;
+        City = city ?? string.Empty;
+        District = district ?? string.Empty;
+        Number = number ?? 0;
+        State = state ?? string.Empty;
+        Country = country ?? string.Empty;
+        ZipCode = zipCode ?? string.Empty;
     }
 
     public static Address Create(string? street, string? city, string? district, int? number, string? state, string? country, string? zipCode)

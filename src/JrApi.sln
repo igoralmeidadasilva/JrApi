@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JrApi.Presentation.Api", "JrApi.Presentation\JrApi.Presentation.Api.csproj", "{F45655A8-31AA-416D-83CA-87061BBE4ACF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JrApi.Domain", "JrApi.Domain\JrApi.Domain.csproj", "{30DA7E15-9B5F-45F9-8C56-741C7880D457}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JrApi.Application", "JrApi.Application\JrApi.Application.csproj", "{CCDD9514-4F93-4BB3-9518-93F4411BBFA9}"
@@ -15,16 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JrApi.UnitTest", "JrApi.Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JrApi.SharedKernel", "JrApi.SharedKernel\JrApi.SharedKernel.csproj", "{92F44DB9-7961-4C1A-9DE5-00548CE4A506}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JrApi.Presentation", "JrApi.Presentation\JrApi.Presentation.csproj", "{37F82543-9C29-4AEE-93DA-9AAA90BBBAE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F45655A8-31AA-416D-83CA-87061BBE4ACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F45655A8-31AA-416D-83CA-87061BBE4ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F45655A8-31AA-416D-83CA-87061BBE4ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F45655A8-31AA-416D-83CA-87061BBE4ACF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30DA7E15-9B5F-45F9-8C56-741C7880D457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{30DA7E15-9B5F-45F9-8C56-741C7880D457}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30DA7E15-9B5F-45F9-8C56-741C7880D457}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{92F44DB9-7961-4C1A-9DE5-00548CE4A506}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92F44DB9-7961-4C1A-9DE5-00548CE4A506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92F44DB9-7961-4C1A-9DE5-00548CE4A506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F82543-9C29-4AEE-93DA-9AAA90BBBAE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F82543-9C29-4AEE-93DA-9AAA90BBBAE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F82543-9C29-4AEE-93DA-9AAA90BBBAE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F82543-9C29-4AEE-93DA-9AAA90BBBAE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

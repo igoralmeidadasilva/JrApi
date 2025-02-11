@@ -11,7 +11,7 @@ public static class ApiRoutes
     {
         public const string GET_BY_ID = "users/{userId:guid}";
         public const string GET_ALL = "users";
-        public const string INSERT = "users";
+        public const string CREATE = "users";
         public const string UPDATE = "users/{userId:guid}";
         public const string DELETE = "users/{userId:guid}";
     }

@@ -1,4 +1,3 @@
-using FluentValidation.TestHelper;
 using JrApi.Application.Core.Errors;
 using JrApi.Application.Queries.Users.GetUserById;
 

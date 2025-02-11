@@ -8,8 +8,5 @@ public sealed class UserReadOnlyRepository : BaseReadOnlyRepository<User>, IUser
     public UserReadOnlyRepository(ApplicationContext context) : base(context) { }
 
     public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
-    {
-        // return await Context.Users!.AsNoTracking().AnyAsync(x => x.Email!.Equals(email), cancellationToken);
-        throw new NotImplementedException();
-    }
+        => await Context.Users!.AsNoTracking().AnyAsync(x => x.Email!.Value.Equals(email), cancellationToken);
 }

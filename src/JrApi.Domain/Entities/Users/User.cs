@@ -26,10 +26,10 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
        Address? address, 
        EUserRole role) : base(id, createdOnUtc)
     {
-       Guard.ThrowIfNull(Name, nameof(Name));
-       Guard.ThrowIfNull(email, nameof(email));
-       Guard.ThrowIfNull(passwordHash, nameof(passwordHash));
-       Guard.ThrowIfNull(birthDate, nameof(birthDate));
+       Guard.ThrowIfNull(name, nameof(Name));
+       Guard.ThrowIfNull(email, nameof(Email));
+       Guard.ThrowIfNull(passwordHash, nameof(PasswordHash));
+       Guard.ThrowIfNull(birthDate, nameof(BirthDate));
 
        Name = name;
        Email = email;

@@ -7,9 +7,9 @@ public sealed class CreateUserCommandResponse : Result<Unit>, ICommandResponse
     public CreateUserCommandResponse() { }
 
     private CreateUserCommandResponse(
-        Unit value, 
-        bool isSuccess, 
-        IList<Error> errors) 
+        Unit value,
+        bool isSuccess,
+        IList<Error> errors)
         : base(value, isSuccess, errors) { }
 
     public static new CreateUserCommandResponse Success(Unit value) => new(value, true, []);
