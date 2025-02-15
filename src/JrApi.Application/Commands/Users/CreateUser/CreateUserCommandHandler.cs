@@ -58,6 +58,6 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         _logger.LogInformation("{RequestName} User was entered with id {UserId}.", 
             nameof(CreateUserCommand),
             user.Id);
-        return CreateUserCommandResponse.Success(Unit.Value);
+        return CreateUserCommandResponse.Success(user.Id);
    }
 }

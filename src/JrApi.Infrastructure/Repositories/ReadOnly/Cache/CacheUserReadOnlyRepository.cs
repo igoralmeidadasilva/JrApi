@@ -1,9 +1,11 @@
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Entities.Users;
 using JrApi.Infrastructure.Core.Options;
+using JrApi.SharedKernel;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Linq.Expressions;
 
 namespace JrApi.Infrastructure.Repositories.ReadOnly.Cache;
 
@@ -24,13 +26,17 @@ public sealed class CacheUserReadOnlyRepository : BaseReadOnlyRepository<User>, 
         _options = options.Value;
     }
 
-    public override async Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken = default)
+    public override async Task<PagedList<User>> GetPagedAsync<TKey>(
+        Expression<Func<User, TKey>> orderBy,
+        int pageNumber = 0, 
+        int pageSize = int.MaxValue, 
+        CancellationToken cancellationToken = default)
     {
         string cachedUsers = (await _distributedCache.GetStringAsync(_options.UsersKey!, cancellationToken))!;
 
         if(string.IsNullOrEmpty(cachedUsers))
         {
-            IEnumerable<User> response = await _decorated.GetAllAsync(cancellationToken);
+            PagedList<User> response = await _decorated.GetPagedAsync<TKey>(orderBy, pageNumber, pageSize, cancellationToken);
 
             if (response is null)
                 return response!;
@@ -43,7 +49,7 @@ public sealed class CacheUserReadOnlyRepository : BaseReadOnlyRepository<User>, 
             await _distributedCache.SetStringAsync(_options.UsersKey!, JsonConvert.SerializeObject(response), cacheOptions, cancellationToken);
             return response;
         }
-        return JsonConvert.DeserializeObject<IEnumerable<User>>(cachedUsers)!;
+        return JsonConvert.DeserializeObject<PagedList<User>>(cachedUsers)!;
     }
 
     public override async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)

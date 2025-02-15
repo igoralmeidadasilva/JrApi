@@ -1,4 +1,5 @@
 ﻿using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
+using JrApi.SharedKernel;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -20,15 +21,28 @@ public abstract class BaseReadOnlyRepository<TEntity> : IReadOnlyRepository<TEnt
         TableName = modelEntityType!.GetSchemaQualifiedTableName()!;
     }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-        => await Context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken);
-    
+    public virtual async Task<PagedList<TEntity>> GetPagedAsync<TKey>(
+        Expression<Func<TEntity, TKey>> orderBy,
+        int pageNumber, 
+        int pageSize, 
+        CancellationToken cancellationToken = default)
+    {
+        List<TEntity> entities = await Context.Set<TEntity>()
+            .OrderBy(orderBy)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+        int totalCount = await Context.Set<TEntity>().CountAsync(cancellationToken);
+        return new PagedList<TEntity>(entities, totalCount, pageNumber, pageSize);
+    }
+        
     public virtual async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => (await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken))!;
-    
+
     public virtual async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
         => await Context.Set<TEntity>().AsNoTracking().AnyAsync(x => x.Id == id, cancellationToken);
-    
+
     public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func, CancellationToken cancellationToken = default)
         => (await Context.Set<TEntity>().AsNoTracking().Where(func).FirstOrDefaultAsync(cancellationToken))!;
 
