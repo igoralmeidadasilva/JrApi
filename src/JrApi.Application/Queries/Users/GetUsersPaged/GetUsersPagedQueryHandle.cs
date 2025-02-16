@@ -37,7 +37,7 @@ public sealed class GetUsersPagedQueryHandle(
         _logger.LogInformation("{RequestName} Found {UsersCount} User records.", 
             nameof(GetUsersPagedQuery), 
             users.Count);
-            
+
         IEnumerable<GetUsersPagedQueryResponseItem> mappedUsers = users.Select(_mapper.Map<GetUsersPagedQueryResponseItem>);
         Uri nextPage = _linkGeneratorService.CreatePaginationUri(nameof(User), users.PageNumber + 1, users.PageSize);
         Uri previousPage = _linkGeneratorService.CreatePaginationUri(nameof(User), users.PageNumber - 1, users.PageSize);

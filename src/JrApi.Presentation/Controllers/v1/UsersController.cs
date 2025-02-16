@@ -27,11 +27,10 @@ public sealed class UsersController : ApiController<UsersController>
     [HttpGet(ApiRoutes.Users.GET_BY_ID)]
     [ProducesResponseType(typeof(GetUserByIdQueryResponseItem ), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status404NotFound)]
-    public IActionResult GetUserById(Guid userId)
+    public async Task<IActionResult> GetUserById(Guid userId)
     {
-        // var response = await Mediator.Send(new GetUserByIdQuery(userId));
-        // return response.IsSuccess ? Ok(response.Value) : GenerateErrorResponse(response);
-        return Ok();
+        var response = await Mediator.Send(new GetUserByIdQuery(userId));
+        return response.IsSuccess ? Ok(response.Value) : GenerateErrorResponse(response);
     }
 
     [HttpPost(ApiRoutes.Users.CREATE)]

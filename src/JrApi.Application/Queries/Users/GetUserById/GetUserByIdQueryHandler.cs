@@ -1,27 +1,26 @@
 using AutoMapper;
 using JrApi.Domain.Core.Errors;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
-using JrApi.Domain.Models;
+using JrApi.Domain.Core.Interfaces.Services;
+using JrApi.Domain.Entities.Users;
 using Microsoft.Extensions.Logging;
 
 namespace JrApi.Application.Queries.Users.GetUserById;
 
-public sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, GetUserByIdQueryResponse>
+public sealed class GetUserByIdQueryHandler(
+    ILogger<GetUserByIdQueryHandler> logger,
+    IMapper mapper,
+    IUserReadOnlyRepository userRepository,
+    ILinkGeneratorService linkGeneratorService) : IQueryHandler<GetUserByIdQuery, GetUserByIdQueryResponse>
 {
-    private readonly IUserReadOnlyRepository _userRepository;
-    private readonly ILogger<GetUserByIdQueryHandler> _logger;
-    private readonly IMapper _mapper;
-
-    public GetUserByIdQueryHandler(IUserReadOnlyRepository userRepository, ILogger<GetUserByIdQueryHandler> logger, IMapper mapper)
-    {
-        _userRepository = userRepository;
-        _logger = logger;
-        _mapper = mapper;
-    }
+    private readonly ILogger<GetUserByIdQueryHandler> _logger = logger;
+    private readonly IMapper _mapper = mapper;
+    private readonly IUserReadOnlyRepository _userRepository = userRepository;
+    private readonly ILinkGeneratorService _linkGeneratorService = linkGeneratorService;
 
     public async Task<GetUserByIdQueryResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+        User user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if(user is null)
         {
@@ -31,28 +30,14 @@ public sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, Ge
             return GetUserByIdQueryResponse.Failure(DomainErrors.User.IdNotFound);
         }
 
-        var mapperUser = _mapper.Map<GetUserByIdQueryResponseItem>(user);
-        var response = GetUserByIdQueryResponse.Success(mapperUser);
-
-        response.Value!.Links = GenerateUserLinks(request.Id);
+        GetUserByIdQueryResponseItem mapperUser = _mapper.Map<GetUserByIdQueryResponseItem>(user);
+        mapperUser.Links = _linkGeneratorService.CreateLinksCollection(nameof(User), request.Id);
+        GetUserByIdQueryResponse response = GetUserByIdQueryResponse.Success(mapperUser);
 
         _logger.LogInformation("{RequestName} Registration recovery for user {UserId} completed successfully.",
             nameof(GetUserByIdQuery),
             request.Id);
         
         return response;
-    }
-
-    private static IEnumerable<Link> GenerateUserLinks(Guid id)
-    {
-        IEnumerable<Link> links =
-        [
-            new($"/api/users/{id}","self", HttpMethod.Get.ToString()),
-            new("/api/users", "all-users", HttpMethod.Get.ToString()),
-            new("/api/users", "create", HttpMethod.Post.ToString()),
-            new($"/api/users/{id}", "update", HttpMethod.Put.ToString()),
-            new($"/api/users/{id}", "delete", HttpMethod.Delete.ToString())
-        ]; 
-        return links;
     }
 }

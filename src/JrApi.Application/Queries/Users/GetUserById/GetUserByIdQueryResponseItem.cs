@@ -1,8 +1,9 @@
+using JrApi.Application.Dtos;
 using JrApi.Domain.Models;
 
 namespace JrApi.Application.Queries.Users.GetUserById;
 
-public sealed record GetUserByIdQueryResponseItem
+public sealed record GetUserByIdQueryResponseItem : LinkCollectionResponseDto
 {
     public Guid Id { get; init; }
     public DateTime CreatedOnUtc { get; init; }
@@ -17,5 +18,4 @@ public sealed record GetUserByIdQueryResponseItem
     public string? State { get; init; }
     public string? Country { get; init; }
     public string? ZipCode { get; init; }
-    public IEnumerable<Link>? Links { get; set; }
 }
