@@ -1,7 +1,9 @@
 using Asp.Versioning;
 using HealthChecks.UI.Client;
+using JrApi.Domain.Core.Interfaces.Services;
 using JrApi.Presentation.Api.Core.Options;
 using JrApi.Presentation.Api.Routes;
+using JrApi.Presentation.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -15,6 +17,9 @@ public static class DependencyInjection
         services = services.AddAspVersioning(configuration);
         services = services.AddSwaggerConfiguration(configuration);
         //services = services.AddApiHealthCheck(configuration);
+
+        services = services.AddScoped<ILinkGeneratorService, LinkGeneratorService>();
+
         return services;
     }
 

@@ -16,7 +16,6 @@ public static class DependencyInjection
         services = services.AddMediatr();
         services = services.AddValidators();
         services = services.AddAutoMapper();
-
         return services;
     }
 
@@ -28,7 +27,6 @@ public static class DependencyInjection
                 .AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
                 .AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
-
         return services;
     }
 
@@ -37,9 +35,7 @@ public static class DependencyInjection
         services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
         services.AddScoped<IValidator<UpdateUserCommand>, UpdateUserCommandValidator>();
         services.AddScoped<IValidator<DeleteUserCommand>, DeleteUserCommandValidator>();
-
         services.AddScoped<IValidator<GetUserByIdQuery>, GetUserByIdQueryValidator>();
-
         return services;
     }
 

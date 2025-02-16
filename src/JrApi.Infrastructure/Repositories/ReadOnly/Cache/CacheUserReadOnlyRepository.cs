@@ -27,16 +27,16 @@ public sealed class CacheUserReadOnlyRepository : BaseReadOnlyRepository<User>, 
     }
 
     public override async Task<PagedList<User>> GetPagedAsync<TKey>(
-        Expression<Func<User, TKey>> orderBy,
         int pageNumber = 0, 
         int pageSize = int.MaxValue, 
+        Expression<Func<User, TKey>> orderBy = default!,
         CancellationToken cancellationToken = default)
     {
         string cachedUsers = (await _distributedCache.GetStringAsync(_options.UsersKey!, cancellationToken))!;
 
         if(string.IsNullOrEmpty(cachedUsers))
         {
-            PagedList<User> response = await _decorated.GetPagedAsync<TKey>(orderBy, pageNumber, pageSize, cancellationToken);
+            PagedList<User> response = await _decorated.GetPagedAsync<TKey>(pageNumber, pageSize, orderBy, cancellationToken);
 
             if (response is null)
                 return response!;

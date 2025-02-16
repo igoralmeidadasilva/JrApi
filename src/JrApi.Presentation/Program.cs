@@ -1,5 +1,4 @@
 using JrApi.Application;
-using JrApi.Domain.Core.Interfaces.Services;
 using JrApi.Infrastructure;
 using JrApi.Presentation.Api;
 using JrApi.Presentation.Api.Core.Middlewares;
@@ -12,6 +11,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddExceptionHandler<GlobalExcpetionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddApplication(builder.Configuration)

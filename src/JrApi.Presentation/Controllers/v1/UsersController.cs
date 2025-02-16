@@ -1,10 +1,10 @@
 using Asp.Versioning;
 using JrApi.Application.Commands.Users.CreateUser;
+using JrApi.Application.Dtos;
 using JrApi.Application.Queries.Users.GetUserById;
 using JrApi.Application.Queries.Users.GetUsersPaged;
 using JrApi.Presentation.Api.Core.Abstractions;
 using JrApi.Presentation.Api.Routes;
-using JrApi.SharedKernel.PageList;
 using JrApi.SharedKernel.Results;
 
 namespace JrApi.Presentation.Controllers.v1;
@@ -16,7 +16,7 @@ public sealed class UsersController : ApiController<UsersController>
     public UsersController(ILogger<UsersController> logger, IMediator mediator) : base(logger, mediator) { }
 
     [HttpGet(ApiRoutes.Users.GET_USERS_PAGED)]
-    [ProducesResponseType(typeof(PagedResponse<GetUsersPagedQueryResponseItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResponseDto<GetUsersPagedQueryResponseItem>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUsersPaged(int pageNumber = 1, int pageSize = 2)
     {
         var request = new GetUsersPagedQuery(pageNumber, pageSize);
@@ -27,10 +27,11 @@ public sealed class UsersController : ApiController<UsersController>
     [HttpGet(ApiRoutes.Users.GET_BY_ID)]
     [ProducesResponseType(typeof(GetUserByIdQueryResponseItem ), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetUserById(Guid userId)
+    public IActionResult GetUserById(Guid userId)
     {
-        var response = await Mediator.Send(new GetUserByIdQuery(userId));
-        return response.IsSuccess ? Ok(response.Value) : GenerateErrorResponse(response);
+        // var response = await Mediator.Send(new GetUserByIdQuery(userId));
+        // return response.IsSuccess ? Ok(response.Value) : GenerateErrorResponse(response);
+        return Ok();
     }
 
     [HttpPost(ApiRoutes.Users.CREATE)]

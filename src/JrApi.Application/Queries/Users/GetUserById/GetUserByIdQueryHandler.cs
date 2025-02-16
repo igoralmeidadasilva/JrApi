@@ -47,13 +47,12 @@ public sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, Ge
     {
         IEnumerable<Link> links =
         [
-            new() { Rel = "self", Href = $"/api/users/{id}", Method = HttpMethod.Get.ToString() },
-            new() { Rel = "all-users", Href = "/api/users", Method = HttpMethod.Get.ToString() },
-            new() { Rel = "create", Href = "/api/users", Method = HttpMethod.Post.ToString() },
-            new() { Rel = "update", Href = $"/api/users/{id}", Method = HttpMethod.Put.ToString() },
-            new() { Rel = "delete", Href = $"/api/users/{id}", Method = HttpMethod.Delete.ToString() }
-        ];
-        
+            new($"/api/users/{id}","self", HttpMethod.Get.ToString()),
+            new("/api/users", "all-users", HttpMethod.Get.ToString()),
+            new("/api/users", "create", HttpMethod.Post.ToString()),
+            new($"/api/users/{id}", "update", HttpMethod.Put.ToString()),
+            new($"/api/users/{id}", "delete", HttpMethod.Delete.ToString())
+        ]; 
         return links;
     }
 }

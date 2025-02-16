@@ -22,20 +22,23 @@ public abstract class BaseReadOnlyRepository<TEntity> : IReadOnlyRepository<TEnt
     }
 
     public virtual async Task<PagedList<TEntity>> GetPagedAsync<TKey>(
-        Expression<Func<TEntity, TKey>> orderBy,
         int pageNumber, 
         int pageSize, 
+        Expression<Func<TEntity, TKey>> orderBy,
         CancellationToken cancellationToken = default)
     {
-        List<TEntity> entities = await Context.Set<TEntity>()
-            .OrderBy(orderBy)
+        List<TEntity> response = await Context.Set<TEntity>()
+            .AsNoTracking()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .AsNoTracking()
+            .OrderBy(orderBy)
             .ToListAsync(cancellationToken);
         int totalCount = await Context.Set<TEntity>().CountAsync(cancellationToken);
-        return new PagedList<TEntity>(entities, totalCount, pageNumber, pageSize);
+        return new PagedList<TEntity>(response, totalCount, pageNumber, pageSize);
     }
+
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+        => await Context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken);
         
     public virtual async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => (await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken))!;
