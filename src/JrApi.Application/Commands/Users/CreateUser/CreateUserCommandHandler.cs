@@ -8,29 +8,20 @@ using Microsoft.Extensions.Logging;
 
 namespace JrApi.Application.Commands.Users.CreateUser;
 
-public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, CreateUserCommandResponse>
+public sealed class CreateUserCommandHandler(
+    ILogger<CreateUserCommandHandler> logger,
+    IPasswordHashingService passwordHasher,
+    IUserPersistenceRepository userPersistenceRepository,
+    IUserReadOnlyRepository userReadOnlyRepository,
+    IUnitOfWork unitOfWork) : ICommandHandler<CreateUserCommand, CreateUserCommandResponse>
 {
-   private readonly ILogger<CreateUserCommandHandler> _logger;
-   private readonly IPasswordHashingService _passwordHasher;
-   private readonly IUserPersistenceRepository _userPersistenceRepository;
-   private readonly IUserReadOnlyRepository _userReadOnlyRepository;
-   private readonly IUnitOfWork _unitOfWork;
+   private readonly ILogger<CreateUserCommandHandler> _logger = logger;
+   private readonly IPasswordHashingService _passwordHasher = passwordHasher;
+   private readonly IUserPersistenceRepository _userPersistenceRepository = userPersistenceRepository;
+   private readonly IUserReadOnlyRepository _userReadOnlyRepository = userReadOnlyRepository;
+   private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-   public CreateUserCommandHandler(
-       ILogger<CreateUserCommandHandler> logger,
-       IPasswordHashingService passwordHasher,
-       IUserPersistenceRepository userPersistenceRepository,
-       IUserReadOnlyRepository userReadOnlyRepository,
-       IUnitOfWork unitOfWork)
-   {
-       _logger = logger;
-       _passwordHasher = passwordHasher;
-       _userPersistenceRepository = userPersistenceRepository;
-       _userReadOnlyRepository = userReadOnlyRepository;
-       _unitOfWork = unitOfWork;
-   }
-
-   public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
    {
         if(await _userReadOnlyRepository.EmailExistsAsync(request.Email, cancellationToken))
         {
