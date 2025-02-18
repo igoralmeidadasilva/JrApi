@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.ConfigureSwaggerUI();
 }
 
-//app.ConfigureHealthCheck();
+app.ConfigureHealthCheck();
 
 // var seeder = app.Services.GetService<IDatabaseSeedService>();
 

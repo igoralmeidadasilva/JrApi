@@ -16,7 +16,7 @@ public static class DependencyInjection
     {
         services = services.AddAspVersioning(configuration);
         services = services.AddSwaggerConfiguration(configuration);
-        //services = services.AddApiHealthCheck(configuration);
+        services = services.AddApiHealthCheck(configuration);
 
         services = services.AddScoped<ILinkGeneratorService, LinkGeneratorService>();
 
@@ -66,9 +66,10 @@ public static class DependencyInjection
 
     private static IServiceCollection AddApiHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddHealthChecks()
+        services.AddHealthChecks()
+            .AddSqlServer(connectionString: configuration.GetConnectionString("DefaultConnection")!, name: "SqlSever Health Check", tags: ["db", "tags"]);
         //    .AddSqlite(connectionString: configuration.GetConnectionString("Sqlite")!, name: "SQLite Check", tags: ["db", "tags"])
-        //    .AddRedis(redisConnectionString: configuration.GetConnectionString("Redis")!, name: "Redis Check", tags: ["db", "tags"]);
+        //    .AddRedis(redisConnectionString: configuration.GetConnectionString("Redis")!, name: "Redis Health Check", tags: ["db", "cache", "tags"]);
 
         services.AddHealthChecksUI(options =>
         {
@@ -80,15 +81,15 @@ public static class DependencyInjection
         return services;
     }
 
-    //public static WebApplication ConfigureHealthCheck(this WebApplication app)
-    //{
-    //    app.UseHealthChecks(ApiRoutes.Health.HEALTH, new HealthCheckOptions
-    //    {
-    //        Predicate = p => true,
-    //        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    //    });
+    public static WebApplication ConfigureHealthCheck(this WebApplication app)
+    {
+       app.UseHealthChecks(ApiRoutes.Health.HEALTH, new HealthCheckOptions
+       {
+           Predicate = p => true,
+           ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+       });
 
-    //    app.UseHealthChecksUI(options => { options.UIPath = ApiRoutes.Health.DASHBOARD; });
-    //    return app;
-    //}
+       app.UseHealthChecksUI(options => { options.UIPath = ApiRoutes.Health.DASHBOARD; });
+       return app;
+    }
 }
