@@ -1,6 +1,6 @@
 namespace JrApi.Application.Dtos;
 
-public record PagedResponseDto<T> where T : class
+public record PagedResponseDto<T> where T : class, new()
 {
     public IEnumerable<T> Result { get; set; } = [];
     public int Count { get; set; }

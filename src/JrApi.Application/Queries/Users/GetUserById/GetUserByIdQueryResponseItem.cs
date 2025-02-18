@@ -1,9 +1,6 @@
-using JrApi.Application.Dtos;
-using JrApi.Domain.Models;
-
 namespace JrApi.Application.Queries.Users.GetUserById;
 
-public sealed record GetUserByIdQueryResponseItem : LinkCollectionResponseDto
+public sealed record GetUserByIdQueryResponseItem
 {
     public Guid Id { get; init; }
     public DateTime CreatedOnUtc { get; init; }

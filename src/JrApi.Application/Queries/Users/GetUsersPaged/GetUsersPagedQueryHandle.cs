@@ -30,7 +30,7 @@ public sealed class GetUsersPagedQueryHandle(
 
         if(users is null)
         {
-            _logger.LogInformation("{RequestName} user list is null.", 
+            _logger.LogInformation("{RequestName} user's list is null.", 
                 nameof(GetUsersPagedQuery));
             return GetUsersPagedQueryResponse.Failure(DomainErrors.User.NoneCanBeFound);
         }
@@ -48,6 +48,12 @@ public sealed class GetUsersPagedQueryHandle(
             Next = users.HasNext ? nextPage.AbsoluteUri : string.Empty,
             Previous = users.HasPrevious ? previousPage.AbsoluteUri : string.Empty,
         };
+
+        _logger.LogInformation("{RequestName} Returning to page {} containing {} records out of a total of {}.", 
+            nameof(GetUsersPagedQuery), 
+            request.PageNumber,
+            users.Count,
+            users.TotalCount);
         return GetUsersPagedQueryResponse.Success(pagedResponse);
     }
 }

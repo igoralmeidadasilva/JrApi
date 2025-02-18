@@ -12,8 +12,8 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
     public Address? Address { get; private set; }
     public DateTime BirthDate { get; private set; }
     public EUserRole Role { get; private set; }
-    public bool IsDeleted { get; set; }
-    public DateTime DeletedOnUtc { get; set; }
+    public bool IsDeleted { get; private set; }
+    public DateTime DeletedOnUtc { get; private set; }
 
     public User() { } // ORM
     private User(
@@ -49,7 +49,6 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
 
     public void Delete()
     {
-        Role = EUserRole.None;
         IsDeleted = true;
         DeletedOnUtc = DateTime.UtcNow;
     }

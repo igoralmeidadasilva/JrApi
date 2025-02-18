@@ -6,23 +6,16 @@ using Microsoft.Extensions.Logging;
 
 namespace JrApi.Application.Commands.Users.DeleteUser;
 
-public sealed class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand, DeleteUserCommandResponse>
+public sealed class DeleteUserCommandHandler(
+    ILogger<DeleteUserCommandHandler> logger,
+    IUserPersistenceRepository userPersistenceRepository,
+    IUserReadOnlyRepository userReadOnlyRepository,
+    IUnitOfWork unitOfWork) : ICommandHandler<DeleteUserCommand, DeleteUserCommandResponse>
 {
-    private readonly ILogger<DeleteUserCommandHandler> _logger;
-    private readonly IUserPersistenceRepository _userPersistenceRepository;
-    private readonly IUserReadOnlyRepository _userReadOnlyRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    public DeleteUserCommandHandler(
-        ILogger<DeleteUserCommandHandler> logger,
-        IUserPersistenceRepository userPersistenceRepository,
-        IUserReadOnlyRepository userReadOnlyRepository,
-        IUnitOfWork unitOfWork)
-    {
-        _logger = logger;
-        _userPersistenceRepository = userPersistenceRepository;
-        _userReadOnlyRepository = userReadOnlyRepository;
-        _unitOfWork = unitOfWork;
-    }
+    private readonly ILogger<DeleteUserCommandHandler> _logger = logger;
+    private readonly IUserPersistenceRepository _userPersistenceRepository = userPersistenceRepository;
+    private readonly IUserReadOnlyRepository _userReadOnlyRepository = userReadOnlyRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<DeleteUserCommandResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {

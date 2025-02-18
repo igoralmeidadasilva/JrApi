@@ -1,4 +1,5 @@
 using AutoMapper;
+using JrApi.Application.Dtos;
 using JrApi.Domain.Core.Errors;
 using JrApi.Domain.Core.Interfaces.Repositories.ReadOnly;
 using JrApi.Domain.Core.Interfaces.Services;
@@ -31,8 +32,12 @@ public sealed class GetUserByIdQueryHandler(
         }
 
         GetUserByIdQueryResponseItem mapperUser = _mapper.Map<GetUserByIdQueryResponseItem>(user);
-        mapperUser.Links = _linkGeneratorService.CreateLinksCollection(nameof(User), request.Id);
-        GetUserByIdQueryResponse response = GetUserByIdQueryResponse.Success(mapperUser);
+        LinkCollectionResponseDto<GetUserByIdQueryResponseItem> responseItem = new()
+        {
+            Links = _linkGeneratorService.CreateLinksCollection(nameof(User), request.Id),
+            Result = mapperUser
+        };
+        GetUserByIdQueryResponse response = GetUserByIdQueryResponse.Success(responseItem);
 
         _logger.LogInformation("{RequestName} Registration recovery for user {UserId} completed successfully.",
             nameof(GetUserByIdQuery),
