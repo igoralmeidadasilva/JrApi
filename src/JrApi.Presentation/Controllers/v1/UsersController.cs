@@ -17,7 +17,7 @@ public sealed class UsersController : ApiController<UsersController>
 {
     public UsersController(ILogger<UsersController> logger, IMediator mediator) : base(logger, mediator) { }
 
-    [HttpGet(ApiRoutes.Users.GET_USERS_PAGED)]
+    [HttpGet(ApiRoutes.Users.GET_PAGED)]
     [ProducesResponseType(typeof(PagedResponseDto<GetUsersPagedQueryResponseItem>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUsersPaged(int pageNumber = 1, int pageSize = 2)
     {
