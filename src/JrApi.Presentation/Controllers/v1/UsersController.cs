@@ -5,8 +5,8 @@ using JrApi.Application.Commands.Users.UpdateUser;
 using JrApi.Application.Dtos;
 using JrApi.Application.Queries.Users.GetUserById;
 using JrApi.Application.Queries.Users.GetUsersPaged;
-using JrApi.Presentation.Api.Core.Abstractions;
-using JrApi.Presentation.Api.Routes;
+using JrApi.Presentation.Core.Abstractions;
+using JrApi.Presentation.Routes;
 using JrApi.SharedKernel.Results;
 
 namespace JrApi.Presentation.Controllers.v1;

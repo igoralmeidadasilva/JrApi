@@ -1,14 +1,12 @@
 using Asp.Versioning;
-using HealthChecks.UI.Client;
 using JrApi.Domain.Core.Interfaces.Services;
-using JrApi.Presentation.Api.Core.Options;
-using JrApi.Presentation.Api.Routes;
+using JrApi.Presentation.Core.Options;
+using JrApi.Presentation.Routes;
 using JrApi.Presentation.Services;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace JrApi.Presentation.Api;
+namespace JrApi.Presentation;
 
 public static class DependencyInjection
 {
@@ -79,17 +77,5 @@ public static class DependencyInjection
         })
         .AddInMemoryStorage();
         return services;
-    }
-
-    public static WebApplication ConfigureHealthCheck(this WebApplication app)
-    {
-       app.UseHealthChecks(ApiRoutes.Health.HEALTH, new HealthCheckOptions
-       {
-           Predicate = p => true,
-           ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-       });
-
-       app.UseHealthChecksUI(options => { options.UIPath = ApiRoutes.Health.DASHBOARD; });
-       return app;
     }
 }

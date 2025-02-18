@@ -1,7 +1,7 @@
 using JrApi.Application;
 using JrApi.Infrastructure;
-using JrApi.Presentation.Api;
-using JrApi.Presentation.Api.Core.Middlewares;
+using JrApi.Presentation;
+using JrApi.Presentation.Core.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +28,9 @@ if (app.Environment.IsDevelopment())
 
 app.ConfigureHealthCheck();
 
-// var seeder = app.Services.GetService<IDatabaseSeedService>();
-
-// await seeder!.ExecuteMigrationAsync();
-// await seeder!.ExecuteSeedAsync();
+app.EnsureCreateDatabase();
+app.ApplyMigrations();
+app.ApplySeeding();
 
 app.UseHttpsRedirection();
 app.MapControllers();

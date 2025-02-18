@@ -22,24 +22,11 @@ public static class DependencyInjection
         services = services.AddServices(configuration);
         services = services.AddUnitOfWork(configuration);
         services = services.AddOptions(configuration);
-        services = services.AddRedis(configuration);
-        services = services.AddCachingDecorator(configuration);
+        // services = services.AddRedis(configuration);
+        // services = services.AddCachingDecorator(configuration);
 
         return services;
     }
-
-    // private static IServiceCollection AddSqLite(this IServiceCollection services, IConfiguration configuration)
-    // {
-    //     services.AddSingleton<SoftDeleteInterceptor>();
-
-    //     services.AddDbContext<ApplicationContext>((serviceProvider, options) =>
-    //     {
-    //         options.UseSqlServer(configuration.GetConnectionString("DefaultDatabase")!)
-    //             .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
-    //     });
-
-    //     return services;
-    // }
 
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
@@ -55,12 +42,10 @@ public static class DependencyInjection
         return services;
     }
 
-    
-
     private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IPasswordHashingService, PasswordHashingService>();
-        //services.AddSingleton<IDatabaseSeedService, DatabaseSeedService>();
+        services.AddSingleton<IDatabaseSeedService, DatabaseSeedService>();
         return services;
     }
 
@@ -73,7 +58,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<DatabaseSeedOptions>(options => configuration.GetSection(nameof(DatabaseSeedOptions))
+        services.Configure<DatabaseManagerOptions>(options => configuration.GetSection(nameof(DatabaseManagerOptions))
             .Bind(options, c => c.BindNonPublicProperties = true));
         services.Configure<DistributedCacheOptions>(configuration.GetSection(nameof(DistributedCacheOptions)));
         return services;

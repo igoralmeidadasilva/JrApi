@@ -16,6 +16,7 @@ public sealed class User : AggregateRoot<User>, ISoftDeletableEntity
     public DateTime DeletedOnUtc { get; private set; }
 
     public User() { } // ORM
+    
     private User(
        Guid id, 
        DateTime createdOnUtc, 

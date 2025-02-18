@@ -1,0 +1,92 @@
+[
+  {
+    "FirstName": "Super Admin",
+    "LastName": "-",
+    "Email": "admin.jrapi@email.com",
+    "Password": "@Admin456",
+    "BirthDate": "2000-01-01T00:00:00Z",
+    "Role": 0,
+    "Address": {}
+  },
+  {
+    "FirstName": "John",
+    "LastName": "Doe",
+    "Email": "john.doe@email.com",
+    "Password": "@John123456",
+    "BirthDate": "1995-05-15T00:00:00Z",
+    "Role": 1,
+    "Address": {}
+  },
+  {
+    "FirstName": "Jane",
+    "LastName": "Smith",
+    "Email": "jane.smith@email.com",
+    "Password": "@Jane123456",
+    "BirthDate": "1992-08-22T00:00:00Z",
+    "Role": 2,
+    "Address": {}
+  },
+  {
+    "FirstName": "Alice",
+    "LastName": "Brown",
+    "Email": "alice.brown@email.com",
+    "Password": "@Alice789123",
+    "BirthDate": "1988-10-10T00:00:00Z",
+    "Role": 1,
+    "Address": {}
+  },
+  {
+    "FirstName": "Bob",
+    "LastName": "Wilson",
+    "Email": "bob.wilson@email.com",
+    "Password": "@Bob456789",
+    "BirthDate": "1985-03-05T00:00:00Z",
+    "Role": 2,
+    "Address": {}
+  },
+  {
+    "FirstName": "Charlie",
+    "LastName": "Miller",
+    "Email": "charlie.miller@email.com",
+    "Password": "@Charlie789123",
+    "BirthDate": "1990-12-12T00:00:00Z",
+    "Role": 1,
+    "Address": {}
+  },
+  {
+    "FirstName": "David",
+    "LastName": "Taylor",
+    "Email": "david.taylor@email.com",
+    "Password": "@David456789",
+    "BirthDate": "1983-07-18T00:00:00Z",
+    "Role": 4,
+    "Address": {}
+  },
+  {
+    "FirstName": "Emma",
+    "LastName": "Anderson",
+    "Email": "emma.anderson@email.com",
+    "Password": "@Emma123456",
+    "BirthDate": "1997-09-25T00:00:00Z",
+    "Role": 1,
+    "Address": {}
+  },
+  {
+    "FirstName": "Frank",
+    "LastName": "Thomas",
+    "Email": "frank.thomas@email.com",
+    "Password": "@Frank789123",
+    "BirthDate": "1980-04-30T00:00:00Z",
+    "Role": 2,
+    "Address": {}
+  },
+  {
+    "FirstName": "Grace",
+    "LastName": "White",
+    "Email": "grace.white@email.com",
+    "Password": "@Grace456789",
+    "BirthDate": "1993-11-07T00:00:00Z",
+    "Role": 1,
+    "Address": {}
+  }
+]

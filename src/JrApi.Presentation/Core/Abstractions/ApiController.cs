@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using JrApi.SharedKernel.Results;
 
-namespace JrApi.Presentation.Api.Core.Abstractions;
+namespace JrApi.Presentation.Core.Abstractions;
 
 [ApiController]
 [ApiVersion("2.0")]

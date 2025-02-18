@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace JrApi.Presentation.Api.Core.Middlewares;
+namespace JrApi.Presentation.Core.Middlewares;
 
 public sealed class GlobalExcpetionHandler : IExceptionHandler
 {

@@ -10,7 +10,7 @@ down-infra:
 
 # Ef Core
 ef-add:
-	dotnet ef migrations add $(NAME) --project .\src\JrApi.Infrastructure\JrApi.Infrastructure.csproj --startup-project .\src\JrApi.Presentation\JrApi.Presentation.Api.csproj
+	dotnet ef migrations add $(NAME) --project .\src\JrApi.Infrastructure\JrApi.Infrastructure.csproj --startup-project .\src\JrApi.Presentation\JrApi.Presentation.csproj --context ApplicationContext
 ef-rm:
 	dotnet ef migrations remove --project .\src\JrApi.Infrastructure\JrApi.Infrastructure.csproj --startup-project .\src\JrApi.Presentation\JrApi.Presentation.Api.csproj
 ef-update:

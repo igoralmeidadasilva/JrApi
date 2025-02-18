@@ -2,8 +2,8 @@ namespace JrApi.Domain.Core.Abstractions;
 
 public abstract class Entity<T>
 {
-    public Guid Id { get; init; }
-    public DateTime CreatedOnUtc { get; init; }
+    public Guid Id { get; private init; }
+    public DateTime CreatedOnUtc { get; private init; }
 
     protected Entity() { } // ORM
 

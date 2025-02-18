@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace JrApi.Presentation.Api.Core.Options;
+namespace JrApi.Presentation.Core.Options;
 
 public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
@@ -21,7 +21,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
         }
     }
-    private OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
+    private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
     {
         var info = new OpenApiInfo
         {
